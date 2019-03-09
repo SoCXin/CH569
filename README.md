@@ -1,25 +1,24 @@
-﻿# [Z8500](https://github.com/mcuyun/Z8500) 
+﻿# [Z85XX](https://github.com/sochub/Z85)
 
-[![sites](mcuyun/mcuyun.png)](http://www.mcuyun.com)
+[![sites](SoC/SoC.png)](http://www.qitas.cn) 
 
-#### 归属：[X86架构](https://github.com/mcuyun/X86)
+#### 归属：[Intel Atom X](https://github.com/sochub/atom)
 
-#### [关于悠云](https://github.com/mcuyun)可访问 www.mcuyun.com
+## [描述](https://github.com/sochub/Z85/wiki) 
 
-## [描述](https://github.com/mcuyun/Z8500/wiki) 
+应用于移动设备的 Cherry Trail-T" (14 nm)中阶产品
 
-高水平入门级x86处理器，低功耗处理器，拥有不错的性价比
+芯片设计 TDP 2.17 W ，UTFCBGA1380 封装 17 mm × 17 × 1.0 mm
+
+包括  Z8500/Z8550 两个型号，1.44GHz - 2.4GHz
 
 [![sites](docs/capacity.png)](docs/)
 [![sites](docs/interface.png)](docs/)
 [![sites](docs/package.png)](docs/)
 
 
-
-
 ---
 
-###  [悠云，为嵌入式](http://www.mcuyun.com)   
+###  [SoC开发平台](http://www.qitas.cn)   
+
 ###  qitas@qitas.cn
-
-
