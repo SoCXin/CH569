@@ -30,6 +30,6 @@ RISC-V内核，120MHz系统主频，支持单周期乘法和硬件除法、低�
 
 ### [选型建议](https://github.com/SoCXin)
 
-[CH569](https://github.com/SoCXin/CH569) 可看作在[CH552](https://github.com/SoCXin/CH552) 基础上添加了USB主机功能，代码兼容，对于不需要主机功能的场景下使用性价比不高。
+[CH569](https://github.com/SoCXin/CH569) 针对比价特殊的文件及加密环境
 
 ###  [SoC芯平台](http://www.SoC.Xin)
