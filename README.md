@@ -25,8 +25,7 @@
 * SerDes控制及收发器（内置PHY可直接驱动光纤），网线（仅使用1组差分线）传输90米，支持1.25Gbps高速差分信号通讯
 * EMMC控制器支持单线、4线、8线数据通讯模式，符合EMMC卡4.4和4.5.1规范，兼容5.0规范
 * 支持AES/SM4算法，8种组合加解密模式，支持SRAM/EMMC/HSPI外设接口数据加解密
-* 4组UART，最高波特率6Mbps，兼容16C550，内置FIFO，多个触发级
-* 2组SPI接口，支持主从(Master/Slave)模式，内置FIFO，支持DMA
+* SPI x 2 + UART x 4 (16C550/波特率6Mbps/多触发级FIFO)
 * 封装(QFN68/QFN40)
 
 ### [选型建议](https://github.com/SoCXin)
