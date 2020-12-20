@@ -1,8 +1,0 @@
-{
-    "name":"CH569",
-    "Core":"RISC-V3A",
-    "Vendor":"wch",
-    "description":"RISC-V3A CH569 SoC",
-    "url":"https://github.com/SoCXin/CH569",
-    "version":"1.0.0"
-}

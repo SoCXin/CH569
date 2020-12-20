@@ -1,0 +1,64 @@
+{
+    "type":"MCU",
+    "name":"CH569",
+    "tags": ["Type-C","USB PD3.0"],
+    "series":["CH569"],
+    "description":"WCH RISC-V3A MCU",
+    "peripheral": ["ADC","TIM","PWM"],
+    "package":["LQFP64"],
+    "encryption": ["UID-96"],
+    "SRAM":128,
+    "OTP":4032,
+    "Core": {
+        "num": 1,
+        "architecture":"RISC-V3A",
+        "Freq":48
+    },
+    "Level": {
+        "main":1,
+        "sub":12,
+        "price":0.7
+    },
+    "GPIO": {
+        "num": [13,17],
+        "irq": 4,
+        "more":["LIN","IrDA"]
+    },
+    "ADC": {
+        "num": 1,
+        "channel": 6,
+        "resolution": 12,
+        "rate": 1024
+    },
+    "TIM": {
+        "resolution":[8,8,8,8,16]
+    },
+    "PWM": {
+        "num": 4,
+        "resolution": 8,
+        "rate": 256
+    },
+    "CLK": {
+        "HSE": [1000,16000],
+        "HSI": [16000],
+        "LSI": [32],
+        "PLL": [16000,16000],
+        "DIV": [1,128],
+        "accuracy": 0.02
+    },
+    "PWR": {
+        "VDD": [3000,5500],
+        "PVD": [1820,1810],
+        "IDD": [2.21,14.31],
+        "Imax": 120
+    },
+    "EMC": {
+        "HSE": [2000,24000],
+        "ESD": [31]
+    },
+    "vendor":"chipsea",
+    "url":"http://www.SoC.xin/CS32A039",
+    "repo":"https://github.com/SoCXin/CS32A039",
+    "homepage": "http://www.chipsea.com/8-bit-pd-mcu/CS32A039.html",
+    "version":"1.0.0"
+}
