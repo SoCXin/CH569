@@ -20,8 +20,6 @@
      256 bytes/page for writing, EEPROM_WRITE support one byte or more byte writing, but multiple of 256 is the best,
      4KB (4096 bytes) bytes/block for erasing, so multiple of 4096 is the best */
 
-#include "CH56x_common.h"
-
 #ifndef EEPROM_PAGE_SIZE
 #define EEPROM_PAGE_SIZE    256                       // Flash-ROM & Data-Flash page size for writing
 #define EEPROM_BLOCK_SIZE   4096                      // Flash-ROM & Data-Flash block size for erasing
@@ -56,5 +54,5 @@ extern UINT32 FLASH_ROMA_VERIFY( UINT32 StartAddr, PVOID Buffer, UINT32 Length )
 
 extern UINT8 FLASH_ROMA_READ( UINT32 StartAddr, PVOID Buffer, UINT32 Length );  // read FlashROM data block, minimal block is dword, return 0 if success
 
-extern UINT8 FLASH_ROMA_LOCK( UINT8 LockFlag );  // lock(protect)/unlock FlashROM data block, return 0 if success
-/* LockFlag: 0=unlock all, 1=lock boot code, 2=lock boot code and user code, 3=lock all code and data */
+extern UINT8 FLASH_ROMA_LOCK( UINT8 LockFlag );  // unlock FlashROM block, return 0 if success
+/* LockFlag: not care */

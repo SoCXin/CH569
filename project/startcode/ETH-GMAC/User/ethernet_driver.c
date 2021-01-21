@@ -119,7 +119,7 @@ UINT8 ETH_buf_init(void)
 }
 
 #ifdef USE_USB125M
-void usbssh_init ()	// USBSS host initial
+void myusbssh_init ()	// USBSS host initial
 {
 	USBSSH->UH_TX_CTRL = 0;
 	USBSSH->UH_RX_CTRL = 0;
@@ -140,6 +140,22 @@ void usbssh_init ()	// USBSS host initial
 
 	USBSS->LINK_CTRL = POWER_MODE_2; // GO RX DETECT
 }
+
+/*******************************************************************************
+* Function Name  : switch_pwr_mode
+* Description    :
+* Input          : None
+* Return         : None
+*******************************************************************************/
+void myswitch_pwr_mode( UINT8 pwr_mode )
+{
+    UINT32 temp;
+    temp = USBSS->LINK_CTRL;
+    temp &= ~PM_MASK;
+    temp |= pwr_mode;
+    USBSS->LINK_CTRL = temp;
+    while( USBSS->LINK_STATUS & LINK_BUSY );            // wait power mode switch done
+}
 #endif
 
 /*******************************************************************************
@@ -152,8 +168,8 @@ void ETH_uClock_enable(void)
 {
 	// config ethernet clock frequency
 #ifdef USE_USB125M
-	usbssh_init();
-	switch_pwr_mode(POWER_MODE_2);
+	myusbssh_init();
+	myswitch_pwr_mode(POWER_MODE_2);
 #endif
 	R8_SAFE_ACCESS_SIG = 0x57; // enable safe access mode
 	R8_SAFE_ACCESS_SIG = 0xa8;

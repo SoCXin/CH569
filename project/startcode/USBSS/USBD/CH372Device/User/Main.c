@@ -1,22 +1,25 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : Main.c
 * Author             : WCH
-* Version            : V1.0
-* Date               : 2020/07/31
+* Version            : V1.1
+* Date               : 2020/12/23
 * Description 		 : 
 *******************************************************************************/
-
-
 #include "CH56x_common.h"
-#include "usb30_porp.H"
-#include "usbhs.h"
-#include "usb20_des.h"
-#define	UART1_BAUD	921600
-extern void USB20_IRQ( void );  //USB2中断函数
-extern void usbhsdev_init (void);
-void USBSS_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));			//TMR0 interrupt service
-void LINK_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));		//TMR1 interrupt service
-void USBHS_IRQHandler (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
+#include "CH56xusb30_lib.h"
+#include "CH56x_usb30.h"
+
+/* Global define */
+#define UART1_BAUD  921600
+
+/* Global Variable */
+
+
+
+/* Function declaration */
+
+
+
 /*******************************************************************************
 * Function Name  : DebugInit
 * Description    : Initializes the UART1 peripheral.
@@ -38,6 +41,7 @@ void DebugInit(UINT32 baudrate)
 	R32_PA_DIR |= (1<<8);
 }
 
+
 /*******************************************************************************
 * Function Name  : main
 * Description    : Main program.
@@ -46,51 +50,26 @@ void DebugInit(UINT32 baudrate)
 *******************************************************************************/
 int main()
 {
-	SystemInit(FREQ_SYS);
+    UINT32 i = 0,j ;
+    UINT8 val = 1;
+
+    SystemInit(FREQ_SYS);
 	Delay_Init(FREQ_SYS);
 
 /* 配置串口调试 */
 	DebugInit(UART1_BAUD);
-	PRINT("USB3.0&USB2.0(80MHz) !\n");
+	PRINT("CH56x USB3.0 & USB2.0 device test(120MHz) !\n");
 
-	R32_USB_CONTROL = 0;
-	USB30_init();  //USB3.0初始化
-	PFIC_EnableIRQ(USBSS_IRQn);
-	PFIC_EnableIRQ(LINK_IRQn);
+//USB初始化
+    R32_USB_CONTROL = 0;
+    PFIC_EnableIRQ(USBSS_IRQn);
+    PFIC_EnableIRQ(LINK_IRQn);
+    PFIC_EnableIRQ(TMR0_IRQn);
+    R8_TMR0_INTER_EN = 1;
+    TMR0_TimerInit( 67000000 );   //约0.5秒
+	USB30D_init(ENABLE);          //USB3.0初始化，初始化之前确保USB3.0两个中断使能
 
-	usbhsdev_init();    //USB2.0初始化
-	PFIC_EnableIRQ(USBHS_IRQn);
-	while(1);
-}
-
-/*******************************************************************************
-* Function Name  : LINK_IRQHandler
-* Description    : USB3.0 Link Interrupt Handler.
-* Input          : None
-* Return         : None
-*******************************************************************************/
-void LINK_IRQHandler (void)	          //USBSS link interrupt service
-{
-	USB30_linkIRQHandler();
-}
-
-/*******************************************************************************
-* Function Name  : USBSS_IRQHandler
-* Description    : USB3.0 Interrupt Handler.
-* Input          : None
-* Return         : None
-*******************************************************************************/
-void USBSS_IRQHandler (void)			//USBSS interrupt service
-{
-	USB30_usbssIRQHandler();
-}
-/*******************************************************************************
-* Function Name  : USBHS_IRQHandler
-* Description    : USB2.0 Interrupt Handler.
-* Input          : None
-* Return         : None
-*******************************************************************************/
-void USBHS_IRQHandler (void)
-{
-    USB20_IRQ();
+	while(1){
+	    ;
+	}
 }

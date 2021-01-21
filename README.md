@@ -34,4 +34,4 @@
 
 [CH569](https://github.com/SoCXin/CH569)相较于[CH565](https://github.com/SoCXin/CH565)没有DVP接口，拥有HSPI。
 
-###  [SoC芯平台](http://www.SoC.Xin)
+###  [www.SoC.xin(芯)](http://www.SoC.Xin)

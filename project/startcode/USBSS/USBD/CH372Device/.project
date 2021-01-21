@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <projectDescription>
   <name>CH372Device</name>
-  <comment />
-  <projects />
+  <comment/>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
       <triggers>clean,full,incremental,</triggers>
-      <arguments />
+      <arguments/>
     </buildCommand>
     <buildCommand>
       <name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
       <triggers>full,incremental,</triggers>
-      <arguments />
+      <arguments/>
     </buildCommand>
   </buildSpec>
   <natures>
@@ -22,8 +22,8 @@
   </natures>
   <filteredResources>
     <filter>
-      <id>0</id>
-      <name />
+      <id>1595986042669</id>
+      <name/>
       <type>22</type>
       <matcher>
         <id>org.eclipse.ui.ide.multiFilter</id>
@@ -36,12 +36,13 @@
       <name>copy_PARENT</name>
       <value>file:/D:/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6/2.2020%E9%A1%B9%E7%9B%AE/12.CH569EVT/CH569EVT/Ch56x_EVT/EVT/EXAM</value>
     </variable>
-    <variable>
-      <name>copy_PARENT1</name>
-      <value>$%7BPARENT-2-ECLIPSE_HOME%7D/Users/OWNER/Desktop/569USB3%E4%BE%8B%E7%A8%8B/EVT/EXAM</value>
-    </variable>
   </variableList>
   <linkedResources>
+    <link>
+      <name>Peripheral</name>
+      <type>2</type>
+      <location>PARENT-3-PROJECT_LOC/SRC/Peripheral</location>
+    </link>
     <link>
       <name>RVMSIS</name>
       <type>2</type>
@@ -51,11 +52,6 @@
       <name>Startup</name>
       <type>2</type>
       <location>PARENT-3-PROJECT_LOC/SRC/Startup</location>
-    </link>
-    <link>
-      <name>Peripheral</name>
-      <type>2</type>
-      <location>PARENT-3-PROJECT_LOC/SRC/Peripheral</location>
     </link>
   </linkedResources>
 </projectDescription>

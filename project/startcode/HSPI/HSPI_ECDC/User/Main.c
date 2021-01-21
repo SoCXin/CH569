@@ -5,11 +5,10 @@
 * Date               : 2020/07/31
 * Description 		 : 
 *******************************************************************************/
+#define  FREQ_SYS   120000000
 
 #include "CH56x_common.h"
 
-//System clock
-#define  FREQ_SYS   80000000
 
 //Mode
 #define Host_MODE    0
@@ -250,9 +249,6 @@ int main()
 
 	mDelaymS(100);
 	HSPI_Init();
-
-	R8_HSPI_INT_FLAG = 0xF;  //发送之前将所有 HSPI标志位清 0
-	R8_HSPI_CTRL |= RB_HSPI_SW_ACT;  //软件，触发发送
 
 #endif
 

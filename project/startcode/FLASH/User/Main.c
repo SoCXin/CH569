@@ -89,8 +89,6 @@ int main()
         PRINT("    ***verify ok***\n");
     }PRINT("\n");
 
-    FLASH_ROMA_LOCK( 3 );                                             //全部LOCK
-
 #endif
 
 /*测试DataFlash擦写、校验*/

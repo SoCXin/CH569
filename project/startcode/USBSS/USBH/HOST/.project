@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <projectDescription>
-	<name>ETH-GMAC</name>
+	<name>HOST</name>
 	<comment/>
 	<projects>
 	</projects>
@@ -27,17 +27,17 @@
 		<link>
 			<name>Peripheral</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/SRC/Peripheral</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/SRC/Peripheral</locationURI>
 		</link>
 		<link>
 			<name>RVMSIS</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/SRC/RVMSIS</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/SRC/RVMSIS</locationURI>
 		</link>
 		<link>
 			<name>Startup</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/SRC/Startup</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/SRC/Startup</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

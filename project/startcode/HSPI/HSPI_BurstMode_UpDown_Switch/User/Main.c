@@ -13,8 +13,8 @@
 #define Host_MODE    0
 #define Slave_MODE   1
 /* HSPI Mode Selection */
-#define HSPI_MODE   Host_MODE
-//#define HSPI_MODE   Slave_MODE
+//#define HSPI_MODE   Host_MODE
+#define HSPI_MODE   Slave_MODE
 
 //Data size
 #define DataSize_8bit   0
@@ -42,6 +42,7 @@
 volatile UINT8 Tx_End_Flag = 0;  //发送完成标志
 volatile UINT8 Rx_End_Flag = 0;  //接收完成标志
 volatile UINT8 BURST_End_Flag = 0;  //突发完成标志
+volatile UINT8 BURST_cnt = 0;  //突发计数
 
 void HSPI_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
@@ -150,6 +151,7 @@ void HSPI_Init(void)
 	R8_HSPI_INT_EN |= RB_HSPI_IE_T_DONE;
 	R8_HSPI_INT_EN |= RB_HSPI_IE_FIFO_OV;
 	R8_HSPI_INT_EN |= RB_HSPI_IE_B_DONE;
+    R8_HSPI_INT_EN |= RB_HSPI_IE_R_DONE;
 
 	//config TX 自定义  Header
 	R32_HSPI_UDF0 = 0x3ABCDEF;      //UDF0
@@ -158,6 +160,7 @@ void HSPI_Init(void)
 #elif (HSPI_MODE==Slave_MODE)
 	R8_HSPI_INT_EN |= RB_HSPI_IE_R_DONE;
 	R8_HSPI_INT_EN |= RB_HSPI_IE_FIFO_OV;
+	R8_HSPI_INT_EN |= RB_HSPI_IE_B_DONE;
 
 #endif
 
@@ -206,54 +209,72 @@ int main()
 #if (HSPI_MODE==Host_MODE)
 	PRINT("HSPI Host MODE\r\n");
 
-	HSPI_Init();
-	mDelaymS(1000);
+    mDelaymS(100);
+    HSPI_Init();
 
 	//写RAM2
 	for(i=0; i<0x2000; i++){   //0x2000*4 = 32K
       *(UINT32*)(0x20020000+i*4) = i;
 	}
 
-	R16_HSPI_BURST_CFG = (64<<8)|RB_HSPI_BURST_EN;
-	R8_HSPI_INT_FLAG = 0xF;   //发送之前将所有 HSPI中断标志清 0
-	R8_HSPI_CTRL |= RB_HSPI_SW_ACT;  //软件，触发发送
-
 #elif (HSPI_MODE==Slave_MODE)
 	PRINT("HSPI Slave MODE\r\n");
 
-	mDelaymS(100);
-	HSPI_Init();
+    HSPI_Init();
+    mDelaymS(1000);
+
+    //写RAM2
+    for(i=0; i<0x2000; i++){   //0x2000*4 = 32K
+      *(UINT32*)(0x20020000+i*4) = i;
+    }
+
+    R16_HSPI_BURST_CFG = (1<<8)|RB_HSPI_BURST_EN;
+    R8_HSPI_INT_FLAG = 0xF;   //发送之前将所有 HSPI中断标志清 0
+    R8_HSPI_CTRL |= RB_HSPI_SW_ACT;  //软件，触发发送
 
 #endif
 
 #if (HSPI_MODE==Host_MODE)
 
-	while(Tx_End_Flag == 0);
-	while(BURST_End_Flag == 0);
-    PRINT("BURST suc\r\n");
+    while(1){
+        while(Rx_End_Flag == 0);
+        Rx_End_Flag = 0;
+        PRINT("host Rx suc\r\n");
+
+        R16_HSPI_BURST_CFG = (64<<8)|RB_HSPI_BURST_EN;
+        R8_HSPI_INT_FLAG = 0xF;   //发送之前将所有 HSPI中断标志清 0
+        R8_HSPI_CTRL |= RB_HSPI_SW_ACT;  //软件，触发发送
+
+        while(BURST_End_Flag == 0);
+        BURST_End_Flag = 0;
+        PRINT("BURST suc\r\n");
+
+    }
 
 #elif (HSPI_MODE==Slave_MODE)
-	while(Rx_End_Flag == 0);
+    while(1){
+        while(BURST_End_Flag == 0);
+        BURST_End_Flag = 0;
+        PRINT("BURST suc\r\n");
+        while(Rx_End_Flag == 0);
+        Rx_End_Flag = 0;
+        PRINT("slave Rx suc\r\n");
 
-	//vreify
-	for(i=0; i<0x2000; i++){
-      if(*(UINT32*)(0x20020000+i*4) != i){
-        Rx_Verify_Flag = 1;
-        break;
-      }
-	}
-
-    if(Rx_Verify_Flag){
-    	PRINT("vreify err\r\n");
-    }
-    else{
-    	PRINT("vreify suc\r\n");
+        if(BURST_cnt < 10){
+            BURST_cnt++;
+            R16_HSPI_BURST_CFG = (1<<8)|RB_HSPI_BURST_EN;
+            R8_HSPI_INT_FLAG = 0xF;   //发送之前将所有 HSPI中断标志清 0
+            R8_HSPI_CTRL |= RB_HSPI_SW_ACT;  //软件，触发发送
+        }
+        else{
+            PRINT("Tx End...\r\n");
+            while(1);
+        }
     }
 
 #endif
 
 
-    while(1);    
 }
 
 /*******************************************************************************
@@ -268,10 +289,9 @@ void HSPI_IRQHandler(void)
 	static UINT32 Rx_Cnt = 0;
 	static UINT32 addr_cnt = 0;
 
+#if (HSPI_MODE==Host_MODE)
 	if(R8_HSPI_INT_FLAG & RB_HSPI_IF_T_DONE){   //单包发送完成
 		R8_HSPI_INT_FLAG = RB_HSPI_IF_T_DONE;  //Clear Interrupt
-
-#if (HSPI_MODE==Host_MODE)
 		Tx_Cnt++;
 		addr_cnt++;
 
@@ -287,15 +307,14 @@ void HSPI_IRQHandler(void)
 			Tx_End_Flag = 1;
 			addr_cnt = 0;
 		}
+	}
 
 #endif
-
-	}
 
 	if(R8_HSPI_INT_FLAG & RB_HSPI_IF_R_DONE){  //单包接收完成
 		R8_HSPI_INT_FLAG = RB_HSPI_IF_R_DONE;  //Clear Interrupt
 
-        //判断CRC是否正确
+		//判断CRC是否正确
         if(R8_HSPI_RTX_STATUS & RB_HSPI_CRC_ERR){  //CRC 校验  err
         	PRINT("CRC err\r\n");
 
@@ -355,10 +374,13 @@ void HSPI_IRQHandler(void)
     		else{ //接收完成
     			Rx_End_Flag = 1;
     			addr_cnt = 0;
-
+    			Rx_Cnt  = 0;
     		}
 
+#elif (HSPI_MODE==Host_MODE)
+    		Rx_End_Flag = 1;
 #endif
+
 
         }
 	}
@@ -369,9 +391,13 @@ void HSPI_IRQHandler(void)
 		PRINT("FIFO OV\r\n");
 	}
 
-#if (HSPI_MODE==Host_MODE)
+
 	if(R8_HSPI_INT_FLAG & RB_HSPI_IF_B_DONE){   //突发模式下，突发序列包发送完成
 		R8_HSPI_INT_FLAG = RB_HSPI_IF_B_DONE;  //Clear Interrupt
+
+#if (HSPI_MODE==Slave_MODE)
+        Tx_Cnt++;
+#endif
 
 		if(Tx_Cnt != (R16_HSPI_BURST_CFG>>8)){  // 判断突发模式是否发送成功
 			PRINT("BURST Tx Err\r\n");
@@ -387,6 +413,8 @@ void HSPI_IRQHandler(void)
 			R32_HSPI_TX_ADDR1 = DMA_TX_Addr1;
 			R32_HSPI_RX_ADDR1 = DMA_RX_Addr1;
 
+
+
             if((R8_HSPI_TX_SC & (1<<4)) == (1<<4)){
             	R8_HSPI_TX_SC = (1<<4);
             }
@@ -394,7 +422,14 @@ void HSPI_IRQHandler(void)
             	R8_HSPI_RX_SC = (1<<4);
             }
 
+            while(1);
+#if (HSPI_MODE==Host_MODE)
 			R16_HSPI_BURST_CFG = (64<<8)|RB_HSPI_BURST_EN;
+
+#elif (HSPI_MODE==Slave_MODE)
+			R16_HSPI_BURST_CFG = (1<<8)|RB_HSPI_BURST_EN;
+#endif
+
 			R8_HSPI_INT_FLAG = 0xF;  //发送之前将所有 HSPI中断标志清 0
 			R8_HSPI_CTRL |= RB_HSPI_SW_ACT;  //软件，触发发送
 		}
@@ -420,7 +455,7 @@ void HSPI_IRQHandler(void)
 		}
 
 	}
-#endif
+
 
 }
 

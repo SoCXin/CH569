@@ -5,11 +5,9 @@
 * Date               : 2020/07/31
 * Description 		 : 
 *******************************************************************************/
+#define  FREQ_SYS   120000000
 
 #include "CH56x_common.h"
-
-//System clock
-#define  FREQ_SYS   80000000
 
 //Mode
 #define Host_MODE    0
@@ -133,6 +131,9 @@ void HSPI_Init(void)
 	R8_HSPI_CFG |= RB_HSPI_TX_TOG_EN;
 #endif
 
+    //DUDMA    1  使能双DMA功能
+	R8_HSPI_CFG |= RB_HSPI_DUALDMA;
+
 	//TX 采样边沿
 	R8_HSPI_AUX |= RB_HSPI_TCK_MOD;  //下降沿采样
 
@@ -219,9 +220,6 @@ int main()
 
 	mDelaymS(100);
 	HSPI_Init();
-
-	R8_HSPI_INT_FLAG = 0xF;  //发送之前将所有 HSPI标志位清 0
-	R8_HSPI_CTRL |= RB_HSPI_SW_ACT;  //软件，触发发送
 
 #endif
 

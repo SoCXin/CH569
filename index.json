@@ -1,64 +1,74 @@
 {
-    "type":"MCU",
+    "type":"SoC",
     "name":"CH569",
-    "tags": ["Type-C","USB PD3.0"],
     "series":["CH569"],
-    "description":"WCH RISC-V3A MCU",
-    "peripheral": ["ADC","TIM","PWM"],
-    "package":["LQFP64"],
-    "encryption": ["UID-96"],
-    "SRAM":128,
-    "OTP":4032,
+    "price":[4,6],
+    "description":"WCH RISC-V3A SoC",
+    "tags": ["Type-C","USB PD3.0"],
+    "peripheral": ["TIM","ADC","USB","UART","SPI","LDO","PWM"],
+    "package":["LQFP64","LQFP48","QFN48"],
+    "manufacturer": {
+        "vendor":"WCH",
+        "homepage": "http://www.wch.cn/products/CH569.html"
+    },
+    "url":"http://www.SoC.xin/CH569",
+    "repo":"https://github.com/SoCXin/CH569",
+    "version":"1.5.0",
     "Core": {
         "num": 1,
         "architecture":"RISC-V3A",
-        "Freq":48
+        "Freq":[8,24]
     },
-    "Level": {
-        "main":1,
-        "sub":12,
-        "price":0.7
+    "UART": {
+        "mark": ["UART1","UART2"],
+        "BIT":[5,6,7,8,9],
+        "ISO7816":true,
+        "IrDA":true,
+        "LIN":true,
+        "FIFO": 16,
+        "BPS": [48,3000000]
     },
-    "GPIO": {
-        "num": [13,17],
-        "irq": 4,
-        "more":["LIN","IrDA"]
+    "TIM": {
+        "resolution":[16,16,16],
+        "rate": 1024
+    },
+    "CLK": {
+        "HSI": [24000],
+        "LSI": [32],
+        "PLL": [16000,96000],
+        "DIV": [1,128],
+        "SYS": [187,24000],
+        "accuracy": 0.02
     },
     "ADC": {
         "num": 1,
-        "channel": 6,
-        "resolution": 12,
+        "channel": 4,
+        "resolution": 8,
+        "rate": 2400
+    },
+    "USB": {
+        "num": 1,
+        "FIFO": 64,
+        "more":["FS","type-C","Host","Device"]
+    },
+    "PWR": {
+        "VDD": [2800,5000],
+        "Ivdd": 3.5,
+        "LDO": [5000,3300],
         "rate": 1024
     },
-    "TIM": {
-        "resolution":[8,8,8,8,16]
-    },
     "PWM": {
-        "num": 4,
+        "num": 2,
         "resolution": 8,
         "rate": 256
     },
-    "CLK": {
-        "HSE": [1000,16000],
-        "HSI": [16000],
-        "LSI": [32],
-        "PLL": [16000,16000],
-        "DIV": [1,128],
-        "accuracy": 0.02
-    },
-    "PWR": {
-        "VDD": [3000,5500],
-        "PVD": [1820,1810],
-        "IDD": [2.21,14.31],
-        "Imax": 120
-    },
     "EMC": {
-        "HSE": [2000,24000],
-        "ESD": [31]
+        "EFT": 2000,
+        "ESD": 4000
     },
-    "vendor":"chipsea",
-    "url":"http://www.SoC.xin/CS32A039",
-    "repo":"https://github.com/SoCXin/CS32A039",
-    "homepage": "http://www.chipsea.com/8-bit-pd-mcu/CS32A039.html",
-    "version":"1.0.0"
+    "upload": {
+        "ISP": true,
+        "SWD": true,
+        "speed": 115200
+    }
 }
