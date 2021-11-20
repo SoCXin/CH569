@@ -1,74 +1,38 @@
 {
     "type":"SoC",
     "name":"CH569",
-    "series":["CH569"],
-    "price":[4,6],
-    "description":"WCH RISC-V3A SoC",
-    "tags": ["Type-C","USB PD3.0"],
-    "peripheral": ["TIM","ADC","USB","UART","SPI","LDO","PWM"],
-    "package":["LQFP64","LQFP48","QFN48"],
+    "title": "WCH SoC CH569",
+    "description":"WCH RISC-V USB3.0 SoC",
+    "version":"1.0.0",
+    "Core": {
+        "num": 1,
+        "type":"RISC-V",
+        "Freq": 120,
+        "DMIPS": 150,
+        "CoreMark": 0
+    },
     "manufacturer": {
         "vendor":"WCH",
         "homepage": "http://www.wch.cn/products/CH569.html"
     },
-    "url":"http://www.SoC.xin/CH569",
-    "repo":"https://github.com/SoCXin/CH569",
-    "version":"1.5.0",
-    "Core": {
-        "num": 1,
-        "architecture":"RISC-V3A",
-        "Freq":[8,24]
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SoCXin/CH569.git"
     },
-    "UART": {
-        "mark": ["UART1","UART2"],
-        "BIT":[5,6,7,8,9],
-        "ISO7816":true,
-        "IrDA":true,
-        "LIN":true,
-        "FIFO": 16,
-        "BPS": [48,3000000]
-    },
-    "TIM": {
-        "resolution":[16,16,16],
-        "rate": 1024
-    },
-    "CLK": {
-        "HSI": [24000],
-        "LSI": [32],
-        "PLL": [16000,96000],
-        "DIV": [1,128],
-        "SYS": [187,24000],
-        "accuracy": 0.02
-    },
-    "ADC": {
-        "num": 1,
-        "channel": 4,
-        "resolution": 8,
-        "rate": 2400
-    },
-    "USB": {
-        "num": 1,
-        "FIFO": 64,
-        "more":["FS","type-C","Host","Device"]
-    },
-    "PWR": {
-        "VDD": [2800,5000],
-        "Ivdd": 3.5,
-        "LDO": [5000,3300],
-        "rate": 1024
-    },
-    "PWM": {
-        "num": 2,
-        "resolution": 8,
-        "rate": 256
-    },
+    "series":["CH569","CH565"],
+    "package":["QFN64","QFN40"],
+    "peripheral": ["USB3.0","HSPI","USB","UART","SPI","SerDes","PWM"],
+    "price":[12,16],
     "EMC": {
         "EFT": 2000,
         "ESD": 4000
     },
-    "upload": {
-        "ISP": true,
-        "SWD": true,
-        "speed": 115200
-    }
+    "keywords": [
+        "dev-platform",
+        "RISC-V",
+        "WCH",
+        "CH569",
+        "HSPI","SDIO","CAN","I2C","RTC","SPI",
+        "3.6V","1.8V"
+    ]
 }

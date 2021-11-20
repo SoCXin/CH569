@@ -3,7 +3,7 @@
 [![sites](http://182.61.61.133/link/resources/SoC.png)](http://www.SoC.Xin)
 
 * [WCH](http://www.wch.cn/)：[RISC-V3A](https://github.com/SoCXin/RISC-V)
-* [L4R4](https://github.com/SoCXin/Level)：120 MHz
+* [L4R6](https://github.com/SoCXin/Level)：120 MHz
 
 [![sites](http://182.61.61.133/link/resources/SoC.png)](http://www.SoC.Xin)
 

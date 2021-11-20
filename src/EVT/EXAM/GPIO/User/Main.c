@@ -3,7 +3,7 @@
 * Author             : WCH
 * Version            : V1.0
 * Date               : 2020/07/31
-* Description 		 : 
+* Description 		 :
 *******************************************************************************/
 
 #include "CH56x_common.h"
@@ -12,8 +12,8 @@
 
 void GPIO_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
-//#define normal 1     //普通输入输出
-#define interruption 1    //中断使能
+#define normal 1     //普通输入输出
+// #define interruption 1    //中断使能
 
 
 /*******************************************************************************
@@ -26,7 +26,7 @@ void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
 	UINT32 t = FREQ_SYS;
-	
+
 	x = 10 * t * 2 / 16 / baudrate;
 	x = ( x + 5 ) / 10;
 	R8_UART1_DIV = 1;
@@ -58,7 +58,7 @@ int main()
 	GPIOB_ModeCfg( GPIO_Pin_24, GPIO_Slowascent_PP_8mA );
 	while(1)
 	{
-	    GPIOB_ResetBits(GPIO_Pin_24);
+		GPIOB_ResetBits(GPIO_Pin_24);
 		mDelaymS(300);
 		GPIOB_SetBits(GPIO_Pin_24);
 		mDelaymS(300);
