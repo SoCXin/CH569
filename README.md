@@ -2,11 +2,13 @@
 
 [![sites](http://182.61.61.133/link/resources/SoC.png)](http://www.SoC.Xin)
 
-#### [Vendor](https://github.com/SoCXin/Vendor)：[WCH](https://github.com/SoCXin/WCH)
-#### [Core](https://github.com/SoCXin/RISC-V)：[RISC-V3A](https://github.com/SoCXin/RISC-V)
-#### [Level](https://github.com/SoCXin/Level)：120MHz
+* [WCH](http://www.wch.cn/)：[RISC-V3A](https://github.com/SoCXin/RISC-V)
+* [L4R4](https://github.com/SoCXin/Level)：120 MHz
 
-### [CH569简介](https://github.com/SoCXin/CH569/wiki)
+[![sites](http://182.61.61.133/link/resources/SoC.png)](http://www.SoC.Xin)
+
+
+### [简介](https://github.com/SoCXin/CH569/wiki)
 
 [CH569](https://github.com/SoCXin/CH569) 使用120MHz主频RISC-V3A内核，单周期乘法和硬件除法、低功耗两级流水线，支持RISC-V指令的 IMAC子集。
 
@@ -28,10 +30,17 @@
 * SPI x 2 + UART x 4 (16C550/波特率6Mbps/多触发级FIFO)
 * 封装(QFN68/QFN40)
 
+### [资源收录](https://github.com/SoCXin)
+
+* [参考资源](src/)
+* [参考文档](docs/)
+* [参考工程](project/)
+* [入门教程](https://docs.soc.xin/CH569)
+
 ### [选型建议](https://github.com/SoCXin)
 
 [CH569](https://github.com/SoCXin/CH569) 但芯片方案的高速应用，可以在非常紧凑精简的设备上替代庞大复杂的Linux单板，适合安全运算外设钱包，视频数据合适网络数据的中转。
 
 [CH569](https://github.com/SoCXin/CH569)相较于[CH565](https://github.com/SoCXin/CH565)没有DVP接口，拥有HSPI。
 
-###  [www.SoC.xin(芯)](http://www.SoC.Xin)
+### [探索芯世界 www.SoC.xin](http://www.SoC.Xin)
