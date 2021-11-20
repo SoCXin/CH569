@@ -5,9 +5,6 @@
 * [WCH](http://www.wch.cn/)：[RISC-V3A](https://github.com/SoCXin/RISC-V)
 * [L4R6](https://github.com/SoCXin/Level)：120 MHz
 
-[![sites](http://182.61.61.133/link/resources/SoC.png)](http://www.SoC.Xin)
-
-
 ### [简介](https://github.com/SoCXin/CH569/wiki)
 
 [CH569](https://github.com/SoCXin/CH569) 使用120MHz主频RISC-V3A内核，单周期乘法和硬件除法、低功耗两级流水线，支持RISC-V指令的 IMAC子集。
