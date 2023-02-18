@@ -4,6 +4,8 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 #include "CH56x_common.h"
 
@@ -21,11 +23,14 @@ volatile UINT8 capFlag = 0;
 void TMR0_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void TMR2_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
+ * @fn        DebugInit
+ *
+ * @brief     Initializes the UART1 peripheral.
+ *
+ * @param     baudrate: UART1 communication baud rate.
+ *
+ * @return    None
+ */
 void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
@@ -42,12 +47,13 @@ void DebugInit(UINT32 baudrate)
 	R32_PA_DIR |= (1<<8);
 }
 
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {
 	UINT8 i;
@@ -110,8 +116,7 @@ int main()
 
 	 while( capFlag == 0 );
 	 capFlag = 0;
-	 for( i=0; i<100; i++ )
-	 {
+	 for( i=0; i<100; i++ ) {
 		PRINT("%08ld ", CapBuf[i]&0x1ffffff);      // bit26 最高位表示 高电平还是低电平
 	 }PRINT("\n");
 
@@ -124,11 +129,12 @@ int main()
 
 
 /*******************************************************************************
-* Function Name  : TMR0_IRQHandler
-* Description    : Interruption function
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn      TMR0_IRQHandler
+ *
+ * @brief   Interruption function
+ *
+ * @return  None
+ */
 void TMR0_IRQHandler(void)
 {
 	 if( TMR0_GetITFlag( RB_TMR_IE_CYC_END ) )
@@ -139,12 +145,13 @@ void TMR0_IRQHandler(void)
 	 }
 }
 
-/*******************************************************************************
-* Function Name  : TMR2_IRQHandler
-* Description    : Interruption function
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn       TMR2_IRQHandler
+ *
+ * @brief    Interruption function
+ *
+ * @return   None
+ */
 void TMR2_IRQHandler(void)
 {
 	PRINT("in Capture!\r\n");

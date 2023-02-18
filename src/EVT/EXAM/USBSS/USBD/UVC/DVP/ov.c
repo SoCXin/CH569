@@ -1,17 +1,27 @@
-/*
- * ov.c
- *
- *  Created on: Aug 6, 2020
- *      Author: OWNER
- */
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : ov.c
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/07/31
+* Description 		 : OV2640 摄像头 配置函数
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
+*******************************************************************************/
+
 #include "dvp.h"
 #include "ov.h"
 #include "ov2640cfg.h"
 #include "CH56xSFR.h"
-//初始化OV2640
-//配置完以后,默认输出是1600*1200尺寸的图片!!
-//返回值:0,成功
-//    其他,错误代码
+
+
+/*********************************************************************
+ * @fn      OV2640_Init
+ *
+ * @brief   Init OV2640
+ *
+ * @return  0 - Success
+ *          1 - Err
+ */
 UINT8 OV2640_Init(void)
 {
 	UINT16 i=0;
@@ -35,19 +45,16 @@ UINT8 OV2640_Init(void)
 	reg<<=8;
 	reg|=SCCB_RD_Reg(OV2640_SENSOR_MIDL);	//读取厂家ID 低八位
 
-//	printf("OV2640_VID:%04x\r\n", reg);
 	if(reg!=OV2640_MID)
 	{
 		printf("MID:%d\r\n",reg);
 		return 1;
 	}
 
-
 	reg=SCCB_RD_Reg(OV2640_SENSOR_PIDH);	//读取厂家ID 高八位
 	reg<<=8;
 	reg|=SCCB_RD_Reg(OV2640_SENSOR_PIDL);	//读取厂家ID 低八位
 
-//	printf("OV2640_PID:%04x\r\n", reg);
 	if(reg!=OV2640_PID)
 	{
 		printf("HID:%d\r\n",reg);
@@ -64,11 +71,12 @@ UINT8 OV2640_Init(void)
 
 
 /*******************************************************************************
-* Function Name  : JPEG_Mode_Init
-* Description    : 以 0xFF，0xD8开头； 0xFF ,0xD9结尾
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     JPEG_Mode_Init
+ *
+ * @brief   以 0xFF，0xD8开头； 0xFF ,0xD9结尾
+ *
+ * @return   None
+ */
 void JPEG_Mode_Init(void)
 {
 	UINT8 res=0;
@@ -85,11 +93,11 @@ void JPEG_Mode_Init(void)
 }
 
 /*******************************************************************************
-* Function Name  : OV2640_JPEG_Mode
-* Description    : OV2640切换为JPEG模式
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     OV2640_JPEG_Mode
+ * @brief   OV2640切换为JPEG模式
+ * @param   None
+ * @return   None
+ */
 void OV2640_JPEG_Mode(void)
 {
 	UINT16 i=0;
@@ -105,7 +113,7 @@ void OV2640_JPEG_Mode(void)
 	}
 }
 
-//自动曝光设置参数表,支持5个等级
+/* Start Camera list of initialization configuration registers */
 const static UINT8 OV2640_AUTOEXPOSURE_LEVEL[5][8]=
 {
 	{
@@ -141,8 +149,15 @@ const static UINT8 OV2640_AUTOEXPOSURE_LEVEL[5][8]=
 };
 
 
-//OV2640自动曝光等级设置
-//level:0~4
+/*******************************************************************************
+ * @fn       OV2640_Auto_Exposure
+ *
+ * @brief    自动曝光等级设置
+ *
+ * @param    level - 0~4.
+ *
+ * @return   None
+ */
 void OV2640_Auto_Exposure(UINT8 level)
 {
 	UINT8 i;
@@ -154,12 +169,20 @@ void OV2640_Auto_Exposure(UINT8 level)
 }
 
 
-//白平衡设置
-//0:自动
-//1:太阳sunny
-//2,阴天cloudy
-//3,办公室office
-//4,家里home
+/*******************************************************************************
+ * @fn       OV2640_Light_Mode
+ *
+ * @brief    白平衡设置
+ *
+ * @param    mode -
+ *             0 - 自动
+ *             1 - 太阳sunny
+ *             2 - 阴天cloudy
+ *             3 - 办公室office
+ *             4 - 家里home
+ *
+ * @return   None
+ */
 void OV2640_Light_Mode(UINT8 mode)
 {
 	UINT8 regccval=0X5E;//Sunny
@@ -195,12 +218,20 @@ void OV2640_Light_Mode(UINT8 mode)
 }
 
 
-//色度设置
-//0:-2
-//1:-1
-//2,0
-//3,+1
-//4,+2
+/*******************************************************************************
+ * @fn       OV2640_Color_Saturation
+ *
+ * @brief    色度设置
+ *
+ * @param    sat-
+ *             0 - -2
+ *             1 - -1
+ *             2 - 0
+ *             3 - +1
+ *             4 - +2
+ *
+ * @return   None
+ */
 void OV2640_Color_Saturation(UINT8 sat)
 {
 	UINT8 reg7dval=((sat+2)<<4)|0X08;
@@ -213,12 +244,20 @@ void OV2640_Color_Saturation(UINT8 sat)
 }
 
 
-//亮度设置
-//0:(0X00)-2
-//1:(0X10)-1
-//2,(0X20) 0
-//3,(0X30)+1
-//4,(0X40)+2
+/*******************************************************************************
+ * @fn       OV2640_Brightness
+ *
+ * @brief    亮度设置
+ *
+ * @param    bright -
+ *             0 - (0X00)-2
+ *             1 - (0X10)-1
+ *             2 - (0X20) 0
+ *             3 - (0X30)+1
+ *             4 - (0X40)+2
+ *
+ * @return   None
+ */
 void OV2640_Brightness(UINT8 bright)
 {
   SCCB_WR_Reg(0xff, 0x00);
@@ -230,12 +269,20 @@ void OV2640_Brightness(UINT8 bright)
 }
 
 
-//对比度设置
-//0:-2
-//1:-1
-//2,0
-//3,+1
-//4,+2
+/*******************************************************************************
+ * @fn       OV2640_Contrast
+ *
+ * @brief    对比度设置
+ *
+ * @param    contrast - 
+ *             0 - -2
+ *             1 - -1
+ *             2 - 0
+ *             3 - +1
+ *             4 - +2
+ *
+ * @return   None
+ */
 void OV2640_Contrast(UINT8 contrast)
 {
 	UINT8 reg7d0val=0X20;//默认为普通模式
@@ -270,14 +317,22 @@ void OV2640_Contrast(UINT8 contrast)
 }
 
 
-//特效设置
-//0:普通模式
-//1,负片
-//2,黑白
-//3,偏红色
-//4,偏绿色
-//5,偏蓝色
-//6,复古
+/*******************************************************************************
+ * @fn       OV2640_Special_Effects
+ *
+ * @brief    特效设置
+ *
+ * @param    eft -
+ *             0 - 普通模式
+ *             1 - 负片
+ *             2 - 黑白
+ *             3 - 偏红色
+ *             4 - 偏绿色
+ *             5 - 偏蓝色
+ *             6 - 复古
+ *
+ * @return   None
+ */
 void OV2640_Special_Effects(UINT8 eft)
 {
 	UINT8 reg7d0val=0X00;//默认为普通模式
@@ -321,9 +376,17 @@ void OV2640_Special_Effects(UINT8 eft)
 }
 
 
-//彩条测试
-//sw:0,关闭彩条
-//   1,开启彩条(注意OV2640的彩条是叠加在图像上面的)
+/*******************************************************************************
+ * @fn       OV2640_Color_Bar
+ *
+ * @brief    彩条测试
+ *
+ * @param    sw -
+ *            0 - 关闭彩条
+ *            1 - 开启彩条
+ *
+ * @return   None
+ */
 void OV2640_Color_Bar(UINT8 sw)
 {
 	UINT8 reg;
@@ -334,10 +397,16 @@ void OV2640_Color_Bar(UINT8 sw)
 	SCCB_WR_Reg(0X12,reg);
 }
 
-
-//设置传感器输出窗口
-//sx,sy,起始地址
-//width,height:宽度(对应:horizontal)和高度(对应:vertical)
+/*******************************************************************************
+ * @fn       OV2640_Window_Set
+ *
+ * @brief    设置传感器输出窗口
+ *
+ * @param    sx,sy - 起始地址
+ *           width,height - 宽度(对应:horizontal)和高度(对应:vertical)
+ *
+ * @return   None
+ */
 void OV2640_Window_Set(UINT16 sx,UINT16 sy,UINT16 width,UINT16 height)
 {
 	UINT16 endx;
@@ -362,12 +431,16 @@ void OV2640_Window_Set(UINT16 sx,UINT16 sy,UINT16 width,UINT16 height)
 	SCCB_WR_Reg(0X18,endx>>3);			//设置Href的end的高8位
 }
 
-
-//设置图像输出大小
-//OV2640输出图像的大小(分辨率),完全由该函数确定
-//width,height:宽度(对应:horizontal)和高度(对应:vertical),width和height必须是4的倍数
-//返回值:0,设置成功
-//    其他,设置失败
+/*******************************************************************************
+ * @fn       设置图像输出大小
+ *
+ * @brief    OV2640输出图像的大小(分辨率)
+ *
+ * @param    width,height - 宽度(horizontal)和高度(vertical),width和height必须是4的倍数         
+ *
+ * @return   0 - Success
+ *           1 - Error
+ */
 UINT8 OV2640_OutSize_Set(UINT16 width,UINT16 height)
 {
 	UINT16 outh;
@@ -388,16 +461,16 @@ UINT8 OV2640_OutSize_Set(UINT16 width,UINT16 height)
 	return 0;
 }
 
-
-//设置图像开窗大小
-//由:OV2640_ImageSize_Set确定传感器输出分辨率从大小.
-//该函数则在这个范围上面进行开窗,用于OV2640_OutSize_Set的输出
-//注意:本函数的宽度和高度,必须大于等于OV2640_OutSize_Set函数的宽度和高度
-//     OV2640_OutSize_Set设置的宽度和高度,根据本函数设置的宽度和高度,由DSP
-//     自动计算缩放比例,输出给外部设备.
-//width,height:宽度(对应:horizontal)和高度(对应:vertical),width和height必须是4的倍数
-//返回值:0,设置成功
-//    其他,设置失败
+/*******************************************************************************
+ * @fn       OV2640_ImageWin_Set
+ *
+ * @brief    设置图像开窗大小
+ *
+ * @param    offx,offy - 起始地址
+ *           width,height - 宽度(对应:horizontal)和高度(对应:vertical)
+ *
+ * @return   None
+ */
 UINT8 OV2640_ImageWin_Set(UINT16 offx,UINT16 offy,UINT16 width,UINT16 height)
 {
 	UINT16 hsize;
@@ -423,12 +496,17 @@ UINT8 OV2640_ImageWin_Set(UINT16 offx,UINT16 offy,UINT16 width,UINT16 height)
 	return 0;
 }
 
-
-//该函数设置图像尺寸大小,也就是所选格式的输出分辨率
-//UXGA:1600*1200,SVGA:800*600,CIF:352*288
-//width,height:图像宽度和图像高度
-//返回值:0,设置成功
-//    其他,设置失败
+/*******************************************************************************
+ * @fn       OV2640_ImageSize_Set
+ *
+ * @brief    Image Resolution
+ *
+ * @param    Image_width - 图像宽度 (4的倍数)
+ *           Image_height - 图像高度
+ *
+ * @return   0 - Success
+ *           1 - Error
+ */
 UINT8 OV2640_ImageSize_Set(UINT16 width,UINT16 height)
 {
 	UINT8 temp;
@@ -444,9 +522,17 @@ UINT8 OV2640_ImageSize_Set(UINT16 width,UINT16 height)
 	return 0;
 }
 
+/*******************************************************************************
+ * @fn        ov2640_speed_ctrl
+ *
+ * @brief     Set DVP PCLK
+ *
+ * @param     Pclk_Div: DVP output speed ctrl
+ *            Xclk_Div: 晶振输入分频
+ *
+ * @return    none
+ */
 
-//OV2640速度控制 72/(Xclk+1)/pclk
-//根据LCD分辨率的不同，设置不同的参数
 void ov2640_speed_ctrl(UINT8 pclkdiv, UINT8 clkdiv)
 {
 	SCCB_WR_Reg(0XFF,0X00);

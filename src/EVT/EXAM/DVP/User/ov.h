@@ -1,3 +1,12 @@
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : ov.H
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/07/31
+* Description 		 : OV2640 …„œÒÕ∑ ≈‰÷√∫Ø ˝
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
+*******************************************************************************/
 #ifndef __OV_H
 #define __OV_H
 

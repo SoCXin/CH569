@@ -4,21 +4,25 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
 
 
 /*******************************************************************************
-* Function Name  : PWR_PeriphClkCfg
-* Description    : 外设时钟控制位
-* Input          : s:
-                    ENABLE  - 打开外设时钟
-                    DISABLE - 关闭外设时钟
-                   perph:
-                    please refer to Peripher CLK control bit define
-* Return         : None
-*******************************************************************************/
+ * @fn     PWR_PeriphClkCfg
+ *
+ * @brief  外设时钟控制位
+ * @param  s -
+ *                  ENABLE  - 打开外设时钟
+ *                  DISABLE - 关闭外设时钟
+ *                  perph -
+ *                     please refer to Peripher CLK control bit define
+ 
+ * @return   None
+ */
 void PWR_PeriphClkCfg( UINT8 s, UINT16 perph )
 {
     if( s == DISABLE )
@@ -37,19 +41,21 @@ void PWR_PeriphClkCfg( UINT8 s, UINT16 perph )
 }
 
 /*******************************************************************************
-* Function Name  : PWR_PeriphWakeUpCfg
-* Description    : 睡眠唤醒源配置
-* Input          : s:
-                    ENABLE  - 打开此外设睡眠唤醒功能
-                    DISABLE - 关闭此外设睡眠唤醒功能
-                   perph:
-                   RB_SLP_USBHS_WAKE    -  USB2.0为唤醒源
-                   RB_SLP_USBSS_WAKE    -  USB3.0为唤醒源
-                   RB_SLP_GPIO_WAKE     -  GPIO为唤醒源
-                   RB_SLP_ETH_WAKE      -  ETH为唤醒源
-                    ALL                 -  以上所有
-* Return         : None
-*******************************************************************************/
+ * @fn     PWR_PeriphWakeUpCfg
+ *
+ * @brief  睡眠唤醒源配置
+ *
+ * @param  s -
+ *                  ENABLE  - 打开此外设睡眠唤醒功能
+ *                  DISABLE - 关闭此外设睡眠唤醒功能
+ *         perph -
+ *                 RB_SLP_USBHS_WAKE -  USB2.0为唤醒源
+ *                 RB_SLP_USBSS_WAKE -  USB3.0为唤醒源
+ *                 RB_SLP_GPIO_WAKE  -  GPIO为唤醒源
+ *                 RB_SLP_ETH_WAKE   -  ETH为唤醒源
+ *                 ALL              -  以上所有
+ * @return   None
+ */
 void PWR_PeriphWakeUpCfg( UINT8 s, UINT16 perph )
 {
     if( s == DISABLE )
@@ -68,11 +74,12 @@ void PWR_PeriphWakeUpCfg( UINT8 s, UINT16 perph )
 }
 
 /*******************************************************************************
-* Function Name  : LowPower_Idle
-* Description    : 低功耗-Idle模式
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     LowPower_Idle
+ *
+ * @brief  低功耗-Idle模式
+ *
+ * @return   None
+ */
 void LowPower_Idle( void )
 {
 
@@ -82,11 +89,12 @@ void LowPower_Idle( void )
 }
 
 /*******************************************************************************
-* Function Name  : LowPower_Halt
-* Description    : 低功耗-Halt模式
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     LowPower_Halt
+ *
+ * @brief  低功耗-Halt模式
+ * 
+ * @return   None
+ */
 void LowPower_Halt( void )
 {
 
@@ -96,11 +104,12 @@ void LowPower_Halt( void )
 }
 
 /*******************************************************************************
-* Function Name  : LowPower_Sleep
-* Description    : 低功耗-Sleep模式
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     LowPower_Sleep
+ *
+ * @brief  低功耗-Sleep模式
+ *
+ * @return   None
+ */
 void LowPower_Sleep( void )
 {
 

@@ -1,9 +1,12 @@
-/*
- * UVCLIB.H
- *
- *  Created on: Aug 21, 2020
- *      Author: OWNER
- */
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : UVCLIB.h
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/07/31
+* Description 		 :
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+*******************************************************************************/
+
 
 #ifndef UVCLIB_H_
 #define UVCLIB_H_

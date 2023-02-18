@@ -5,6 +5,8 @@
 * Date               : 2020/07/31
 * Description        : This file contains all the functions prototypes for 
 *                      SystemCoreClock, UART Printf , Delay functions .
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
@@ -14,11 +16,14 @@ static uint8_t  p_us=0;
 static uint16_t p_ms=0;
 
 /*******************************************************************************
-* Function Name  : Delay_Init
-* Description    : Initializes Delay Funcation.
-* Input          : systemclck:系统时钟 Hz
-* Return         : None
-*******************************************************************************/
+ * @fn     Delay_Init
+ *
+ * @brief  Initializes Delay Funcation.
+ *
+ * @param  systemclck - 系统时钟 Hz
+ *
+ * @return   None
+ **/
 void Delay_Init(uint32_t systemclck)
 {
 	p_us=systemclck/8000000;
@@ -26,11 +31,14 @@ void Delay_Init(uint32_t systemclck)
 }
 
 /*******************************************************************************
-* Function Name  : mDelayuS
-* Description    : Microsecond Delay Time.
-* Input          : n：Microsecond number.
-* Return         : None
-*******************************************************************************/
+ * @fn     mDelayuS
+ *
+ * @brief  Microsecond Delay Time.
+ *
+ * @param  n - Microsecond number.
+ *
+ * @return   None
+ **/
 void mDelayuS(uint32_t n)
 {
 	uint32_t i;
@@ -46,11 +54,14 @@ void mDelayuS(uint32_t n)
 }
 
 /*******************************************************************************
-* Function Name  : mDelaymS
-* Description    : Millisecond Delay Time.
-* Input          : n：Millisecond number.
-* Return         : None
-*******************************************************************************/
+ * @fn     mDelaymS
+ *
+ * @brief  Millisecond Delay Time.
+ *
+ * @param  n - Millisecond number.
+ *
+ * @return   None
+ **/
 void mDelaymS(uint32_t n)
 {
 	uint32_t i;
@@ -66,24 +77,25 @@ void mDelaymS(uint32_t n)
 }
 
 /*******************************************************************************
-* Function Name  : SYS_GetInfoSta
-* Description    : 获取当前系统信息状态
-* Input          : i:
-					refer to SYS_InfoStaTypeDef
-* Return         : DISABLE  -  关闭
-				   ENABLE   -  开启
-*******************************************************************************/
+ * @fn     SYS_GetInfoSta
+ *
+ * @brief  获取当前系统信息状态
+ *
+ * @param  i -
+ * @return  stat
+ **/
 UINT8 SYS_GetInfoSta( SYS_InfoStaTypeDef i )
 {
 	return (R8_RST_BOOT_STAT&(1<<i));
 }
 
 /*******************************************************************************
-* Function Name  : SYS_ResetExecute
-* Description    : 执行系统软件复位
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     SYS_ResetExecute
+ *
+ * @brief  执行系统软件复位
+ * 
+ * @return   None
+ **/
 void SYS_ResetExecute( void )
 {
 	R8_SAFE_ACCESS_SIG = 0x57; // enable safe access mode
@@ -93,13 +105,16 @@ void SYS_ResetExecute( void )
 }
 
 /*******************************************************************************
-* Function Name  : WWDG_ITCfg
-* Description    : 看门狗定时器溢出中断使能
-* Input          : s:
-*                  DISABLE - 溢出不中断      
-*                  ENABLE - 溢出中断
-* Return         : None
-*******************************************************************************/
+ * @fn     WWDG_ITCfg
+ *
+ * @brief  看门狗定时器溢出中断使能
+ *
+ * @param  s -
+ *           DISABLE - 溢出不中断      
+ *           ENABLE - 溢出中断
+ *
+ * @return   None
+ **/
 void  WWDG_ITCfg( UINT8 s )
 {
 	R8_SAFE_ACCESS_SIG = 0x57; // enable safe access mode
@@ -110,13 +125,16 @@ void  WWDG_ITCfg( UINT8 s )
 }
 
 /*******************************************************************************
-* Function Name  : WWDG_ResetCfg
-* Description    : 看门狗定时器复位功能
-* Input          : s:
-*                  DISABLE - 溢出不复位      
-*                  ENABLE - 溢出系统复位
-* Return         : None
-*******************************************************************************/
+ * @fn     WWDG_ResetCfg
+ *
+ * @brief  看门狗定时器复位功能
+ *
+ * @param  s -
+ *           DISABLE - 溢出不复位      
+ *           ENABLE - 溢出系统复位
+ *
+ * @return   None
+ **/
 void WWDG_ResetCfg( UINT8 s )
 {
 	R8_SAFE_ACCESS_SIG = 0x57; // enable safe access mode
@@ -127,11 +145,11 @@ void WWDG_ResetCfg( UINT8 s )
 }
 
 /*******************************************************************************
-* Function Name  : WWDG_ClearFlag
-* Description    : 清除看门狗中断标志，重新加载计数值也可清除
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     WWDG_ClearFlag
+ * @brief  清除看门狗中断标志，重新加载计数值也可清除
+ * @param  None
+ * @return   None
+ **/
 void WWDG_ClearFlag( void )
 {
 	R8_SAFE_ACCESS_SIG = 0x57; // enable safe access mode
@@ -143,18 +161,21 @@ void WWDG_ClearFlag( void )
 
 #if( defined  DEBUG)
 /*******************************************************************************
-* Function Name  : _write
-* Description    : Support Printf Function
-* Input          : *buf: UART send Data.
-*                  size: Data length
-* Return         : size: Data length
-*******************************************************************************/
+ * @fn     _write
+ *
+ * @brief  Support Printf Function
+ *
+ * @param  *buf: UART send Data.
+ *           size - Data length
+ *
+ * @return   size - Data length
+ **/
+ __attribute__((used))
 int _write(int fd, char *buf, int size)
 {
 	int i;
 	
-	for(i=0; i<size; i++)
-	{
+	for(i=0; i<size; i++){
 #if  DEBUG == Debug_UART0
 		while( R8_UART0_TFC == UART_FIFO_SIZE );
 		R8_UART0_THR = *buf++;

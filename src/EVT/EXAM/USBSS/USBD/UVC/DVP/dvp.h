@@ -1,9 +1,12 @@
-/*
- * dvp.h
- *
- *  Created on: Aug 6, 2020
- *      Author: OWNER
- */
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : dvp.h
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/08/6
+* Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
+*******************************************************************************/
 
 #ifndef DVP_DVP_H_
 #define DVP_DVP_H_

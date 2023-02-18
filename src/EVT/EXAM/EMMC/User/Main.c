@@ -4,6 +4,8 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 #include "CH56x_common.h"
 
@@ -19,11 +21,14 @@ UINT32  KeyValue[] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
 UINT32  CountValue[] = {0x00000001, 0x00000002, 0x00000003, 0x00000300};
 
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
+ * @fn      DebugInit
+ *
+ * @brief   Initializes the UART1 peripheral.
+ *
+ * @param   baudrate - UART1 communication baud rate.
+ *
+ * @return  None
+ */
 void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
@@ -40,12 +45,13 @@ void DebugInit(UINT32 baudrate)
 	R32_PA_DIR |= (1<<8);
 }
 
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {
 	SystemInit(FREQ_SYS);
@@ -194,8 +200,14 @@ int main()
 	while(1);
 }
 
-//EMMC Interruption
-	void EMMC_IRQHandler(void)   
+/*********************************************************************
+ * @fn      EMMC_IRQHandler
+ *
+ * @brief   This function handles EMMC exception.
+ *
+ * @return  none
+ */
+void EMMC_IRQHandler(void)   
 {
 	if(R16_EMMC_INT_FG)                      //Error interuption
 	{

@@ -4,30 +4,35 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
 
 
 /*******************************************************************************
-* Function Name  : GPIOA_ModeCfg
-* Description    : GPIOA端口引脚模式配置
-* Input          : pin:  PA0-PA15
-					GPIO_Pin_0 - GPIO_Pin_15
-				   mode:
-					GPIO_ModeIN_Floating       -  浮空输入/高阻输入
-					GPIO_ModeIN_PU_NSMT        -  带上拉电阻的输入
-					GPIO_ModeIN_PD_NSMT        -  带下拉电阻的输入
-					GPIO_ModeIN_PU_SMT         -  带上拉电阻的施密特输入
-					GPIO_ModeIN_PD_SMT         -  带下拉电阻的施密特输
-					GPIO_Slowascent_PP_8mA     -  低斜率推挽输出，驱动能力 8mA 级别
-					GPIO_Slowascent_PP_16mA    -  低斜率推挽输出，驱动能力 16mA 级别
-					GPIO_Highspeed_PP_8mA      -  快速推挽输出，驱动能力 8mA 级别
-					GPIO_Highspeed_PP_16mA     -  快速推挽输出，驱动能力 16mA 级别
-					GPIO_ModeOut_OP_8mA        -  推挽输出最大8mA
-					GPIO_ModeOut_OP_16mA       -  推挽输出最大16mA
-* Return         : None
-*******************************************************************************/
+ * @fn     GPIOA_ModeCfg
+ *
+ * @brief  GPIOA端口引脚模式配置
+ *
+ * @param  pin -  PA0-PA15
+ *					GPIO_Pin_0 - GPIO_Pin_15
+ *		   mode -
+ *					GPIO_ModeIN_Floating       -  浮空输入/高阻输入
+ *					GPIO_ModeIN_PU_NSMT        -  带上拉电阻的输入
+ *					GPIO_ModeIN_PD_NSMT        -  带下拉电阻的输入
+ *					GPIO_ModeIN_PU_SMT         -  带上拉电阻的施密特输入
+ *					GPIO_ModeIN_PD_SMT         -  带下拉电阻的施密特输
+ *					GPIO_Slowascent_PP_8mA     -  低斜率推挽输出，驱动能力 8mA 级别
+ *					GPIO_Slowascent_PP_16mA    -  低斜率推挽输出，驱动能力 16mA 级别
+ *					GPIO_Highspeed_PP_8mA      -  快速推挽输出，驱动能力 8mA 级别
+ *					GPIO_Highspeed_PP_16mA     -  快速推挽输出，驱动能力 16mA 级别
+ *					GPIO_ModeOut_OP_8mA        -  推挽输出最大8mA
+ *					GPIO_ModeOut_OP_16mA       -  推挽输出最大16mA
+ *
+ * @return   None
+ */
 void GPIOA_ModeCfg( UINT32 pin, GPIOModeTypeDef mode )
 {	
     switch(mode)
@@ -112,24 +117,28 @@ void GPIOA_ModeCfg( UINT32 pin, GPIOModeTypeDef mode )
 }
 
 /*******************************************************************************
-* Function Name  : GPIOB_ModeCfg
-* Description    : GPIOB端口引脚模式配置
-* Input          : pin:  PB0-PB15
-					GPIO_Pin_0 - GPIO_Pin_15
-				   mode:
-					GPIO_ModeIN_Floating       -  浮空输入/高阻输入
-					GPIO_ModeIN_PU_NSMT        -  带上拉电阻的输入
-					GPIO_ModeIN_PU_NSMT        -  带下拉电阻的输入
-					GPIO_ModeIN_PU_SMT         -  带上拉电阻的施密特输入
-					GPIO_ModeIN_PD_SMT         -  带下拉电阻的施密特输
-					GPIO_Slowascent_PP_8mA     -  低斜率推挽输出，驱动能力 8mA 级别
-					GPIO_Slowascent_PP_16mA    -  低斜率推挽输出，驱动能力 16mA 级别
-					GPIO_Highspeed_PP_8mA      -  快速推挽输出，驱动能力 8mA 级别
-					GPIO_Highspeed_PP_16mA     -  快速推挽输出，驱动能力 16mA 级别
-					GPIO_ModeOut_OP_8mA        -  推挽输出最大8mA
-					GPIO_ModeOut_OP_16mA       -  推挽输出最大16mA
-* Return         : None
-*******************************************************************************/
+ * @fn     GPIOB_ModeCfg
+ *
+ * @brief  GPIOB端口引脚模式配置
+ *
+ * @param  pin -  PB0-PB15
+ *					GPIO_Pin_0 - GPIO_Pin_15
+ *		   mode -
+ *					GPIO_ModeIN_Floating       -  浮空输入/高阻输入
+ *					GPIO_ModeIN_PU_NSMT        -  带上拉电阻的输入
+ *					GPIO_ModeIN_PD_NSMT        -  带下拉电阻的输入
+ *					GPIO_ModeIN_PU_SMT         -  带上拉电阻的施密特输入
+ *					GPIO_ModeIN_PD_SMT         -  带下拉电阻的施密特输
+ *					GPIO_Slowascent_PP_8mA     -  低斜率推挽输出，驱动能力 8mA 级别
+ *					GPIO_Slowascent_PP_16mA    -  低斜率推挽输出，驱动能力 16mA 级别
+ *					GPIO_Highspeed_PP_8mA      -  快速推挽输出，驱动能力 8mA 级别
+ *					GPIO_Highspeed_PP_16mA     -  快速推挽输出，驱动能力 16mA 级别
+ *					GPIO_ModeOut_OP_8mA        -  推挽输出最大8mA
+ *					GPIO_ModeOut_OP_16mA       -  推挽输出最大16mA
+ *
+ * @return   None
+ */
+
 void GPIOB_ModeCfg( UINT32 pin, GPIOModeTypeDef mode )
 {
     switch(mode)
@@ -214,16 +223,19 @@ void GPIOB_ModeCfg( UINT32 pin, GPIOModeTypeDef mode )
 }
 
 /*******************************************************************************
-* Function Name  : GPIOA_ITModeCfg
-* Description    : GPIOA引脚中断模式配置
-* Input          : pin:  PA2-PA4
-				   mode:
-					GPIO_ITMode_LowLevel   -  低电平触发
-					GPIO_ITMode_HighLevel  -  高电平触发
-					GPIO_ITMode_FallEdge   -  下降沿触发
-					GPIO_ITMode_RiseEdge   -  上升沿触发
-* Return         : None
-*******************************************************************************/
+ * @fn     GPIOA_ITModeCfg
+ *
+ * @brief  GPIOA引脚中断模式配置
+ *
+ * @param  pin - PA2-PA4
+ *		   mode -
+ *					GPIO_ITMode_LowLevel   -  低电平触发
+ *					GPIO_ITMode_HighLevel  -  高电平触发
+ *					GPIO_ITMode_FallEdge   -  下降沿触发
+ *					GPIO_ITMode_RiseEdge   -  上升沿触发
+ *
+ * @return   None
+ */
 void GPIOA_ITModeCfg( UINT32 pin, GPIOITModeTpDef mode )
 {
     switch( mode )
@@ -260,16 +272,20 @@ void GPIOA_ITModeCfg( UINT32 pin, GPIOITModeTpDef mode )
 }
 
 /*******************************************************************************
-* Function Name  : GPIOB_ITModeCfg
-* Description    : GPIOB引脚中断模式配置
-* Input          : pin:  3,4,11,12,15
-				   mode:
-					GPIO_ITMode_LowLevel   -  低电平触发
-					GPIO_ITMode_HighLevel  -  高电平触发
-					GPIO_ITMode_FallEdge   -  下降沿触发
-					GPIO_ITMode_RiseEdge   -  上升沿触发
-* Return         : None
-*******************************************************************************/
+ * @fn     GPIOB_ITModeCfg
+ *
+ * @brief  GPIOB引脚中断模式配置
+ *
+ * @param  pin - PB2-PB4
+ *		   mode -
+ *					GPIO_ITMode_LowLevel   -  低电平触发
+ *					GPIO_ITMode_HighLevel  -  高电平触发
+ *					GPIO_ITMode_FallEdge   -  下降沿触发
+ *					GPIO_ITMode_RiseEdge   -  上升沿触发
+ *
+ * @return   None
+ */
+
 void GPIOB_ITModeCfg( UINT32 pin, GPIOITModeTpDef mode )
 {
     switch( mode )
@@ -453,19 +469,21 @@ void GPIOB_ITModeCfg( UINT32 pin, GPIOITModeTpDef mode )
 }
 
 /*******************************************************************************
-* Function Name  : GPIOPinRemap
-* Description    : 外设功能引脚映射
-* Input          : s:
-					ENABLE  - 引脚映射
-					DISABLE - 默认引脚
-				   perph:
-					RB_PIN_UART0  -  RXD0:  PB5 ->  PA5
-					              -  TXD0:  PB6 ->  PA6
-					RB_PIN_TMR2	  -  TMR2/PWM6/CAP2:  PA4 ->  PB3
-					RB_PIN_TMR1	  -  TMR1/PWM5/CAP1:  PB15 ->  PB0
-					RB_PIN_MII	  -  Ethernet:  RMII ->  RGMII
-* Return         : None
-*******************************************************************************/
+ * @fn     GPIOPinRemap
+ *
+ * @brief  外设功能引脚映射
+ *
+ * @param  s -
+ *					ENABLE  - 引脚映射
+ *					DISABLE - 默认引脚
+ *		   perph -
+ *					RB_PIN_UART0  -  RXD0 -  PB5 ->  PA5
+ *					              -  TXD0 -  PB6 ->  PA6
+ *					RB_PIN_TMR2	  -  TMR2/PWM6/CAP2 -  PA4 ->  PB3
+ *					RB_PIN_TMR1	  -  TMR1/PWM5/CAP1 -  PB15 ->  PB0
+ *					RB_PIN_MII	  -  Ethernet -  RMII ->  RGMII
+ * @return   None
+ */
 void GPIOPinRemap( UINT8 s, UINT16 perph )
 {
     if( s )     R8_PIN_ALTERNATE |= perph;
@@ -473,15 +491,17 @@ void GPIOPinRemap( UINT8 s, UINT16 perph )
 }
 
 /*******************************************************************************
-* Function Name  : GPIOMco
-* Description    : GPIO MCO模式配置
-* Input          :  ENABLE\DISABLE
-                    mode:
-				   	MCO_125,
-	                MCO_25,
-	                MCO_2d5,
-* Return         : None
-*******************************************************************************/
+ * @fn     GPIOMco
+ *
+ * @brief  GPIO MCO模式配置
+ *
+ * @param   s - ENABLE\DISABLE
+ *          mode-
+ *				   	MCO_125,
+ *	                MCO_25,
+ *	                MCO_2d5,
+ * @return   None
+ */
 void GPIOMco( UINT8 s, UINT16 freq )
 {
 	if(s)

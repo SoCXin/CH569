@@ -4,18 +4,22 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
 
 
 /*******************************************************************************
-* Function Name  : PWMX_CycleCfg
-* Description    : PWM0-PWM3基准时钟配置
-* Input          : cyc:
-					refer to PWMX_CycleTypeDef
-* Return         : None
-*******************************************************************************/
+ * @fn     PWMX_CycleCfg
+ *
+ * @brief  PWM0-PWM3基准时钟配置
+ *
+ * @param  cyc -
+ *
+ * @return   None
+ */
 void PWMX_CycleCfg( PWMX_CycleTypeDef cyc )
 {
     switch( cyc )
@@ -34,18 +38,20 @@ void PWMX_CycleCfg( PWMX_CycleTypeDef cyc )
 }
 
 /*******************************************************************************
-* Function Name  : PWMX_ACTOUT
-* Description    : PWM0-PWM3通道输出波形配置
-* Input          : ch:	select channel of pwm
-					refer to channel of PWM define
-				   da:	effective pulse width
-				   pr:  select wave polar
-					refer to PWMX_PolarTypeDef
-				   s :  control pwmx function
-					ENABLE  - 输出PWM
-					DISABLE - 关闭PWM
-* Return         : None
-*******************************************************************************/
+ * @fn     PWMX_ACTOUT
+ *
+ * @brief  PWM0-PWM3通道输出波形配置
+ *
+ * @param  ch -	select channel of pwm
+ *					refer to channel of PWM define
+ *	       da -	effective pulse width
+ *		   pr -  select wave polar
+ *					refer to PWMX_PolarTypeDef
+ *		   s  -  control pwmx function
+ *					ENABLE  - 输出PWM
+ *					DISABLE - 关闭PWM
+ * @return   None
+ */
 void PWMX_ACTOUT( UINT8 ch, UINT8 da, PWMX_PolarTypeDef pr, UINT8 s)
 {
     UINT8 i;
@@ -55,8 +61,7 @@ void PWMX_ACTOUT( UINT8 ch, UINT8 da, PWMX_PolarTypeDef pr, UINT8 s)
     {
 
     	(pr)?(R8_PWM_CTRL_MOD|=(ch<<4)):(R8_PWM_CTRL_MOD&=~(ch<<4));     //PWM输出极性控制       1：默认高电平，低有效；0：默认低电平，高有效。
-        for(i=0; i<4; i++)
-        {
+        for(i=0; i<4; i++){
             if((ch>>i)&1)		*((PUINT8V)((&R8_PWM0_DATA)+i)) = da;
         }
         R8_PWM_CTRL_MOD |= (ch);

@@ -4,6 +4,8 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #define  FREQ_SYS   80000000
@@ -15,11 +17,14 @@ UINT8 trigB;
 
 void UART2_IRQHandler (void) __attribute__((interrupt()));
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
+ * @fn       DebugInit
+ *
+ * @brief    Initializes the UART1 peripheral.
+ *
+ * @param    baudrate: UART1 communication baud rate.
+ *
+ * @return   None
+ */
 void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
@@ -36,12 +41,13 @@ void DebugInit(UINT32 baudrate)
 	R32_PA_DIR |= (1<<8);
 }
 
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {
 	SystemInit(FREQ_SYS);
@@ -94,11 +100,12 @@ int main()
 
 
 /*******************************************************************************
-* Function Name  : UART1_IRQHandler
-* Description    : Interruption function
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn       UART1_IRQHandler
+ *
+ * @brief    Interruption function
+ *
+ * @return   None
+ */
 void UART2_IRQHandler(void)
 {
 	UINT8 i;

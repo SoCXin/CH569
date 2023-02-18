@@ -3,7 +3,6 @@
 最新资料请到我们的网站上查询
 http://wch.cn
 
-
   |
   |-- CH56x：RISC-V内核微控制器 
   |      |-- DS
@@ -22,18 +21,21 @@ http://wch.cn
   |      |      |      |-- DVP：OV2640摄像头操作例程
   |      |      |      |-- ECDC：ECDC例程
   |      |      |      |-- EMMC：EMMC例程
-  |      |      |      |-- ETH-GMAC：以太网MAC层和物理层驱动例程
+  |      |      |      |-- ETH-GMAC
+  |      |      |      |      |-- GMAC_RAW：以太网原始数据收发例程
+  |      |      |      |      |-- TCP_client：TCP客户端例程   
+  |      |      |      |      |-- TCP_server：TCP服务器例程  
+  |      |      |      |      |-- UDP：UDP例程  
   |      |      |      |-- FLASH：FLASH的擦/读/写例程
   |      |      |      |      |-- Flash_Lib：CH56x内部FLASH操作Lib库
   |      |      |      |-- GPIO：GPIO例程
   |      |      |      |-- HSPI
   |      |      |      |      |-- HSPI_BurstMode：HSPI突发模式上下端收发例程
-  |      |      |      |      |-- HSPI_BurstMode_UpDown_Switch：HSPI突发模式上下端切换收发例程   
+  |      |      |      |      |-- HSPI_BurstMode_UpDown_Switch：HSPI突发模式上下端切换收发例程    
   |      |      |      |      |-- HSPI_DoubleDMAMode：HSPI双DMA模式，硬件自动应答模式上下端收发例程
   |      |      |      |      |-- HSPI_ECDC：HSPI上下端收发数据加解密例程
   |      |      |      |      |-- HSPI_NormalMode：HSPI普通模式上下端收发例程
-  |      |      |      |-- PWMX：PWMX例程
-  |      |      |      |-- SERDES：SERDES例程  
+  |      |      |      |-- PWMX：PWMX例程 
   |      |      |      |-- SPI
   |      |      |      |      |-- SPI0_FLASH：SPI0操作外部FLASH例程
   |      |      |      |      |-- SPI0_HOST：SPI0主机例程
@@ -46,8 +48,10 @@ http://wch.cn
   |      |      |      |-- USBSS
   |      |      |      |      |-- USBD 
   |      |      |      |      |      |-- CH372Device：模拟自定义USB设备（CH372设备）例程，支持USB2.0和USB3.0，提供7个非0通道(上传+下传)，实现数据先下传，然后数据内容取反上传
-  |      |      |      |      |      |-- GeneralDevice：USB3.0通用设备例程
   |      |      |      |      |      |-- UVC：UVC设备例程  
   |      |      |      |      |-- USBH 
-  |      |      |      |      |      |-- HOST：USB设备的简易枚举过程例程  
-  |      |      |      |      |      |-- HOST_Udisk：U盘文件系统示例  
+  |      |      |      |      |      |-- HOST_SS：USB设备的简易枚举过程例程
+  |      |      |      |      |      |-- HOST_Udisk：U盘文件系统示例
+  |      |      |      |      |-- USB3.0TestDemo.zip：演示372设备端点上传下传以及传输速度工具 
+  |      |      |      |-- UserOptionBytes：用户字配置函数和关闭两线接口函数，以及使用该函数例程
+  

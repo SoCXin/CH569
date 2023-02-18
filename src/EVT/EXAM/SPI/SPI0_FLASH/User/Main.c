@@ -4,6 +4,8 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
@@ -29,12 +31,15 @@
 #define  SPI0_CS_HIGH()       R32_PA_OUT |= 1<<12
 
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
-void DebugInit(UINT32 baudrate)		
+ * @fn        DebugInit
+ *
+ * @brief     Initializes the UART1 peripheral.
+ *
+ * @param     baudrate - UART1 communication baud rate.
+ *
+ * @return    None
+ */
+void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
 	UINT32 t = FREQ_SYS;
@@ -51,13 +56,13 @@ void DebugInit(UINT32 baudrate)
 }
 
 /*******************************************************************************
-* Function Name  : SPI_MASTER_INIT
-* Description    : SPI0主机模式初始化
-* Input          : None
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void SPI_MASTER_INIT ( void )
+ * @fn      SPI_MASTER_INIT
+ *
+ * @brief   SPI0主机模式初始化
+ *
+ * @return  None
+ */
+void SPI_MASTER_INIT(void)
 {
   R8_SPI0_CTRL_MOD = RB_SPI_MOSI_OE|RB_SPI_SCK_OE;                              /* MOSI,SCK输出使能，主机模式，方式0 */
   R8_SPI0_CLOCK_DIV = 0x0a;                                                     /* 10分频，100/10=10M */
@@ -67,13 +72,15 @@ void SPI_MASTER_INIT ( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_Trans
-* Description    : 发送一字节数据
-* Input          : data -要发送的数据
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void SPI0_Trans( UINT8 data )
+ * @fn   SPI0_Trans
+ *
+ * @brief 发送一字节数据
+ *
+ * @param  data -要发送的数据
+ *
+ * @return  None
+ */
+void SPI0_Trans(UINT8 data)
 {
 
 //    R8_SPI0_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
@@ -86,13 +93,13 @@ void SPI0_Trans( UINT8 data )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_Recv
-* Description    : 接收一字节数据
-* Input          : None
-* Output         : None
-* Return         : None
-*******************************************************************************/
-UINT8 SPI0_Recv( void )
+ * @fn      SPI0_Recv
+ *
+ * @brief   接收一字节数据
+ *
+ * @return  None
+ */
+UINT8 SPI0_Recv(void)
 {
 //    R8_SPI0_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
 //    R8_SPI0_BUFFER = 0xFF;                                //启动传输
@@ -108,13 +115,16 @@ UINT8 SPI0_Recv( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_RecvS
-* Description    : 使用FIFO连续接收多字节
-* Input          : pbuf: 待发送的数据内容首地址
-                   len: 请求发送的数据长度，最大4095
-* Return         : None
-*******************************************************************************/
-void SPI0_RecvS( UINT8 *pbuf, UINT16 len )
+ * @fn       SPI0_RecvS
+ *
+ * @brief    使用FIFO连续接收多字节
+ *
+ * @param    pbuf - 待发送的数据内容首地址
+             len - 请求发送的数据长度，最大4095
+
+ * @return   None
+ */
+void SPI0_RecvS(UINT8 *pbuf, UINT16 len)
 {
     UINT16  readlen;
 
@@ -134,13 +144,13 @@ void SPI0_RecvS( UINT8 *pbuf, UINT16 len )
 }
 
 /*******************************************************************************
-* Function Name  : ReadExternalFlashStatusReg_SPI
-* Description    : 用来读取状态寄存器，并返回状态寄存器的值
-* Input          : None
-* Output         : None
-* Return         : ExFlashRegStatus
-*******************************************************************************/
-UINT8 ReadExternalFlashStatusReg_SPI( void )
+ * @fn      ReadExternalFlashStatusReg_SPI
+ *
+ * @brief   用来读取状态寄存器，并返回状态寄存器的值
+ *
+ * @return  ExFlashRegStatus
+ */
+UINT8 ReadExternalFlashStatusReg_SPI(void)
 {
     UINT8 ExFlashRegStatus;
 
@@ -154,13 +164,13 @@ UINT8 ReadExternalFlashStatusReg_SPI( void )
 }
 
 /*******************************************************************************
-* Function Name  : WaitExternalFlashIfBusy
-* Description    : 等待芯片空闲(在执行Byte-Program, Sector-Erase, Block-Erase, Chip-Erase操作后)
-* Input          : None
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void WaitExternalFlashIfBusy( void )
+ * @fn      WaitExternalFlashIfBusy
+ *
+ * @brief   等待芯片空闲(在执行Byte-Program, Sector-Erase, Block-Erase, Chip-Erase操作后)
+ *
+ * @return  None
+ */
+void WaitExternalFlashIfBusy(void)
 {
     while ((ReadExternalFlashStatusReg_SPI())&0x01 == 0x01 )
     {
@@ -169,13 +179,13 @@ void WaitExternalFlashIfBusy( void )
 }
 
 /*******************************************************************************
-* Function Name  : WriteExternalFlashEnable_SPI
-* Description    : 写使能，同样可以用于使能写状态寄存器
-* Input          : None
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void WriteExternalFlashEnable_SPI( void )
+ * @fn       WriteExternalFlashEnable_SPI
+ *
+ * @brief    写使能，同样可以用于使能写状态寄存器
+ *
+ * @return   None
+ */
+void WriteExternalFlashEnable_SPI(void)
 {
     SPI0_CS_LOW();
     SPI0_Trans( CMD_WR_ENABLE );                                        //发送写使能命令
@@ -183,13 +193,15 @@ void WriteExternalFlashEnable_SPI( void )
 }
 
 /*******************************************************************************
-* Function Name  : EraseExternal4KFlash_SPI
-* Description    : 擦除4K Flash  擦除一个扇区
-* Input          : Dst_Addr 0-1 ffff ffff ,清除任意地址所在的扇区
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void EraseExternal4KFlash_SPI( UINT32 Dst_Addr )
+ * @fn       EraseExternal4KFlash_SPI
+ *
+ * @brief    擦除4K Flash  擦除一个扇区
+ *
+ * @param    Dst_Addr 0-1 ffff ffff ,清除任意地址所在的扇区
+ *
+ * @return   None
+ */
+void EraseExternal4KFlash_SPI(UINT32 Dst_Addr)
 {
     WriteExternalFlashEnable_SPI();
     WaitExternalFlashIfBusy();
@@ -205,13 +217,15 @@ void EraseExternal4KFlash_SPI( UINT32 Dst_Addr )
 }
 
 /*******************************************************************************
-* Function Name  : EraseExternalFlash_SPI
-* Description    : 擦除32K Flash  擦除一个扇区
-* Input          : Dst_Addr 0-1 ffff ffff ,清除任意地址所在的扇区
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void EraseExternal32KFlash_SPI( UINT32 Dst_Addr )
+ * @fn         EraseExternalFlash_SPI
+ *
+ * @brief      擦除32K Flash  擦除一个扇区
+ *
+ * @param      Dst_Addr 0-1 ffff ffff ,清除任意地址所在的扇区
+ *
+ * @return     None
+ */
+void EraseExternal32KFlash_SPI(UINT32 Dst_Addr)
 {
     WriteExternalFlashEnable_SPI();
     WaitExternalFlashIfBusy();
@@ -227,15 +241,17 @@ void EraseExternal32KFlash_SPI( UINT32 Dst_Addr )
 }
 
 /*******************************************************************************
-* Function Name  : PageWriteExternalFlash_SPI
-* Description    : 页写，SPI在一页内写入少于256个字节的数据
-* Input          : RcvBuffer:数据存储区
-*                  StarAddr:开始写入的地址
-*                  Len:要写入的字节数(最大256),该数不应该超过该页剩余的字节数!!!
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void PageWriteExternalFlash_SPI(UINT32 StarAddr,UINT16 Len,PUINT8 RcvBuffer)
+ * @fn           PageWriteExternalFlash_SPI
+ *
+ * @brief        页写，SPI在一页内写入少于256个字节的数据
+ *
+ * @param        RcvBuffer - 数据存储区
+ *               StarAddr - 开始写入的地址
+ *               Len - 要写入的字节数(最大256),该数不应该超过该页剩余的字节数
+ *
+ * @returnNone
+ */
+void PageWriteExternalFlash_SPI(UINT32 StarAddr, UINT16 Len, PUINT8 RcvBuffer)
 {
     UINT16 i;
 
@@ -246,8 +262,7 @@ void PageWriteExternalFlash_SPI(UINT32 StarAddr,UINT16 Len,PUINT8 RcvBuffer)
     SPI0_Trans(((StarAddr & 0xFFFFFF) >> 16));                        //发送24bit地址
     SPI0_Trans(((StarAddr & 0xFFFF) >> 8));
     SPI0_Trans(StarAddr & 0xFF);
-    for(i=0; i!=Len; i++)
-    {
+    for(i=0; i!=Len; i++){
     	SPI0_Trans(RcvBuffer[i]);    //循环写数
     }
     SPI0_CS_HIGH();
@@ -256,16 +271,18 @@ void PageWriteExternalFlash_SPI(UINT32 StarAddr,UINT16 Len,PUINT8 RcvBuffer)
 }
 
 /*******************************************************************************
-* Function Name  : BlukWriteExternalFlash_SPI
-* Description    : 无检验写SPI FLASH
-*                  必须确保所写地址范围内的数据全部为0XFF，否则在非0XFF处写入的数据将失败；
-* Input          : SendBuffer:数据存储区
-*                  StarAddr:开始写入的地址
-*                  Len:要写入的字节数(最大65535)
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void BlukWriteExternalFlash_SPI(UINT32 StarAddr,UINT16 Len,PUINT8 SendBuffer)
+ * @fn       BlukWriteExternalFlash_SPI
+ *
+ * @brief    无检验写SPI FLASH
+ *               必须确保所写地址范围内的数据全部为0XFF，否则在非0XFF处写入的数据将失败；
+ *
+ * @param    SendBuffer - 数据存储区
+ *           StarAddr - 开始写入的地址
+ *           Len - 要写入的字节数(最大65535)
+ *
+ * @return   None
+ */
+void BlukWriteExternalFlash_SPI(UINT32 StarAddr, UINT16 Len, PUINT8 SendBuffer)
 {
     UINT16  pageremain;
 
@@ -299,10 +316,17 @@ void BlukWriteExternalFlash_SPI(UINT32 StarAddr,UINT16 Len,PUINT8 SendBuffer)
 }
 
 /*******************************************************************************
-* Function Name  : ReadExternalFlash_SPI
-* Description    : 读取地址的数据
-*******************************************************************************/
-void ReadExternalFlash_SPI( UINT32 StarAddr, UINT16 Len, PUINT8 RcvBuffer )
+ * @fn  ReadExternalFlash_SPI
+ *
+ * @brief 读取地址的数据
+ *
+ * @param     StarAddr
+ *            Len 读取数据长度
+ *            RcvBuffer 接收缓冲区起始地址
+ *
+ * @return None
+ */
+void ReadExternalFlash_SPI(UINT32 StarAddr, UINT16 Len, PUINT8 RcvBuffer)
 {
     SPI0_CS_LOW();
     SPI0_Trans(CMD_READ_DATA);                                         //读命令
@@ -314,15 +338,17 @@ void ReadExternalFlash_SPI( UINT32 StarAddr, UINT16 Len, PUINT8 RcvBuffer )
 }
 
 /*******************************************************************************
-* Function Name  : BlukReadExternalFlash_SPI
-* Description    : 读取起始地址内多个字节的数据，存入缓冲区中
-* Input          : StarAddr -Destination Address 000000H - 1FFFFFH
-                   Len 读取数据长度
-                   RcvBuffer 接收缓冲区起始地址
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void BlukReadExternalFlash_SPI( UINT32 StarAddr, UINT16 Len, PUINT8 RcvBuffer )
+ * @fn        BlukReadExternalFlash_SPI
+ *
+ * @brief     读取起始地址内多个字节的数据，存入缓冲区中
+ *
+ * @param     StarAddr -Destination Address 000000H - 1FFFFFH
+              Len - 读取数据长度
+              RcvBuffer - 接收缓冲区起始地址
+
+ * @return None
+ */
+void BlukReadExternalFlash_SPI(UINT32 StarAddr, UINT16 Len, PUINT8 RcvBuffer)
 {
     SPI0_CS_LOW();
     SPI0_Trans(CMD_FAST_READ);                                         //高速度
@@ -335,16 +361,16 @@ void BlukReadExternalFlash_SPI( UINT32 StarAddr, UINT16 Len, PUINT8 RcvBuffer )
 }
 
 /*******************************************************************************
-* Function Name  : SPIFlash_ReadID
-* Description    : SPI Flash读取芯片ID
-* Input          : None
-* Output         : None
-* Return         : 0XEF13,表示芯片型号为W25Q80
-*                  0XEF14,表示芯片型号为W25Q16
-*                  0XEF15,表示芯片型号为W25Q32
-*                  0XEF16,表示芯片型号为W25Q64
-*                  0XEF17,表示芯片型号为W25Q128
-*******************************************************************************/
+ * @fn        SPIFlash_ReadID
+ *
+ * @brief     SPI Flash读取芯片ID
+ *
+ * @return    0XEF13 - 表示芯片型号为W25Q80
+ *            0XEF14 - 表示芯片型号为W25Q16
+ *            0XEF15 - 表示芯片型号为W25Q32
+ *            0XEF16 - 表示芯片型号为W25Q64
+ *            0XEF17 - 表示芯片型号为W25Q128
+ */
 UINT16 SPIFlash_ReadID(void)
 {
     UINT16  temp = 0;
@@ -364,12 +390,13 @@ UINT16 SPIFlash_ReadID(void)
     return temp;
 }
 
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {
 
@@ -390,8 +417,7 @@ int main()
 
     printf("id:0x%04x\n", SPIFlash_ReadID() );                                  /*读取芯片ID */
 
-    for(i=0; i!=255; i++)
-    {
+    for(i=0; i!=255; i++){
         buf[i] = i;
     }
 
@@ -400,8 +426,7 @@ int main()
     BlukWriteExternalFlash_SPI(0,255,buf);
     BlukReadExternalFlash_SPI( 0,255,buf );
 
-    for(i=0; i!=255; i++)
-    {
+    for(i=0; i!=255; i++){
     	printf("%d ",(UINT16)buf[i]);
     }
     printf("done\n");

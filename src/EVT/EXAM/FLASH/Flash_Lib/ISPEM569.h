@@ -1,7 +1,12 @@
-/* CH56x Flash-ROM & Data-Flash  */
-/* Website:  http://wch.cn       */
-/* Email:    tech@wch.cn         */
-/* Author:   W.ch 2011.10        */
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : ISPEM569.h
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/07/31
+* Description     : for the chip only USER code area, no BOOT
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+*******************************************************************************/
+
 /* V1.1 FlashROM library for BOOT */
 /* 1. for the chip only USER code area, no BOOT */
 /* 2. for the target in BOOT area on the chip divided into USER code area and BOOT area */

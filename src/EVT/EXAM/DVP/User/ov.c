@@ -4,6 +4,8 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 		 : OV2640 摄像头 配置函数
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
@@ -87,12 +89,13 @@ const UINT8 OV2640_RGB565RegTbl[][2]=
 	0xff, 0x01,	0xe0, 0x00,	0xe1, 0x00,	0xe5, 0x00,	0xd7, 0x00,	0xda, 0x00,	0xe0, 0x00,
 };
 
-/*******************************************************************************
-* Function Name  : SCCB_GPIO_Init
-* Description    : SCCB 接口初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/***************************************************************
+ * @fn       SCCB_GPIO_Init
+ *
+ * @brief    SCCB 接口初始化
+ *
+ * @return   None
+ */
 void SCCB_GPIO_Init(void)
 {
 	IIC_SCL_OUT;
@@ -102,11 +105,12 @@ void SCCB_GPIO_Init(void)
 }
 
 /*******************************************************************************
-* Function Name  : SCCB_Start
-* Description    : Start Signal
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn       SCCB_Start
+ *
+ * @brief    Start Signal
+ *
+ * @return   None
+ */
 void SCCB_Start(void)
 {
 	IIC_SDA_SET;
@@ -118,11 +122,12 @@ void SCCB_Start(void)
 }
 
 /*******************************************************************************
-* Function Name  : SCCB_Stop
-* Description    : Stop Signal
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn        SCCB_Stop
+ *
+ * @brief     Stop Signal
+ *
+ * @return    None
+ */
 void SCCB_Stop(void)
 {
 	IIC_SDA_CLR;
@@ -134,11 +139,12 @@ void SCCB_Stop(void)
 }
 
 /*******************************************************************************
-* Function Name  : SCCB_No_Ack
-* Description    : NAK Signal
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn      SCCB_No_Ack
+ *
+ * @brief   NAK Signal
+ *
+ * @return  None
+ */
 void SCCB_No_Ack(void)
 {
 	mDelayuS(50);
@@ -152,12 +158,12 @@ void SCCB_No_Ack(void)
 }
 
 /*******************************************************************************
-* Function Name  : SCCB_WR_Byte
-* Description    : Write One Byte
-* Input          : data
-* Return         : 0:成功
-*                  其他:失败
-*******************************************************************************/
+ * @fn        SCCB_WR_Byte
+ * @brief     Write One Byte
+ * @param     data
+ * @return    0:成功
+ *                                 其他:失败
+ */
 UINT8 SCCB_WR_Byte(UINT8 data)
 {
 	UINT8 i,t;
@@ -192,11 +198,12 @@ UINT8 SCCB_WR_Byte(UINT8 data)
 }
 
 /*******************************************************************************
-* Function Name  : SCCB_RD_Byte
-* Description    : Read One Byte
-* Input          : None
-* Return         : Read one byte data
-*******************************************************************************/
+ * @fn        SCCB_RD_Byte
+ *
+ * @brief     Read One Byte
+ *
+ * @return    Read one byte data
+ */
 UINT8 SCCB_RD_Byte(void)
 {
 	UINT8 t=0,i;
@@ -220,14 +227,17 @@ UINT8 SCCB_RD_Byte(void)
 }
 
 /*******************************************************************************
-* Function Name  : SCCB_WR_Reg
-* Description    : Write camera Register
-* Input          : Reg_Adr: Register address
-*                  Reg_Val: Register value
-* Return         : 0:成功
-*                  其他:失败
-*******************************************************************************/
-UINT8 SCCB_WR_Reg(UINT8 Reg_Adr,UINT8 Reg_Val)
+ * @fn        SCCB_WR_Reg
+ *
+ * @brief     Write camera Register
+ *
+ * @param     Reg_Adr - Register address
+ *            Reg_Val - Register value
+ *
+ * @return    0 - 成功
+ *            其他 - 失败
+ */
+UINT8 SCCB_WR_Reg(UINT8 Reg_Adr, UINT8 Reg_Val)
 {
 	UINT8 res=0;
 
@@ -243,11 +253,12 @@ UINT8 SCCB_WR_Reg(UINT8 Reg_Adr,UINT8 Reg_Val)
 }
 
 /*******************************************************************************
-* Function Name  : SCCB_RD_Reg
-* Description    : Read camera Register
-* Input          : None
-* Return         : Camera Register value
-*******************************************************************************/
+ * @fn         SCCB_RD_Reg
+ *
+ * @brief      Read camera Register
+ *
+ * @return     Camera Register value
+ */
 UINT8 SCCB_RD_Reg(UINT8 Reg_Adr)
 {
 	UINT8 val=0;
@@ -272,12 +283,13 @@ UINT8 SCCB_RD_Reg(UINT8 Reg_Adr)
 
 
 /*******************************************************************************
-* Function Name  : OV2640_Init
-* Description    : OV2640 初始化
-* Input          : None
-* Return         : 0: 初始化成功
-*                  1: 初始化失败
-*******************************************************************************/
+ * @fn         OV2640_Init
+ *
+ * @brief      OV2640 初始化
+ *
+ * @return     0 - 初始化成功
+ *             1 - 初始化失败
+ */
 UINT8 OV2640_Init(void)
 {
 	UINT16 i=0;
@@ -329,11 +341,12 @@ UINT8 OV2640_Init(void)
 }
 
 /*******************************************************************************
-* Function Name  : RGB565_Mode_Init
-* Description    : RGB565 模式初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn       RGB565_Mode_Init
+ *
+ * @brief    RGB565 模式初始化
+ *
+ * @return   None
+ */
 void RGB565_Mode_Init(void)
 {
 	OV2640_RGB565_Mode();
@@ -342,11 +355,12 @@ void RGB565_Mode_Init(void)
 }
 
 /*******************************************************************************
-* Function Name  : JPEG_Mode_Init
-* Description    :  以 0xFF，0xD8开头； 0xFF，0xD9结尾 构成1帧图片
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn       JPEG_Mode_Init
+ *
+ * @brief    以 0xFF，0xD8开头； 0xFF，0xD9结尾 构成1帧图片
+ *
+ * @return    None
+ */
 void JPEG_Mode_Init(void)
 {
 	OV2640_JPEG_Mode();
@@ -355,11 +369,12 @@ void JPEG_Mode_Init(void)
 }
 
 /*******************************************************************************
-* Function Name  : OV2640_JPEG_Mode
-* Description    : JPEG Mode
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn       OV2640_JPEG_Mode
+ *
+ * @brief    JPEG Mode
+ *
+ * @return   None
+ */
 void OV2640_JPEG_Mode(void)
 {
 	UINT16 i=0;
@@ -377,11 +392,12 @@ void OV2640_JPEG_Mode(void)
 }
 
 /*******************************************************************************
-* Function Name  : OV2640_RGB565_Mode
-* Description    : RGB565 Mode
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn       OV2640_RGB565_Mode
+ *
+ * @brief    RGB565 Mode
+ *
+ * @return   None
+ */
 void OV2640_RGB565_Mode(void)
 {
 	UINT16 i=0;
@@ -394,14 +410,17 @@ void OV2640_RGB565_Mode(void)
 }
 
 /*******************************************************************************
-* Function Name  : OV2640_OutSize_Set
-* Description    : Set Image Resolution
-* Input          : Image_width: 图像宽度 (4的倍数)
-*                  Image_height: 图像高度
-* Return         : 0：成功
-*                  其他：失败
-*******************************************************************************/
-UINT8 OV2640_OutSize_Set(UINT16 Image_width,UINT16 Image_height)
+ * @fn           OV2640_OutSize_Set
+ *
+ * @briefSet     Image Resolution
+ *
+ * @param        Image_width -  图像宽度 (4的倍数)
+ *               Image_height - 图像高度
+ *
+ * @return       0 -成功
+ *               其他 -失败
+ */
+UINT8 OV2640_OutSize_Set(UINT16 Image_width, UINT16 Image_height)
 {
 	UINT16 Out_Size_Width;
 	UINT16 Out_Size_Height;
@@ -425,13 +444,16 @@ UINT8 OV2640_OutSize_Set(UINT16 Image_width,UINT16 Image_height)
 }
 
 /*******************************************************************************
-* Function Name  : OV2640_Speed_Set
-* Description    : Set DVP PCLK
-* Input          : Pclk_Div: DVP output speed ctrl
-*                  Xclk_Div: 晶振输入分频
-* Return         : 0：成功
-*                  其他：失败
-*******************************************************************************/
+ * @fn        OV2640_Speed_Set
+ *
+ * @brief     Set DVP PCLK
+ *
+ * @param     Pclk_Div - DVP output speed ctrl
+ *            Xclk_Div - 晶振输入分频
+ *
+ * @return    0 -成功
+ *            其他 - 失败
+ */
 void OV2640_Speed_Set(UINT8 Pclk_Div, UINT8 Xclk_Div)
 {
 	SCCB_WR_Reg(0XFF,0X00);

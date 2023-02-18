@@ -1,4 +1,11 @@
-
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : CH56XUSB30_LIB.h
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/07/31
+* Description 		 :
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+*******************************************************************************/
 #ifndef CH56XUSB30_LIB_H_
 #define CH56XUSB30_LIB_H_
 
@@ -78,184 +85,224 @@ typedef struct __PACKED
 #define USB_DESCR_SERIAL_STRING    0x03
 #define USB_DESCR_OS_STRING        0xee
 #endif
-/*******************************************************************************1
-* Function Name  : USB30_initDevice
-* Description    : USB3.0 Device初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_initDevice
+ *
+ * @brief  USB3.0 Device初始化
+ *
+ * @return   None
+ */
 extern UINT32 USB30_initDevice(void);
 
-/*******************************************************************************1
-* Function Name  : set_ISO_delay
-* Description    : 标准请求，同步传输发送/接收包的延迟时间量
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     set_ISO_delay
+ *
+ * @brief  标准请求，同步传输发送/接收包的延迟时间量
+ *
+ * @return   None
+ */
 extern void set_ISO_delay( UINT32 dly );
-/*******************************************************************************3
-* Function Name  : USB30_setEndpDMA
-* Description    : 设置端点DMA地址
-* Input          : num：端点号   最高位表方向，低四位为端点号
-* 				   addr：将要设置的DMA地址
-* Return         : None
-*******************************************************************************/
+
+/*******************************************************************************
+ * @fn     USB30_setEndpDMA
+ *
+ * @brief  设置端点DMA地址
+ *
+ * @param  num -  端点号   最高位表方向，低四位为端点号
+ *                addr - 将要设置的DMA地址
+ *
+ * @return   None
+ */
 extern void USB30_setEndpDMA(UINT8 num,UINT8 *addr);
 
-/*******************************************************************************4
-* Function Name  : USB30_setISOEndp
-* Description    : 配置同步端点
-* Input          : num：端点号    最高位表方向，低四位为端点号
-* 				   Status：enable or disable
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_setISOEndp
+ *
+ * @brief  设置端点DMA地址
+ *
+ * @param  num -  端点号   最高位表方向，低四位为端点号
+ *                Status - enable or disable
+ *
+ * @return   None
+ */
 extern void USB30_setISOEndp(UINT8 num,FunctionalState Status );
 
-/*******************************************************************************5
-* Function Name  : UART1_DefInit
-* Description    : 使能端点
-* Input          : num：端点号    最高位表方向，低四位为端点号
-* 				   Status：enable or disable
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     UART1_DefInit
+ *
+ * @brief  使能端点
+ *
+ * @param  num -  端点号   最高位表方向，低四位为端点号
+ *                Status - enable or disable
+ *
+ * @return   None
+ */
 extern void USB30_setEnableEndp(UINT8 num,FunctionalState Status );
 
-/*******************************************************************************6
-* Function Name  : USB30_getRxCount
-* Description    : 获取端点接收数据长度
-* Input          : endp：端点号
-* 						nump：端点能够接收的数据包个数
-* 				 		  len:端点接收的长度，对于突发传输表示端点接收最后一包的数据长度
-* 				   status:接收状态：
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_getRxCount
+ *
+ * @brief  获取端点接收数据长度
+ *
+ * @param  endp -  端点号
+ *                nump - 端点能够接收的数据包个数
+ *                len - 端点接收的长度，对于突发传输表示端点接收最后一包的数据长度
+ *
+ * @return   None
+ */
 extern void USB30_getRxCount(UINT8 endp,UINT8 *nump,UINT16 *len,UINT8 *status);
 
-/*******************************************************************************7
-* Function Name  : USB30_setRxCtrl
-* Description    : 端点接收设置
-* Input          : endp：将要设置的端点号
-* 				   status：NREDY_TP/ACK_TP/STALL_TP/INVALID
-* 				   nump: 端点0能接收到数据包的个数，端点1~7突发传输能接收数据包的个数
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_getRxCount
+ *
+ * @brief  获取端点接收数据长度
+ *
+ * @param  endp -  将要设置的端点号
+ *                 status - NREDY_TP/ACK_TP/STALL_TP/INVALID
+ *                nump - 端点0能接收到数据包的个数，端点1~7突发传输能接收数据包的个数
+ *
+ * @return   None
+ */
 extern void USB30_setRxCtrl(UINT8 endp,UINT8 status,UINT8 nump);
 
-/*******************************************************************************8
-* Function Name  : USB30_setTxCtrl
-* Description    : 端点发送设置
-* Input          : endp：端点号     status：
-* 				   status：NREDY_TP/ACK_TP/STALL_TP/INVALID
-* 				   nump: 端点0能接收到数据包的个数，端点1~7突发传输能接收数据包的个数
-* 				   TxLen：端点发送数据长度
-* 				   lpf:
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_getRxCount
+ *
+ * @brief  获取端点接收数据长度
+ *
+ * @param  endp -  端点号
+ *                 status - NREDY_TP/ACK_TP/STALL_TP/INVALID
+ *                nump - 端点0能接收到数据包的个数，端点1~7突发传输能接收数据包的个数
+ *                TxLen - 端点发送数据长度
+ *
+ * @return   None
+ */
 extern void USB30_setTxCtrl(UINT8 endp,FunctionalState lpf,UINT8 status,UINT8 nump,UINT16 TxLen);
 
-/*******************************************************************************9
-* Function Name  : USB30_getTxNump
-* Description    : 获取实际突发包数
-* Input          : endp：端点号
-* Return         : 当前突发包数
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_getTxNump
+ *
+ * @brief  获取实际突发包数
+ *
+ * @param  endp -  端点号
+ *
+ * @return   当前突发包数
+ */
 extern UINT8 USB30_getTxNump(UINT8 endp);
 
-/*******************************************************************************10
-* Function Name  : USB30_setFCCTRL
-* Description    : 端点流控设置
-* Input          : endp：端点号   最高位表方向，低四位为端点号
-* 				   nump:端点接收或发送的数据包长度
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_getRxCount
+ *
+ * @brief  获取端点接收数据长度
+ *
+ * @param  endp -  端点号
+ *                nump - 端点接收或发送的数据包长度
+ *
+ * @return   None
+ */
 extern void USB30_setFCCTRL(UINT8 endp,UINT8 nump);
 
-/*******************************************************************************11
-* Function Name  : set_device_address
-* Description    : 设置设备地址
-* Input          : address：将要设置的地址
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     set_device_address
+ *
+ * @brief  设置设备地址
+ *
+ * @param  address -  将要设置的地址
+ *
+ * @return   None
+ */
 extern void set_device_address( UINT32 address );
 
-/*******************************************************************************12
-* Function Name  : USB30_linkIRQHandler
-* Description    : USB3.0 link中断处理
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_linkIRQHandler
+ *
+ * @brief  USB3.0 link中断处理
+ *
+ * @return   None
+ */
 extern void USB30_linkIRQHandler (void);
 
-/*******************************************************************************13
-* Function Name  : USB30_enableITP
-* Description    : USB ITP使能
-* Input          : Status：enable/disable
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_enableITP
+ *
+ * @brief  USB ITP使能
+ *
+ * @param  Status-  enable/disable
+ *
+ * @return   None
+ */
 extern void USB30_enableITP(FunctionalState Status);
 
-/*******************************************************************************14
-* Function Name  : USB30_usbssIRQHandler
-* Description    : USB3.0中断处理
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_usbssIRQHandler
+ *
+ * @brief  USB3.0中断处理
+ *
+ * @return   None
+ */
 extern void USB30_usbssIRQHandler();
 
-/*******************************************************************************15
-* Function Name  : USB30_StandardReq
-* Description    : USB设备模式标准请求命令处理
-* Input          : None
-* Return         : 主机请求设备发送的数据长度
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_StandardReq
+ *
+ * @brief  USB设备模式标准请求命令处理
+ *
+ * @return   主机请求设备发送的数据长度
+ */
 extern UINT16 USB30_StandardReq();
 
-/*******************************************************************************16
-* Function Name  : USB30_NonStandardReq
-* Description    : USB设备模式非标准请求命令处理
-* Input          : None
-* Return         : 主机请求设备发送的数据长度
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_NonStandardReq
+ *
+ * @brief  USB设备模式非标准请求命令处理
+ *
+ * @return   主机请求设备发送的数据长度
+ */
 extern UINT16 USB30_NonStandardReq();
 
-/*******************************************************************************17
-* Function Name  :  EP0_IN_Callback
-* Description    : 端点0 IN传输完成回调函数
-* Input          : None
-* Return         : 一次IN传输响应发送的数据长度
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     EP0_IN_Callback
+ *
+ * @brief  端点0 IN传输完成回调函数
+ *
+ * @return   一次IN传输响应发送的数据长度
+ */
 extern UINT16 EP0_IN_Callback();
 
-/*******************************************************************************18
-* Function Name  : EP0_OUT_Callback
-* Description    : 端点0 OUT传输完成回调函数
-* Input          : None
-* Return         : 0
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     EP0_OUT_Callback
+ *
+ * @brief  端点0 OUT传输完成回调函数
+ *
+ * @return   0
+ */
 extern UINT16 EP0_OUT_Callback();
 
-/*******************************************************************************19
-* Function Name  : USB30_SetupStatus
-* Description    : 控制传输状态阶段
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     USB30_SetupStatus
+ *
+ * @brief  控制传输状态阶段
+ *
+ * @return   None
+ */
 extern void USB30_SetupStatus();
 
-/*******************************************************************************20
-* Function Name  : ITP_Callback
-* Description    : ITP回调函数
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     ITP_Callback
+ *
+ * @brief  ITP回调函数
+ *
+ * @return   None
+ */
 extern void  ITP_Callback(UINT32 ITPCounter);
 
-/*******************************************************************************21
-* Function Name  : EPn_IN_Callback()
-* Description    : 端点n IN事务处理回调函数
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     EPn_IN_Callback()
+ *
+ * @brief  端点n IN事务处理回调函数
+ *
+ * @return   None
+ */
 extern void  EP1_IN_Callback();
 extern void  EP2_IN_Callback();
 extern void  EP3_IN_Callback();
@@ -264,12 +311,13 @@ extern void  EP5_IN_Callback();
 extern void  EP6_IN_Callback();
 extern void  EP7_IN_Callback();
 
-/*******************************************************************************22
-* Function Name  : EPn_IN_Callback()
-* Description    : 端点n OUT事务处理回调函数
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*******************************************************************************
+ * @fn     EPn_IN_Callback()
+ *
+ * @brief  端点n OUT事务处理回调函数
+ *
+ * @return   None
+ */
 extern void  EP1_OUT_Callback();
 extern void  EP2_OUT_Callback();
 extern void  EP3_OUT_Callback();

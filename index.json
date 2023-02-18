@@ -1,38 +1,36 @@
 {
     "type":"SoC",
     "name":"CH569",
-    "title": "WCH SoC CH569",
+    "title": "WCH CH569 SoC",
     "description":"WCH RISC-V USB3.0 SoC",
-    "version":"1.0.0",
     "Core": {
-        "num": 1,
-        "type":"RISC-V",
-        "Freq": 120,
-        "DMIPS": 150,
-        "CoreMark": 0
+        "CoreNum": 1,
+        "Core":"RISC-V",
+        "Fmax":120,
+        "DMIPS": 120,
+        "CoreMark": 120
     },
     "manufacturer": {
         "vendor":"WCH",
-        "homepage": "http://www.wch.cn/products/CH569.html"
+        "homepage":"http://www.wch.cn"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/SoCXin/CH569.git"
     },
+    "version":"1.0.0",
     "series":["CH569","CH565"],
     "package":["QFN64","QFN40"],
     "peripheral": ["USB3.0","HSPI","USB","UART","SPI","SerDes","PWM"],
-    "price":[12,16],
-    "EMC": {
-        "EFT": 2000,
-        "ESD": 4000
+    "temp": [-40,85],
+    "volt": [1.8,3.6],
+    "ESD": {
+        "HBM": 4000,
+        "CDM": 500
     },
     "keywords": [
-        "dev-platform",
         "RISC-V",
         "WCH",
-        "CH569",
-        "HSPI","SDIO","CAN","I2C","RTC","SPI",
-        "3.6V","1.8V"
+        "HSPI","SDIO","CAN","I2C","RTC","SPI"
     ]
 }

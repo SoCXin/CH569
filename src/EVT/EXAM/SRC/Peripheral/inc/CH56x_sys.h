@@ -1,4 +1,13 @@
-
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : CH56x_sys.h
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/07/31
+* Description        : This file contains all the functions prototypes for
+*                      SystemCoreClock, UART Printf , Delay functions .
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
+*******************************************************************************/
 
 
 #ifndef __CH56x_SYS_H__

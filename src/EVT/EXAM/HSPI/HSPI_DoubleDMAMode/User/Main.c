@@ -4,6 +4,8 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 #define  FREQ_SYS   120000000
 
@@ -47,12 +49,15 @@ void HSPI_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
 
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
-void DebugInit(UINT32 baudrate)		
+ * @fn        DebugInit
+ *
+ * @brief     Initializes the UART1 peripheral.
+ *
+ * @param     baudrate: UART1 communication baud rate
+ *
+ * @return    None
+ */
+void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
 	UINT32 t = FREQ_SYS;
@@ -69,11 +74,12 @@ void DebugInit(UINT32 baudrate)
 }
 
 /*******************************************************************************
-* Function Name  : HSPI_GPIO_Init
-* Description    :
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn      HSPI_GPIO_Init
+ *
+ * @brief    Initializes the HSPI GPIO.
+ *
+ * @return  None
+ */
 void HSPI_GPIO_Init(void)
 {
 	//TX GPIO PA9、11、21 推挽输出
@@ -88,11 +94,12 @@ void HSPI_GPIO_Init(void)
 
 
 /*******************************************************************************
-* Function Name  : HSPI_Init
-* Description    : HSPI 初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn       HSPI_Init
+ *
+ * @brief    HSPI 初始化
+ *
+ * @return   None
+ */
 void HSPI_Init(void)
 {
 	//GPIO Cfg
@@ -183,13 +190,13 @@ void HSPI_Init(void)
 	PFIC_EnableIRQ(HSPI_IRQn);
 }
 
-
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {  
     UINT32 i,j ;
@@ -256,12 +263,13 @@ int main()
     while(1);    
 }
 
-/*******************************************************************************
-* Function Name  : HSPI_IRQHandler
-* Description    :
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      HSPI_IRQHandler
+ *
+ * @brief   This function handles HSPI exception.
+ *
+ * @return  none
+ */
 void HSPI_IRQHandler(void)
 {
 	static UINT32 Tx_Cnt = 0;

@@ -4,28 +4,29 @@
 * Version            : V1.1
 * Date               : 2020/12/23
 * Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 #include "CH56x_common.h"
 #include "CH56xusb30_lib.h"
 #include "CH56x_usb30.h"
-
+#include "CH56x_usb20.h"
 /* Global define */
-#define UART1_BAUD  921600
-
+#define  FREQ_SYS       120000000
+#define  UART1_BAUD     921600
 /* Global Variable */
-
-
 
 /* Function declaration */
 
-
-
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
+ * @fn        DebugInit
+ *
+ * @brief     Initializes the UART1 peripheral.
+ *
+ * @param     baudrate: UART1 communication baud rate.
+ *
+ * @return    None
+ */
 void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
@@ -41,17 +42,15 @@ void DebugInit(UINT32 baudrate)
 	R32_PA_DIR |= (1<<8);
 }
 
-
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {
-    UINT32 i = 0,j ;
-    UINT8 val = 1;
 
     SystemInit(FREQ_SYS);
 	Delay_Init(FREQ_SYS);
@@ -64,12 +63,13 @@ int main()
     R32_USB_CONTROL = 0;
     PFIC_EnableIRQ(USBSS_IRQn);
     PFIC_EnableIRQ(LINK_IRQn);
-    PFIC_EnableIRQ(TMR0_IRQn);
-    R8_TMR0_INTER_EN = 1;
-    TMR0_TimerInit( 67000000 );   //约0.5秒
-	USB30D_init(ENABLE);          //USB3.0初始化，初始化之前确保USB3.0两个中断使能
 
-	while(1){
-	    ;
-	}
+    PFIC_EnableIRQ(TMR0_IRQn);
+    R8_TMR0_INTER_EN = RB_TMR_IE_CYC_END;
+    TMR0_TimerInit( 67000000 );   //约0.5秒
+
+	USB30D_init(ENABLE);          //USB3.0初始化 初始化之前确保USB3.0两个中断使能
+
+	while(1);
 }
+

@@ -4,17 +4,22 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
 
 
 /*******************************************************************************
-* Function Name  : SystemInit
-* Description    : 系统时钟初始化
-* Input          : systemclck:系统时钟 Hz
-* Return         : None
-*******************************************************************************/
+ * @fn     SystemInit
+ *
+ * @brief   系统时钟初始化
+ *
+ * @param  systemclck:系统时钟 Hz
+ *
+ * @return  None
+ */
 void SystemInit(uint32_t systemclck)
 {	
 	uint8_t sc;
@@ -72,11 +77,14 @@ void SystemInit(uint32_t systemclck)
 }
 
 /*******************************************************************************
-* Function Name  : GetSysClock
-* Description    : 获取当前系统时钟
-* Input          : None
-* Return         : Hz
-*******************************************************************************/
+ * @fn     GetSysClock
+ *
+ * @brief  获取当前系统时钟
+ *
+ * @param  None
+ *
+ * @return   Hz
+ */
 UINT32 GetSysClock( void )
 {
 	UINT8  rev;

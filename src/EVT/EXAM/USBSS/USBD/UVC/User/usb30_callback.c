@@ -1,9 +1,12 @@
-/*
- * usb30_callback.c
- *
- *  Created on: Aug 17, 2020
- *      Author: OWNER
- */
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : usb30_callback.c
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/07/31
+* Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
+*******************************************************************************/
 #include "CH56xUSB30_LIB.H"
 #include "usb30_porp.h"
 

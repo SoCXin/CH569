@@ -4,15 +4,18 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 #include "CH56x_common.h"
 
 /*******************************************************************************
-* Function Name  : EMMCIO0Init
-* Description    : EMMC Controller Initializtion
-* Input          : None
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCIO0Init
+ *
+ * @brief  EMMC Controller Initializtion
+ * 
+ * @return   OP_SUCCESS
+ */
 UINT8 EMMCIO0Init( void )
 {
 /* GPIO configuration */
@@ -50,11 +53,14 @@ UINT8 EMMCIO0Init( void )
 }
 
 /*******************************************************************************
-* Function Name  : CheckCMDComp
-* Description    : Estimate the end of Command
-* Input          : pEMMCPara
-* Return         : CMD_NULL
-*******************************************************************************/
+ * @fn     CheckCMDComp
+ *
+ * @brief  Estimate the end of Command
+ *
+ * @param  pEMMCPara
+ *
+ * @return   CMD_NULL
+ **/
 UINT8 CheckCMDComp( PSD_PARAMETER pEMMCPara )
 {
     if(R16_EMMC_INT_FG & RB_EMMC_IF_CMDDONE)
@@ -67,11 +73,14 @@ UINT8 CheckCMDComp( PSD_PARAMETER pEMMCPara )
 }
 
 /*******************************************************************************
-* Function Name  : EMMCResetIdle
-* Description    : when EMMC waiting status,do the OCR analysis
-* Input          : pEMMCPara
-* Return         : None
-*******************************************************************************/
+ * @fn     EMMCResetIdle
+ *
+ * @brief  when EMMC waiting status,do the OCR analysis
+ *
+ * @param  pEMMCPara
+ *
+ * @return   None
+ */
 void EMMCResetIdle( PSD_PARAMETER pEMMCPara )
 {
     UINT32 cmd_arg_val;
@@ -85,11 +94,14 @@ void EMMCResetIdle( PSD_PARAMETER pEMMCPara )
 
 
 /*******************************************************************************
-* Function Name  : EMMCReadOCR
-* Description    : when EMMC waiting status,do the OCR analysis
-* Input          : pEMMCPara
-* Return         : CMD_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCReadOCR
+ *
+ * @brief  when EMMC waiting status,do the OCR analysis
+ *
+ * @param  pEMMCPara
+ *
+ * @return   CMD_SUCCESS
+ */
 UINT8 EMMCReadOCR( PSD_PARAMETER pEMMCPara )
 {
     UINT8  i;
@@ -135,11 +147,14 @@ UINT8 EMMCReadOCR( PSD_PARAMETER pEMMCPara )
 
 
 /*******************************************************************************
-* Function Name  : EMMCReadCID
-* Description    : acquire 128bit CID parameter
-* Input          : pEMMCPara
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCReadCID
+ *
+ * @brief  acquire 128bit CID parameter
+ *
+ * @param  pEMMCPara
+ *
+ * @return   OP_SUCCESS
+ **/
 UINT8 EMMCReadCID( PSD_PARAMETER pEMMCPara )
 {
     UINT32 cmd_arg_val;
@@ -169,11 +184,14 @@ UINT8 EMMCReadCID( PSD_PARAMETER pEMMCPara )
 }
 
 /*******************************************************************************
-* Function Name  : EMMCSetRCA
-* Description    : assign relative address to deviceARC 16bit
-* Input          : pEMMCPara
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCSetRCA
+ *
+ * @brief  assign relative address to deviceARC 16bit
+ *
+ * @param  pEMMCPara
+ *
+ * @return   OP_SUCCESS
+ */
 UINT8 EMMCSetRCA( PSD_PARAMETER pEMMCPara )
 {
     UINT32 cmd_arg_val;
@@ -201,11 +219,14 @@ UINT8 EMMCSetRCA( PSD_PARAMETER pEMMCPara )
 }
 
 /*******************************************************************************
-* Function Name  : EMMCReadCSD
-* Description    : acquire 128bit CSD parameter and get it analyzed
-* Input          : pEMMCPara
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCReadCSD
+ *
+ * @brief  acquire 128bit CSD parameter and get it analyzed
+ *
+ * @param  pEMMCPara
+ *
+ * @return   OP_SUCCESS
+ */
 UINT8 EMMCReadCSD( PSD_PARAMETER pEMMCPara )
 {
     UINT32 cmd_arg_val;
@@ -252,11 +273,14 @@ UINT8 EMMCReadCSD( PSD_PARAMETER pEMMCPara )
 }
 
 /*******************************************************************************
-* Function Name  : SelectEMMCCard
-* Description    : select card
-* Input          : pEMMCPara
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     SelectEMMCCard
+ *
+ * @brief  select card
+ *
+ * @param  pEMMCPara
+ *
+ * @return   OP_SUCCESS
+ */
 UINT8 SelectEMMCCard(PSD_PARAMETER pEMMCPara)
 {
     UINT32 cmd_arg_val;
@@ -298,12 +322,15 @@ UINT8 ReadEMMCStatus(PSD_PARAMETER pEMMCPara)
 }
 
 /*******************************************************************************
-* Function Name  : SwitchEMMCIOBusType
-* Description    : set the IO bus_mode
-* Input          : pEMMCPara
-*                  bus_mode
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     SwitchEMMCIOBusType
+ *
+ * @brief  set the IO bus_mode
+ *
+ * @param  pEMMCPara -
+ *         bus_mode -
+ *
+ * @return   OP_SUCCESS
+ */
 UINT8 EMMCSetBusWidth(PSD_PARAMETER pEMMCPara, UINT8 bus_mode)
 {
     UINT32 cmd_arg_val;
@@ -346,11 +373,14 @@ UINT8 EMMCSetHighSpeed(PSD_PARAMETER pEMMCPara)
 }
 
 /*******************************************************************************
-* Function Name  : ConfigAllSD
-* Description    : EMMC Information
-* Input          : pEMMCPara
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     ConfigAllSD
+ *
+ * @brief  EMMC Information
+ *
+ * @param  pEMMCPara
+ *
+ * @return   OP_SUCCESS
+ **/
 #define  SD2CMD   EMMCSendCmd
 __attribute__ ((aligned(8))) UINT8  buf[512]   __attribute__((section(".DMADATA")));
 UINT8 EMMCCardConfig( PSD_PARAMETER pEMMCPara )
@@ -466,10 +496,11 @@ UINT8 EMMCCardConfig_N( PSD_PARAMETER pEMMCPara )
     return OP_SUCCESS;
 }
 /*******************************************************************************
-* Function Name  : EMMCIOTransErrorDeal
-* Description    : error processing
-* Input          : None
-* Return         : OP_SUCCESS
+ * @fn     EMMCIOTransErrorDeal
+ *
+ * @brief  error processing
+ *
+ * @return   OP_SUCCESS
 *******************************************************************************/
 UINT8 EMMCIOTransErrorDeal( PSD_PARAMETER pEMMCPara )
 {
@@ -480,12 +511,15 @@ UINT8 EMMCIOTransErrorDeal( PSD_PARAMETER pEMMCPara )
 }
 
 /*******************************************************************************
-* Function Name  : EMMCCardReadEXCSD
-* Description    : read single section
-* Input          : pEMMCPara
-*                  Lbaaddr -- section first address
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCCardReadEXCSD
+ *
+ * @brief  read single section
+ *
+ * @param  pEMMCPara
+ *         Lbaaddr - section first address
+ *
+ * @return   OP_SUCCESS
+ **/
 UINT8 EMMCCardReadEXCSD( PSD_PARAMETER pEMMCPara, PUINT8 pRdatbuf )
 {
     UINT32 cmd_arg_val;
@@ -515,13 +549,16 @@ UINT8 EMMCCardReadEXCSD( PSD_PARAMETER pEMMCPara, PUINT8 pRdatbuf )
 
 
 /*******************************************************************************
-* Function Name  : EMMCCardReadOneSec
-* Description    : read single section
-* Input          : pEMMCPara
-*                  pRdatbuf -- read buffer address
-*                  Lbaaddr
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCCardReadOneSec
+ *
+ * @brief  read single section
+ *
+ * @param  pEMMCPara
+ *         pRdatbuf -- read buffer address
+ *         Lbaaddr
+ *
+ * @return   OP_SUCCESS
+ **/
 UINT8 EMMCCardReadOneSec( PSD_PARAMETER pEMMCPara, PUINT8 pRdatbuf, UINT32 Lbaaddr )
 {
     UINT32 cmd_arg_val;
@@ -552,14 +589,17 @@ UINT8 EMMCCardReadOneSec( PSD_PARAMETER pEMMCPara, PUINT8 pRdatbuf, UINT32 Lbaad
 }
 
 /*******************************************************************************
-* Function Name  : EMMCCardReadMulSec
-* Description    : read continuous multiple sections
-* Input          : pEMMCPara
-*                  pReqnum -- request continuous sections address
-*                  pRdatbuf
-*                  Lbaaddr
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCCardReadMulSec
+ *
+ * @brief  read continuous multiple sections
+ *
+ * @param  pEMMCPara -
+ *         pReqnum - request continuous sections address
+ *         pRdatbuf -
+ *         Lbaaddr -
+ *
+ * @return   OP_SUCCESS
+ */
 UINT8 EMMCCardReadMulSec( PSD_PARAMETER pEMMCPara, PUINT16 pReqnum, PUINT8 pRdatbuf, UINT32 Lbaaddr )
 {
     UINT32 cmd_arg_val;
@@ -609,14 +649,14 @@ UINT8 EMMCCardReadMulSec( PSD_PARAMETER pEMMCPara, PUINT16 pReqnum, PUINT8 pRdat
 }
 
 /*******************************************************************************
-* Function Name  : EMMCCardWriteMulSec
-* Description    : write continuous multiple sections
-* Input          : pSDPara
-*                  pReqnum
-*                  pWdatbuf
-*                  Lbaaddr
-* Return         : OP_SUCCESS
-*******************************************************************************/
+ * @fn     EMMCCardWriteMulSec
+ * @brief  write continuous multiple sections
+ * @param  pSDPara -
+ *         pReqnum -
+ *         pWdatbuf -
+ *         Lbaaddr -
+ * @return   OP_SUCCESS
+ **/
 UINT8 EMMCCardWriteMulSec( PSD_PARAMETER pEMMCPara, PUINT16 pReqnum, PUINT8 pWdatbuf, UINT32 Lbaaddr )
 {
     UINT32 cmd_arg_val;
@@ -680,15 +720,17 @@ UINT8 EMMCCardWriteMulSec( PSD_PARAMETER pEMMCPara, PUINT16 pReqnum, PUINT8 pWda
 }
 
 /*******************************************************************************
-* Function Name  : AES_EMMCWriteMulSec
-* Description    : Write continuous multiple sections
-* Input          : pEMMCPara - SD information structure pointer
-*                  pReqnum - Request to the sector number variable address consecutively
-*                  pWdatbuf - Write to the data cache address
-*                  Lbaaddr - Write the sector head address continuously
-* Output         : None
-* Return         : None
-*******************************************************************************/
+ * @fn     AES_EMMCWriteMulSec
+ *
+ * @brief  Write continuous multiple sections
+ *
+ * @param  pEMMCPara - SD information structure pointer
+ *         pReqnum - Request to the sector number variable address consecutively
+ *         pWdatbuf - Write to the data cache address
+ *         Lbaaddr - Write the sector head address continuously
+ * 
+ * @return   None
+ ***/
 UINT8 AES_EMMCWriteMulSec( PSD_PARAMETER pEMMCPara, PUINT32 pReqnum, PUINT32 pWdatbuf, UINT32 Lbaaddr, UINT8 excutemode, UINT8 endianmode, PUINT32 pcount)//闁哄洤鐡ㄩ弫鍏肩閸℃ɑ娈堕柟璇″枤鐞氼偊宕归敓锟�?
 {
     UINT32 cmd_arg_val;
@@ -757,16 +799,18 @@ UINT8 AES_EMMCWriteMulSec( PSD_PARAMETER pEMMCPara, PUINT32 pReqnum, PUINT32 pWd
 }
 
 /*******************************************************************************
-* Function Name  : AES_EMMCReadMulSec
-* Description    : Read continuous multiple sections
-* Input          : pEMMCPara - SD information structure pointer
-*                  pReqnum - Request to the sector number variable address consecutively
-*                  pWdatbuf - Write to the data cache address
-*                  Lbaaddr - Write the sector head address continuously
-* Output         : None
-* Return         : OP_SUCCESS - suc
-*                  other - err
-*******************************************************************************/
+ * @fn     AES_EMMCReadMulSec
+ *
+ * @brief  Read continuous multiple sections
+ *
+ * @param  pEMMCPara - SD information structure pointer
+ *         pReqnum - Request to the sector number variable address consecutively
+ *         pWdatbuf - Write to the data cache address
+ *         Lbaaddr - Write the sector head address continuously
+ * 
+ * @return   OP_SUCCESS - suc
+ *           other - err
+ **/
 UINT8 AES_EMMCReadMulSec( PSD_PARAMETER pEMMCPara, PUINT32 pReqnum, PUINT32 pRdatbuf, UINT32 Lbaaddr, UINT8 excutemode, UINT8 endianmode, PUINT32 pcount)//闁哄洤鐡ㄩ弫鍏肩閸℃ɑ娈堕柟璇″枤鐞氼偊宕归敓锟�?
 {
     UINT32 cmd_arg_val;
@@ -802,7 +846,7 @@ UINT8 AES_EMMCReadMulSec( PSD_PARAMETER pEMMCPara, PUINT32 pReqnum, PUINT32 pRda
         {
             if(R16_EMMC_INT_FG & RB_EMMC_IF_BKGAP)
             {
-            ///////////////////////////////////////////////CTR mode
+            /* CTR mode */
                 if(R16_ECEC_CTRL & RB_ECDC_CIPHER_MOD)
                     ECDC_RloadCount( excutemode, endianmode, pcount );
 

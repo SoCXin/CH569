@@ -1,9 +1,12 @@
-/*
- * ov2640cfg.h
- *
- *  Created on: Aug 6, 2020
- *      Author: OWNER
- */
+/********************************** (C) COPYRIGHT *******************************
+* File Name          : ov2640.c
+* Author             : WCH
+* Version            : V1.0
+* Date               : 2020/07/31
+* Description 		 : OV2640 …„œÒÕ∑ ≈‰÷√∫Ø ˝
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
+*******************************************************************************/
 
 #ifndef DVP_OV2640CFG_H_
 #define DVP_OV2640CFG_H_

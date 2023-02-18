@@ -3,7 +3,9 @@
 * Author             : WCH
 * Version            : V1.0
 * Date               : 2020/07/31
-* Description 		 :
+* Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
@@ -12,21 +14,24 @@
 
 void GPIO_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
-#define normal 1     //普通输入输出
-// #define interruption 1    //中断使能
+//#define normal 1     //普通输入输出
+#define interruption 1    //中断使能
 
 
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
+ * @fn       DebugInit
+ *
+ * @brief    Initializes the UART1 peripheral.
+ *
+ * @param    baudrate: UART1 communication baud rate.
+ *
+ * @return   None
+ */
 void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
 	UINT32 t = FREQ_SYS;
-
+	
 	x = 10 * t * 2 / 16 / baudrate;
 	x = ( x + 5 ) / 10;
 	R8_UART1_DIV = 1;
@@ -38,12 +43,13 @@ void DebugInit(UINT32 baudrate)
 	R32_PA_DIR |= (1<<8);
 }
 
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {
 	SystemInit(FREQ_SYS);
@@ -58,7 +64,7 @@ int main()
 	GPIOB_ModeCfg( GPIO_Pin_24, GPIO_Slowascent_PP_8mA );
 	while(1)
 	{
-		GPIOB_ResetBits(GPIO_Pin_24);
+	    GPIOB_ResetBits(GPIO_Pin_24);
 		mDelaymS(300);
 		GPIOB_SetBits(GPIO_Pin_24);
 		mDelaymS(300);
@@ -88,11 +94,12 @@ int main()
 
 
 /*******************************************************************************
-* Function Name  : GPIO_IRQHandler
-* Description    : Interruption function
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn      GPIO_IRQHandler
+ *
+ * @brief   Interruption function
+ *
+ * @return  None
+ */
 void GPIO_IRQHandler(void)
 {
 	PRINT("in!\r\n");

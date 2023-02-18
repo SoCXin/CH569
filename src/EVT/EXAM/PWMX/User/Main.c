@@ -4,6 +4,8 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
@@ -11,12 +13,15 @@
 #define  FREQ_SYS   80000000
 
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
-void DebugInit(UINT32 baudrate)		
+ * @fn        DebugInit
+ *
+ * @brief     Initializes the UART1 peripheral.
+ *
+ * @param     baudrate: UART1 communication baud rate.
+ *
+ * @return  None
+ */
+void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
 	UINT32 t = FREQ_SYS;
@@ -32,12 +37,13 @@ void DebugInit(UINT32 baudrate)
 	R32_PA_DIR |= (1<<8);
 }
 
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {  
     SystemInit(FREQ_SYS);

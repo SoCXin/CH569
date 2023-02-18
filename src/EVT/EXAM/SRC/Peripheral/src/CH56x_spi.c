@@ -4,16 +4,19 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
 
 /*******************************************************************************
-* Function Name  : SPI0_MasterDefInit
-* Description    : 主机模式默认初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_MasterDefInit
+ *
+ * @brief  主机模式默认初始化
+ *
+ * @return   None
+ */
 void SPI0_MasterDefInit( void )
 {
     R8_SPI0_CLOCK_DIV = 4;                                   //主频时钟4分频
@@ -24,12 +27,14 @@ void SPI0_MasterDefInit( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_DataMode
-* Description    : 设置数据流模式
-* Input          : m: 数据流模式
-					refer to ModeBitOrderTypeDef
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_DataMode
+ *
+ * @brief  设置数据流模式
+ *
+ * @param  m - 数据流模式
+ *
+ * @return   None
+ */
 void SPI0_DataMode( ModeBitOrderTypeDef m )
 {
     switch( m )
@@ -56,11 +61,14 @@ void SPI0_DataMode( ModeBitOrderTypeDef m )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_MasterSendByte
-* Description    : 发送单字节(buffer)
-* Input          : d:发送字节
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_MasterSendByte
+ *
+ * @brief  发送单字节(buffer)
+ *
+ * @param  d - 发送字节
+ *
+ * @return  None
+ */
 void SPI0_MasterSendByte( UINT8 d )
 {
     R8_SPI0_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
@@ -69,11 +77,12 @@ void SPI0_MasterSendByte( UINT8 d )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_MasterRecvByte
-* Description    : 接收单字节 (buffer)
-* Input          : None
-* Return         : 接收到的字节
-*******************************************************************************/
+ * @fn     SPI0_MasterRecvByte
+ *
+ * @brief  接收单字节 (buffer)
+ *
+ * @return   接收到的字节
+ */
 UINT8 SPI0_MasterRecvByte( void )
 {
     R8_SPI0_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
@@ -83,12 +92,14 @@ UINT8 SPI0_MasterRecvByte( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_MasterTrans
-* Description    : 使用FIFO连续发送多字节
-* Input          : pbuf:待发送的数据内容首地址
-                   len: 请求发送的数据长度，最大4095
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_MasterTrans
+ *
+ * @brief  使用FIFO连续发送多字节
+ *
+ * @param  pbuf:待发送的数据内容首地址
+ *
+ * @return   None
+ */
 void SPI0_MasterTrans( UINT8 *pbuf, UINT16 len )
 {
     UINT16 sendlen;
@@ -110,12 +121,14 @@ void SPI0_MasterTrans( UINT8 *pbuf, UINT16 len )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_MasterRecv
-* Description    : 使用FIFO连续接收多字节
-* Input          : pbuf: 待发送的数据内容首地址
-                   len: 请求发送的数据长度，最大4095
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_MasterRecv
+ *
+ * @brief  使用FIFO连续接收多字节
+ *
+ * @param  pbuf: 待发送的数据内容首地址
+ *
+ * @return   None
+ **/
 void SPI0_MasterRecv( UINT8 *pbuf, UINT16 len )
 {
     UINT16  readlen;
@@ -136,12 +149,14 @@ void SPI0_MasterRecv( UINT8 *pbuf, UINT16 len )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_MasterDMATrans
-* Description    : DMA方式连续发送数据
-* Input          : pbuf: 待发送数据起始地址
-*                  len : 带发送数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_MasterDMATrans
+ *
+ * @brief  DMA方式连续发送数据
+ *
+ * @param  pbuf: 待发送数据起始地址
+ *
+ * @return   None
+ */
 void SPI0_MasterDMATrans( PUINT8 pbuf, UINT16 len)
 {
     R8_SPI0_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
@@ -155,12 +170,14 @@ void SPI0_MasterDMATrans( PUINT8 pbuf, UINT16 len)
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_MasterDMARecv
-* Description    : DMA方式连续接收数据
-* Input          : pbuf: 待接收数据存放起始地址
-*                  len : 待接收数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_MasterDMARecv
+ *
+ * @brief  DMA方式连续接收数据
+ *
+ * @param  pbuf: 待接收数据存放起始地址
+ *
+ * @return   None
+ **/
 void SPI0_MasterDMARecv( PUINT8 pbuf, UINT16 len)
 {
     R8_SPI0_CTRL_MOD |= RB_SPI_FIFO_DIR;
@@ -174,11 +191,12 @@ void SPI0_MasterDMARecv( PUINT8 pbuf, UINT16 len)
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_SlaveInit
-* Description    : 设备模式默认初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_SlaveInit
+ *
+ * @brief  设备模式默认初始化
+ * 
+ * @return   None
+ */
 void SPI0_SlaveInit( void )
 {
     R8_SPI0_CTRL_MOD = RB_SPI_ALL_CLEAR;             //FIFO/计数器/中断标志寄存器清0，写1强制清空或清零
@@ -187,11 +205,12 @@ void SPI0_SlaveInit( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_SlaveRecvByte
-* Description    : 从机模式，接收一字节数据
-* Input          : None
-* Return         : 接收到数据
-*******************************************************************************/
+ * @fn     SPI0_SlaveRecvByte
+ *
+ * @brief  从机模式，接收一字节数据
+ * 
+ * @return   接收到数据
+ */
 UINT8 SPI0_SlaveRecvByte( void )
 {
     R8_SPI0_CTRL_MOD |= RB_SPI_FIFO_DIR;              //设置为输入模式，接收数据
@@ -200,11 +219,12 @@ UINT8 SPI0_SlaveRecvByte( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_SlaveRecvByte
-* Description    : 从机模式，发送一字节数据
-* Input          : None
-* Return         : 接收到数据
-*******************************************************************************/
+ * @fn     SPI0_SlaveRecvByte
+ *
+ * @brief  从机模式，发送一字节数据
+ * 
+ * @return   接收到数据
+ **/
 void SPI0_SlaveSendByte( UINT8 d )
 {
     R8_SPI0_CTRL_MOD &= ~RB_SPI_FIFO_DIR;              //设置数据方向为输出
@@ -213,12 +233,14 @@ void SPI0_SlaveSendByte( UINT8 d )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_SlaveRecv
-* Description    : 从机模式，接收多字节数据
-* Input          : pbuf: 接收数据存放起始地址
-*                  len : 请求接收数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_SlaveRecv
+ *
+ * @brief  从机模式，接收多字节数据
+ *
+ * @param  pbuf: 接收数据存放起始地址
+ *
+ * @return   None
+ **/
 void SPI0_SlaveRecv( PUINT8 pbuf, UINT16 len )
 {
     UINT16 revlen;
@@ -239,12 +261,14 @@ void SPI0_SlaveRecv( PUINT8 pbuf, UINT16 len )
 }
 
 /*******************************************************************************
-* Function Name  : SPI0_SlaveTrans
-* Description    : 从机模式，发送多字节数据
-* Input          : pbuf: 待发送的数据内容首地址
-                   len: 请求发送的数据长度，最大4095
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI0_SlaveTrans
+ *
+ * @brief  从机模式，发送多字节数据
+ *
+ * @param  pbuf: 待发送的数据内容首地址
+ *
+ * @return   None
+ */
 void SPI0_SlaveTrans( UINT8 *pbuf, UINT16 len )
 {
     UINT16 sendlen;
@@ -267,11 +291,12 @@ void SPI0_SlaveTrans( UINT8 *pbuf, UINT16 len )
 
 
 /*******************************************************************************
-* Function Name  : SPI1_MasterDefInit
-* Description    : 主机模式默认初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_MasterDefInit
+ *
+ * @brief  主机模式默认初始化
+ *
+ * @return   None
+ */
 void SPI1_MasterDefInit( void )
 {
     R8_SPI1_CLOCK_DIV = 4;                                   //主频时钟4分频
@@ -283,12 +308,14 @@ void SPI1_MasterDefInit( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_DataMode
-* Description    : 设置数据流模式
-* Input          : m: 数据流模式
-					refer to ModeBitOrderTypeDef
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_DataMode
+ *
+ * @brief  设置数据流模式
+ *
+ * @param  m: 数据流模式
+ *
+ * @return   None
+ ***/
 void SPI1_DataMode( ModeBitOrderTypeDef m )
 {
     switch( m )
@@ -315,11 +342,14 @@ void SPI1_DataMode( ModeBitOrderTypeDef m )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_MasterSendByte
-* Description    : 发送单字节(buffer)
-* Input          : d:发送字节
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_MasterSendByte
+ *
+ * @brief  发送单字节(buffer)
+ *
+ * @param  d - 发送字节
+ *
+ * @return   None
+ */
 void SPI1_MasterSendByte( UINT8 d )
 {
     R8_SPI1_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
@@ -328,11 +358,12 @@ void SPI1_MasterSendByte( UINT8 d )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_MasterRecvByte
-* Description    : 接收单字节 (buffer)
-* Input          : None
-* Return         : 接收到的字节
-*******************************************************************************/
+ * @fn     SPI1_MasterRecvByte
+ *
+ * @brief  接收单字节 (buffer)
+ *
+ * @return   接收到的字节
+ */
 UINT8 SPI1_MasterRecvByte( void )
 {
     R8_SPI1_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
@@ -342,12 +373,14 @@ UINT8 SPI1_MasterRecvByte( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_MasterTrans
-* Description    : 使用FIFO连续发送多字节
-* Input          : pbuf:待发送的数据内容首地址
-                   len: 请求发送的数据长度，最大4095
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_MasterTrans
+ *
+ * @brief  使用FIFO连续发送多字节
+ *
+ * @param  pbuf - 待发送的数据内容首地址
+ *         len - 请求发送的数据长度，最大4095
+ * @return   None
+ */
 void SPI1_MasterTrans( UINT8 *pbuf, UINT16 len )
 {
     UINT16 sendlen;
@@ -369,12 +402,14 @@ void SPI1_MasterTrans( UINT8 *pbuf, UINT16 len )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_MasterRecv
-* Description    : 使用FIFO连续接收多字节
-* Input          : pbuf: 待发送的数据内容首地址
-                   len: 请求发送的数据长度，最大4095
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_MasterRecv
+ *
+ * @brief  使用FIFO连续接收多字节
+ *
+ * @param  pbuf - 待发送的数据内容首地址
+ *         len - 请求发送的数据长度，最大4095
+ * @return   None
+ **/
 void SPI1_MasterRecv( UINT8 *pbuf, UINT16 len )
 {
     UINT16  readlen;
@@ -395,12 +430,14 @@ void SPI1_MasterRecv( UINT8 *pbuf, UINT16 len )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_MasterDMATrans
-* Description    : DMA方式连续发送数据
-* Input          : pbuf: 待发送数据起始地址
-*                  len : 带发送数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_MasterDMATrans
+ *
+ * @brief  DMA方式连续发送数据
+ *
+ * @param  pbuf - 待发送数据起始地址
+ *         len - 带发送数据长度
+ * @return   None
+ */
 void SPI1_MasterDMATrans( PUINT8 pbuf, UINT16 len)
 {
     R8_SPI1_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
@@ -414,12 +451,15 @@ void SPI1_MasterDMATrans( PUINT8 pbuf, UINT16 len)
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_MasterDMARecv
-* Description    : DMA方式连续接收数据
-* Input          : pbuf: 待接收数据存放起始地址
-*                  len : 待接收数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_MasterDMARecv
+ *
+ * @brief  DMA方式连续接收数据
+ *
+ * @param  pbuf - 待接收数据存放起始地址
+ *         len - 待接收数据长度
+ *
+ * @return   None
+ */
 void SPI1_MasterDMARecv( PUINT8 pbuf, UINT16 len)
 {
     R8_SPI1_CTRL_MOD |= RB_SPI_FIFO_DIR;
@@ -433,11 +473,12 @@ void SPI1_MasterDMARecv( PUINT8 pbuf, UINT16 len)
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_SlaveInit
-* Description    : 设备模式默认初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_SlaveInit
+ *
+ * @brief  设备模式默认初始化
+ *
+ * @return   None
+ */
 void SPI1_SlaveInit( void )
 {
     R8_SPI1_CTRL_MOD = RB_SPI_ALL_CLEAR;
@@ -446,11 +487,12 @@ void SPI1_SlaveInit( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_SlaveRecvByte
-* Description    : 从机模式，接收一字节数据
-* Input          : None
-* Return         : 接收到数据
-*******************************************************************************/
+ * @fn     SPI1_SlaveRecvByte
+ *
+ * @brief  从机模式，接收一字节数据
+ * 
+ * @return   接收到数据
+ */
 UINT8 SPI1_SlaveRecvByte( void )
 {
     R8_SPI1_CTRL_MOD |= RB_SPI_FIFO_DIR;
@@ -459,11 +501,12 @@ UINT8 SPI1_SlaveRecvByte( void )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_SlaveRecvByte
-* Description    : 从机模式，发送一字节数据
-* Input          : None
-* Return         : 接收到数据
-*******************************************************************************/
+ * @fn     SPI1_SlaveRecvByte
+ *
+ * @brief  从机模式，发送一字节数据
+ * 
+ * @return   接收到数据
+ */
 void SPI1_SlaveSendByte( UINT8 d )
 {
     R8_SPI1_CTRL_MOD &= ~RB_SPI_FIFO_DIR;
@@ -472,12 +515,12 @@ void SPI1_SlaveSendByte( UINT8 d )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_SlaveRecv
-* Description    : 从机模式，接收多字节数据
-* Input          : pbuf: 接收数据存放起始地址
-*                  len : 请求接收数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_SlaveRecv
+ * @brief  从机模式，接收多字节数据
+ * @param  pbuf - 接收数据存放起始地址
+ *         len - 请求接收数据长度
+ * @return   None
+ */
 void SPI1_SlaveRecv( PUINT8 pbuf, UINT16 len )
 {
     UINT16 revlen;
@@ -498,12 +541,14 @@ void SPI1_SlaveRecv( PUINT8 pbuf, UINT16 len )
 }
 
 /*******************************************************************************
-* Function Name  : SPI1_SlaveTrans
-* Description    : 从机模式，发送多字节数据
-* Input          : pbuf: 待发送的数据内容首地址
-                   len: 请求发送的数据长度，最大4095
-* Return         : None
-*******************************************************************************/
+ * @fn     SPI1_SlaveTrans
+ *
+ * @brief  从机模式，发送多字节数据
+ *
+ * @param  pbuf - 待发送的数据内容首地址
+ *         len - 请求发送的数据长度，最大4095
+ * @return   None
+ */
 void SPI1_SlaveTrans( UINT8 *pbuf, UINT16 len )
 {
     UINT16 sendlen;

@@ -4,17 +4,20 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
 
 
-/*******************************************************************************
-* Function Name  : UART0_DefInit
-* Description    : 串口默认初始化配置：使能了FIFO,触发点字节数，串口数据长度设置，波特率及分频系数
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/******************************************************************************
+ * @fn     UART0_DefInit
+ *
+ * @brief  串口默认初始化配置：使能了FIFO,触发点字节数，串口数据长度设置，波特率及分频系数
+ * 
+ * @return   None
+ */
 void UART0_DefInit( void )
 {	
     UART0_BaudRateCfg( 115200 );
@@ -25,11 +28,12 @@ void UART0_DefInit( void )
 }
 
 /*******************************************************************************
-* Function Name  : UART1_DefInit
-* Description    : 串口默认初始化配置：使能了FIFO,触发点字节数，串口数据长度设置，波特率及分频系数
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     UART1_DefInit
+ *
+ * @brief  串口默认初始化配置：使能了FIFO,触发点字节数，串口数据长度设置，波特率及分频系数
+ * 
+ * @return   None
+ **/
 void UART1_DefInit( void )
 {
     UART1_BaudRateCfg( 115200 );
@@ -40,11 +44,12 @@ void UART1_DefInit( void )
 }
 
 /*******************************************************************************
-* Function Name  : UART2_DefInit
-* Description    : 串口默认初始化配置：使能了FIFO,触发点字节数，串口数据长度设置，波特率及分频系数
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     UART2_DefInit
+ *
+ * @brief  串口默认初始化配置：使能了FIFO,触发点字节数，串口数据长度设置，波特率及分频系数
+ * 
+ * @return   None
+ */
 void UART2_DefInit( void )
 {
     UART2_BaudRateCfg( 115200 );
@@ -55,11 +60,12 @@ void UART2_DefInit( void )
 }
 
 /*******************************************************************************
-* Function Name  : UART3_DefInit
-* Description    : 串口默认初始化配置：使能了FIFO,触发点字节数，串口数据长度设置，波特率及分频系数
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     UART3_DefInit
+ *
+ * @brief  串口默认初始化配置：使能了FIFO,触发点字节数，串口数据长度设置，波特率及分频系数
+ * 
+ * @return   None
+ */
 void UART3_DefInit( void )
 {
     UART3_BaudRateCfg( 115200 );
@@ -70,11 +76,12 @@ void UART3_DefInit( void )
 }
 
 /*******************************************************************************
-* Function Name  : UART0_BaudRateCfg
-* Description    : 串口波特率配置
-* Input          : 波特率
-* Return         : None
-*******************************************************************************/
+ * @fn     UART0_BaudRateCfg
+ *
+ * @brief  串口波特率配置
+ * 
+ * @return   None
+ */
 void UART0_BaudRateCfg( UINT32 baudrate )
 {
     UINT32	x;
@@ -85,11 +92,12 @@ void UART0_BaudRateCfg( UINT32 baudrate )
 }
 
 /*******************************************************************************
-* Function Name  : UART1_BaudRateCfg
-* Description    : 串口波特率配置
-* Input          : 波特率
-* Return         : None
-*******************************************************************************/
+ * @fn     UART1_BaudRateCfg
+ *
+ * @brief  串口波特率配置
+ * 
+ * @return   None
+ */
 void UART1_BaudRateCfg( UINT32 baudrate )
 {
     UINT32	x;
@@ -100,11 +108,12 @@ void UART1_BaudRateCfg( UINT32 baudrate )
 }
 
 /*******************************************************************************
-* Function Name  : UART2_BaudRateCfg
-* Description    : 串口波特率配置
-* Input          : 波特率
-* Return         : None
-*******************************************************************************/
+ * @fn     UART2_BaudRateCfg
+ *
+ * @brief  串口波特率配置
+ * 
+ * @return   None
+ */
 void UART2_BaudRateCfg( UINT32 baudrate )
 {
     UINT32	x;
@@ -115,11 +124,12 @@ void UART2_BaudRateCfg( UINT32 baudrate )
 }
 
 /*******************************************************************************
-* Function Name  : UART3_BaudRateCfg
-* Description    : 串口波特率配置
-* Input          : 波特率
-* Return         : None
-*******************************************************************************/
+ * @fn     UART3_BaudRateCfg
+ *
+ * @brief  串口波特率配置
+ * 
+ * @return   None
+ */
 void UART3_BaudRateCfg( UINT32 baudrate )
 {
     UINT32	x;
@@ -130,66 +140,76 @@ void UART3_BaudRateCfg( UINT32 baudrate )
 }
 
 /*******************************************************************************
-* Function Name  : UART0_ByteTrigCfg
-* Description    : 串口字节触发中断配置
-* Input          : b: 触发字节数
-                    refer to UARTByteTRIGTypeDef
-* Return         : None
-*******************************************************************************/
+ * @fn     UART0_ByteTrigCfg
+ *
+ * @brief  串口字节触发中断配置
+ *
+ * @param  b - 触发字节数
+ *           refer to UARTByteTRIGTypeDef
+ * @return   None
+ */
 void UART0_ByteTrigCfg( UARTByteTRIGTypeDef b )
 {
     R8_UART0_FCR = (R8_UART0_FCR&~RB_FCR_FIFO_TRIG)|(b<<6);
 }
 
 /*******************************************************************************
-* Function Name  : UART1_ByteTrigCfg
-* Description    : 串口字节触发中断配置
-* Input          : b: 触发字节数
-                    refer to UARTByteTRIGTypeDef
-* Return         : None
-*******************************************************************************/
+ * @fn     UART1_ByteTrigCfg
+ *
+ * @brief  串口字节触发中断配置
+ *
+ * @param  b - 触发字节数
+ *           refer to UARTByteTRIGTypeDef
+ * @return   None
+ **/
 void UART1_ByteTrigCfg( UARTByteTRIGTypeDef b )
 {
     R8_UART1_FCR = (R8_UART1_FCR&~RB_FCR_FIFO_TRIG)|(b<<6);
 }
 
 /*******************************************************************************
-* Function Name  : UART2_ByteTrigCfg
-* Description    : 串口字节触发中断配置
-* Input          : b: 触发字节数
-                    refer to UARTByteTRIGTypeDef
-* Return         : None
-*******************************************************************************/
+ * @fn     UART2_ByteTrigCfg
+ *
+ * @brief  串口字节触发中断配置
+ *
+ * @param  b - 触发字节数
+ *           refer to UARTByteTRIGTypeDef
+ * @return   None
+ */
 void UART2_ByteTrigCfg( UARTByteTRIGTypeDef b )
 {
     R8_UART2_FCR = (R8_UART2_FCR&~RB_FCR_FIFO_TRIG)|(b<<6);
 }
 
 /*******************************************************************************
-* Function Name  : UART3_ByteTrigCfg
-* Description    : 串口字节触发中断配置
-* Input          : b: 触发字节数
-                    refer to UARTByteTRIGTypeDef
-* Return         : None
-*******************************************************************************/
+ * @fn     UART3_ByteTrigCfg
+ *
+ * @brief  串口字节触发中断配置
+ *
+ * @param  b - 触发字节数
+ *           refer to UARTByteTRIGTypeDef
+ * @return   None
+ ***/
 void UART3_ByteTrigCfg( UARTByteTRIGTypeDef b )
 {
     R8_UART3_FCR = (R8_UART3_FCR&~RB_FCR_FIFO_TRIG)|(b<<6);
 }
 
 /*******************************************************************************
-* Function Name  : UART0_INTCfg
-* Description    : 串口中断配置
-* Input          : s:  中断控制状态
-					ENABLE  - 使能相应中断    
-					DISABLE - 关闭相应中断
-				   i:  中断类型
-					RB_IER_MODEM_CHG  - 调制解调器输入状态变化中断使能位（仅 UART0 支持）
-					RB_IER_LINE_STAT  - 接收线路状态中断
-					RB_IER_THR_EMPTY  - 发送保持寄存器空中断
-					RB_IER_RECV_RDY   - 接收数据中断
-* Return         : None
-*******************************************************************************/
+ * @fn     UART0_INTCfg
+ *
+ * @brief  串口中断配置
+ *
+ * @param  s - 中断控制状态
+ *					ENABLE  - 使能相应中断    
+ *					DISABLE - 关闭相应中断
+ *		   i - 中断类型
+ *					RB_IER_MODEM_CHG  - 调制解调器输入状态变化中断使能位（仅 UART0 支持）
+ *					RB_IER_LINE_STAT  - 接收线路状态中断
+ *					RB_IER_THR_EMPTY  - 发送保持寄存器空中断
+ *					RB_IER_RECV_RDY   - 接收数据中断
+ * @return   None
+ **/
 void UART0_INTCfg( UINT8 s,  UINT8 i )
 {
     if( s )
@@ -204,18 +224,21 @@ void UART0_INTCfg( UINT8 s,  UINT8 i )
 }
 
 /*******************************************************************************
-* Function Name  : UART1_INTCfg
-* Description    : 串口中断配置
-* Input          : s:  中断控制状态
-					ENABLE  - 使能相应中断
-					DISABLE - 关闭相应中断
-				   i:  中断类型
-					RB_IER_MODEM_CHG  - 调制解调器输入状态变化中断使能位（仅 UART0 支持）
-					RB_IER_LINE_STAT  - 接收线路状态中断
-					RB_IER_THR_EMPTY  - 发送保持寄存器空中断
-					RB_IER_RECV_RDY   - 接收数据中断
-* Return         : None
-*******************************************************************************/
+ * @fn     UART1_INTCfg
+ *
+ * @brief  串口中断配置
+ *
+ * @param  s - 中断控制状态
+ *					ENABLE  - 使能相应中断
+ *					DISABLE - 关闭相应中断
+ *		   i -  中断类型
+ *					RB_IER_MODEM_CHG  - 调制解调器输入状态变化中断使能位（仅 UART0 支持）
+ *					RB_IER_LINE_STAT  - 接收线路状态中断
+ *					RB_IER_THR_EMPTY  - 发送保持寄存器空中断
+ *					RB_IER_RECV_RDY   - 接收数据中断
+ *
+ * @return   None
+ **/
 void UART1_INTCfg( UINT8 s,  UINT8 i )
 {
     if( s )
@@ -230,18 +253,21 @@ void UART1_INTCfg( UINT8 s,  UINT8 i )
 }
 
 /*******************************************************************************
-* Function Name  : UART2_INTCfg
-* Description    : 串口中断配置
-* Input          : s:  中断控制状态
-					ENABLE  - 使能相应中断
-					DISABLE - 关闭相应中断
-				   i:  中断类型
-					RB_IER_MODEM_CHG  - 调制解调器输入状态变化中断使能位（仅 UART0 支持）
-					RB_IER_LINE_STAT  - 接收线路状态中断
-					RB_IER_THR_EMPTY  - 发送保持寄存器空中断
-					RB_IER_RECV_RDY   - 接收数据中断
-* Return         : None
-*******************************************************************************/
+ * @fn     UART2_INTCfg
+ *
+ * @brief  串口中断配置
+ *
+ * @param  s - 中断控制状态
+ *					ENABLE  - 使能相应中断
+ *					DISABLE - 关闭相应中断
+ *		   i -  中断类型
+ *					RB_IER_MODEM_CHG  - 调制解调器输入状态变化中断使能位（仅 UART0 支持）
+ *					RB_IER_LINE_STAT  - 接收线路状态中断
+ *					RB_IER_THR_EMPTY  - 发送保持寄存器空中断
+ *					RB_IER_RECV_RDY   - 接收数据中断
+ *
+ * @return   None
+ **/
 void UART2_INTCfg( UINT8 s,  UINT8 i )
 {
     if( s )
@@ -256,18 +282,21 @@ void UART2_INTCfg( UINT8 s,  UINT8 i )
 }
 
 /*******************************************************************************
-* Function Name  : UART3_INTCfg
-* Description    : 串口中断配置
-* Input          : s:  中断控制状态
-					ENABLE  - 使能相应中断
-					DISABLE - 关闭相应中断
-				   i:  中断类型
-					RB_IER_MODEM_CHG  - 调制解调器输入状态变化中断使能位（仅 UART0 支持）
-					RB_IER_LINE_STAT  - 接收线路状态中断
-					RB_IER_THR_EMPTY  - 发送保持寄存器空中断
-					RB_IER_RECV_RDY   - 接收数据中断
-* Return         : None
-*******************************************************************************/
+ * @fn     UART3_INTCfg
+ *
+ * @brief  串口中断配置
+ *
+ * @param  s - 中断控制状态
+ *					ENABLE  - 使能相应中断
+ *					DISABLE - 关闭相应中断
+ *		   i -  中断类型
+ *					RB_IER_MODEM_CHG  - 调制解调器输入状态变化中断使能位（仅 UART0 支持）
+ *					RB_IER_LINE_STAT  - 接收线路状态中断
+ *					RB_IER_THR_EMPTY  - 发送保持寄存器空中断
+ *					RB_IER_RECV_RDY   - 接收数据中断
+ *
+ * @return   None
+ **/
 void UART3_INTCfg( UINT8 s,  UINT8 i )
 {
     if( s )
@@ -282,56 +311,62 @@ void UART3_INTCfg( UINT8 s,  UINT8 i )
 }
 
 /*******************************************************************************
-* Function Name  : UART0_Reset
-* Description    : 串口软件复位
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     UART0_Reset
+ *
+ * @brief  串口软件复位
+ * 
+ * @return  None
+ **/
 void UART0_Reset( void )
 {
     R8_UART0_IER = RB_IER_RESET;
 }
 
 /*******************************************************************************
-* Function Name  : UART1_Reset
-* Description    : 串口软件复位
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     UART1_Reset
+ *
+ * @brief  串口软件复位
+ * 
+ * @return  None
+ **/
 void UART1_Reset( void )
 {
     R8_UART1_IER = RB_IER_RESET;
 }
 
 /*******************************************************************************
-* Function Name  : UART2_Reset
-* Description    : 串口软件复位
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     UART2_Reset
+ *
+ * @brief  串口软件复位
+ * 
+ * @return  None
+ **/
 void UART2_Reset( void )
 {
     R8_UART2_IER = RB_IER_RESET;
 }
 
 /*******************************************************************************
-* Function Name  : UAR3_Reset
-* Description    : 串口软件复位
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     UART3_Reset
+ *
+ * @brief  串口软件复位
+ * 
+ * @return  None
+ **/
 void UART3_Reset( void )
 {
     R8_UART3_IER = RB_IER_RESET;
 }
 
 /*******************************************************************************
-* Function Name  : UART0_SendString
-* Description    : 串口多字节发送
-* Input          : buf - 待发送的数据内容首地址
-                     l - 待发送的数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     UART0_SendString
+ *
+ * @brief  串口多字节发送
+ *
+ * @param  buf - 待发送的数据内容首地址
+ *         l - 待发送的数据长度
+ * @return   None
+ */
 void UART0_SendString( PUINT8 buf, UINT16 l )
 {
     UINT16 len = l;
@@ -347,12 +382,14 @@ void UART0_SendString( PUINT8 buf, UINT16 l )
 }
 
 /*******************************************************************************
-* Function Name  : UART1_SendString
-* Description    : 串口多字节发送
-* Input          : buf - 待发送的数据内容首地址
-                     l - 待发送的数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     UART1_SendString
+ *
+ * @brief  串口多字节发送
+ *
+ * @param  buf - 待发送的数据内容首地址
+ *         l - 待发送的数据长度
+ * @return   None
+ */
 void UART1_SendString( PUINT8 buf, UINT16 l )
 {
     UINT16 len = l;
@@ -368,12 +405,14 @@ void UART1_SendString( PUINT8 buf, UINT16 l )
 }
 
 /*******************************************************************************
-* Function Name  : UART2_SendString
-* Description    : 串口多字节发送
-* Input          : buf - 待发送的数据内容首地址
-                     l - 待发送的数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     UART2_SendString
+ *
+ * @brief  串口多字节发送
+ *
+ * @param  buf - 待发送的数据内容首地址
+ *         l - 待发送的数据长度
+ * @return   None
+ */
 void UART2_SendString( PUINT8 buf, UINT16 l )
 {
     UINT16 len = l;
@@ -389,12 +428,14 @@ void UART2_SendString( PUINT8 buf, UINT16 l )
 }
 
 /*******************************************************************************
-* Function Name  : UART3_SendString
-* Description    : 串口多字节发送
-* Input          : buf - 待发送的数据内容首地址
-                     l - 待发送的数据长度
-* Return         : None
-*******************************************************************************/
+ * @fn     UART3_SendString
+ *
+ * @brief  串口多字节发送
+ *
+ * @param  buf - 待发送的数据内容首地址
+ *         l - 待发送的数据长度
+ * @return   None
+ */
 void UART3_SendString( PUINT8 buf, UINT16 l )
 {
     UINT16 len = l;
@@ -410,11 +451,14 @@ void UART3_SendString( PUINT8 buf, UINT16 l )
 }
 
 /*******************************************************************************
-* Function Name  : UART0_RecvString
-* Description    : 串口读取多字节
-* Input          : buf - 读取数据存放缓存区首地址
-* Return         : 读取数据长度
-*******************************************************************************/
+ * @fn     UART0_RecvString
+ *
+ * @brief  串口读取多字节
+ *
+ * @param  buf - 读取数据存放缓存区首地址
+ *
+ * @return 读取数据长度
+ */
 UINT16 UART0_RecvString( PUINT8 buf )
 {
     UINT16 len = 0;
@@ -429,11 +473,15 @@ UINT16 UART0_RecvString( PUINT8 buf )
 }
 
 /*******************************************************************************
-* Function Name  : UART1_RecvString
-* Description    : 串口读取多字节
-* Input          : buf - 读取数据存放缓存区首地址
-* Return         : 读取数据长度
-*******************************************************************************/
+ * @fn     UART1_RecvString
+ *
+ * @brief  串口读取多字节
+ *
+ * @param  buf - 读取数据存放缓存区首地址
+ *
+ * @return 读取数据长度
+ */
+
 UINT16 UART1_RecvString( PUINT8 buf )
 {
     UINT16 len = 0;
@@ -448,11 +496,15 @@ UINT16 UART1_RecvString( PUINT8 buf )
 }
 
 /*******************************************************************************
-* Function Name  : UART2_RecvString
-* Description    : 串口读取多字节
-* Input          : buf - 读取数据存放缓存区首地址
-* Return         : 读取数据长度
-*******************************************************************************/
+ * @fn     UART2_RecvString
+ *
+ * @brief  串口读取多字节
+ *
+ * @param  buf - 读取数据存放缓存区首地址
+ *
+ * @return 读取数据长度
+ */
+
 UINT16 UART2_RecvString( PUINT8 buf )
 {
     UINT16 len = 0;
@@ -467,11 +519,15 @@ UINT16 UART2_RecvString( PUINT8 buf )
 }
 
 /*******************************************************************************
-* Function Name  : UART3_RecvString
-* Description    : 串口读取多字节
-* Input          : buf - 读取数据存放缓存区首地址
-* Return         : 读取数据长度
-*******************************************************************************/
+ * @fn     UART3_RecvString
+ *
+ * @brief  串口读取多字节
+ *
+ * @param  buf - 读取数据存放缓存区首地址
+ *
+ * @return 读取数据长度
+ */
+
 UINT16 UART3_RecvString( PUINT8 buf )
 {
     UINT16 len = 0;

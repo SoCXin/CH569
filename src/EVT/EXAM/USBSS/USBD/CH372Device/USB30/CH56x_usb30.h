@@ -4,6 +4,8 @@
 * Version            : V1.1
 * Date               : 2020/12/23
 * Description        :
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 #ifndef USB30_CH56X_USB30_H_
 #define USB30_CH56X_USB30_H_
@@ -16,20 +18,20 @@ extern "C" {
 
 
 /* Global define */
-#define endpoint_1_OUT_burst_level       4
-#define endpoint_1_IN_burst_level        4
-#define endpoint_2_OUT_burst_level       4
-#define endpoint_2_IN_burst_level        4
-#define endpoint_3_OUT_burst_level       4
-#define endpoint_3_IN_burst_level        4
-#define endpoint_4_OUT_burst_level       4
-#define endpoint_4_IN_burst_level        4
-#define endpoint_5_OUT_burst_level       4
-#define endpoint_5_IN_burst_level        4
-#define endpoint_6_OUT_burst_level       4
-#define endpoint_6_IN_burst_level        4
-#define endpoint_7_OUT_burst_level       4
-#define endpoint_7_IN_burst_level        4
+#define DEF_ENDP1_OUT_BURST_LEVEL       4
+#define DEF_ENDP1_IN_BURST_LEVEL        4
+#define DEF_ENDP2_OUT_BURST_LEVEL       4
+#define DEF_ENDP2_IN_BURST_LEVEL        4
+#define DEF_ENDP3_OUT_BURST_LEVEL       4
+#define DEF_ENDP3_IN_BURST_LEVEL        4
+#define DEF_ENDP4_OUT_BURST_LEVEL       4
+#define DEF_ENDP4_IN_BURST_LEVEL        4
+#define DEF_ENDP5_OUT_BURST_LEVEL       4
+#define DEF_ENDP5_IN_BURST_LEVEL        4
+#define DEF_ENDP6_OUT_BURST_LEVEL       4
+#define DEF_ENDP6_IN_BURST_LEVEL        4
+#define DEF_ENDP7_OUT_BURST_LEVEL       4
+#define DEF_ENDP7_IN_BURST_LEVEL        4
 
 #define SIZE_DEVICE_DESC      		 18
 #define SIZE_CONFIG_DESC       		 200

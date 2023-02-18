@@ -4,23 +4,36 @@
 * Version            : V1.1
 * Date               : 2020/12/23
 * Description        :
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 #include "CH56x_common.h"
 #include "CH56x_usb20.h"
 #include "CH56x_usb30.h"
+#include "CH56xUSB30_LIB.H"
+
+/*
+ * 此例程为USB 2.0 device使用例程
+ *  主机通过端点1下传后， 可通过端点1上传一包
+ *  主机可直接连续从端点2 取数据
+ */
+
 /* Global define */
 
-
 /* Global Variable */
-UINT8 initial_end;
-UINT8 set_address_status =0;
-UINT8 get_config_status =0;
-UINT8 device_addr;
+UINT16V  U20_EndpnMaxSize = 512;
+UINT16V  SetupReqLen=0;            //主机请求数据长度
+UINT16V  SetupLen = 0;             //数据阶段实际发送或接收的数据长度
+UINT32V seq_num = 0;
+DevInfo_Typedef  g_devInfo;
+static UINT8V SetupReqType = 0;    //主机请求描述符类型
+static UINT8V SetupReq = 0;        //主机请求描述符类型
+static PUINT8 pDescr;
 extern UINT8V link_sta;
 
+__attribute__ ((aligned(16))) UINT8 vendor_buff[16]  __attribute__((section(".DMADATA"))); //端点0数据收发缓冲区
 /* Function declaration */
 void USBHS_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));           //USB2.0 interrupt service
-
 
 const UINT8 hs_device_descriptor[] =
 {
@@ -259,368 +272,565 @@ const UINT8 hs_bos_descriptor[] =
 
 
 /*******************************************************************************
-* Function Name  : USB20_Endp_Init
-* Description    : USB2.0端点初始化
-* Input          : None
-* Return         : None
-*******************************************************************************/
+ * @fn     USB20_Endp_Init
+ *
+ * @brief   USB2.0端点初始化
+ *
+ * @return  None
+ */
 void USB20_Endp_Init ()	// USBHS device endpoint initial
 {
-	USBHS->USB_BUF_MODE = 0xccccccc;
-	USBHS->UEP0_MAX_LEN = 64;
-	USBHS->UEP1_MAX_LEN = 512;
-	USBHS->UEP2_MAX_LEN = 512;
-	USBHS->UEP3_MAX_LEN = 512;
-	USBHS->UEP4_MAX_LEN = 512;
-	USBHS->UEP5_MAX_LEN = 512;
-	USBHS->UEP6_MAX_LEN = 512;
-	USBHS->UEP7_MAX_LEN = 512;
+    R8_UEP4_1_MOD = RB_UEP1_RX_EN | RB_UEP1_TX_EN | RB_UEP4_RX_EN | RB_UEP4_TX_EN;
+    R8_UEP2_3_MOD = RB_UEP2_RX_EN | RB_UEP2_TX_EN | RB_UEP3_RX_EN | RB_UEP3_TX_EN;
+    R8_UEP5_6_MOD = RB_UEP5_RX_EN | RB_UEP5_TX_EN | RB_UEP6_RX_EN | RB_UEP6_TX_EN;
+    R8_UEP7_MOD  = RB_UEP7_RX_EN |RB_UEP7_TX_EN;                                       //endpoint send and  receive enable
 
-	USBHS->UEP0_DMA    = (UINT32)(UINT8 *)endp0RTbuff;
-	USBHS->UEP1_TX_DMA = (UINT32)(UINT8 *)endp1RTbuff;
-	USBHS->UEP1_RX_DMA = (UINT32)(UINT8 *)endp1RTbuff;
-	USBHS->UEP2_TX_DMA = (UINT32)(UINT8 *)endp2RTbuff;
-	USBHS->UEP2_RX_DMA = (UINT32)(UINT8 *)endp2RTbuff;
-	USBHS->UEP3_TX_DMA = (UINT32)(UINT8 *)endp3RTbuff;
-	USBHS->UEP3_RX_DMA = (UINT32)(UINT8 *)endp3RTbuff;
-	USBHS->UEP4_TX_DMA = (UINT32)(UINT8 *)endp4RTbuff;
-	USBHS->UEP4_RX_DMA = (UINT32)(UINT8 *)endp4RTbuff;
-	USBHS->UEP5_TX_DMA = (UINT32)(UINT8 *)endp5RTbuff;
-	USBHS->UEP5_RX_DMA = (UINT32)(UINT8 *)endp5RTbuff;
-	USBHS->UEP6_TX_DMA = (UINT32)(UINT8 *)endp6RTbuff;
-	USBHS->UEP6_RX_DMA = (UINT32)(UINT8 *)endp6RTbuff;
-	USBHS->UEP7_TX_DMA = (UINT32)(UINT8 *)endp7RTbuff;
-	USBHS->UEP7_RX_DMA = (UINT32)(UINT8 *)endp7RTbuff;
+    R16_UEP0_MAX_LEN = 64;
+    R16_UEP1_MAX_LEN = 512;
+    R16_UEP2_MAX_LEN = 512;
+    R16_UEP3_MAX_LEN = 512;
+    R16_UEP4_MAX_LEN = 512;
+    R16_UEP5_MAX_LEN = 512;
+    R16_UEP6_MAX_LEN = 512;
+    R16_UEP7_MAX_LEN = 512;
 
-	USBHS->UEP0_CTRL = 0;
-	USBHS->UEP1_CTRL = 0x20200000;
-	USBHS->UEP2_CTRL = 0x20200000;
-	USBHS->UEP3_CTRL = 0x20200000;
-	USBHS->UEP4_CTRL = 0x20200000;
-	USBHS->UEP5_CTRL = 0x20200000;
-	USBHS->UEP6_CTRL = 0x20200000;
-	USBHS->UEP7_CTRL = 0x20200000;
+    R32_UEP0_RT_DMA = (UINT32)(UINT8 *)endp0RTbuff;
 
+    R32_UEP1_TX_DMA = (UINT32)(UINT8 *)endp1RTbuff;
+	R32_UEP1_RX_DMA = (UINT32)(UINT8 *)endp1RTbuff;
+
+	R32_UEP2_TX_DMA = (UINT32)(UINT8 *)endp2RTbuff;
+	R32_UEP2_RX_DMA = (UINT32)(UINT8 *)endp2RTbuff;
+
+	R32_UEP3_TX_DMA = (UINT32)(UINT8 *)endp3RTbuff;
+	R32_UEP3_RX_DMA = (UINT32)(UINT8 *)endp3RTbuff;
+
+	R32_UEP4_TX_DMA = (UINT32)(UINT8 *)endp4RTbuff;
+	R32_UEP4_RX_DMA = (UINT32)(UINT8 *)endp4RTbuff;
+
+	R32_UEP5_TX_DMA = (UINT32)(UINT8 *)endp5RTbuff;
+	R32_UEP5_RX_DMA = (UINT32)(UINT8 *)endp5RTbuff;
+
+	R32_UEP6_TX_DMA = (UINT32)(UINT8 *)endp6RTbuff;
+	R32_UEP6_RX_DMA = (UINT32)(UINT8 *)endp6RTbuff;
+
+	R32_UEP7_TX_DMA = (UINT32)(UINT8 *)endp7RTbuff;
+	R32_UEP7_RX_DMA = (UINT32)(UINT8 *)endp7RTbuff;
+
+	R16_UEP0_T_LEN = 0;
+	R8_UEP0_TX_CTRL = 0;
+	R8_UEP0_RX_CTRL = 0;
+
+	R16_UEP1_T_LEN = 0;
+	R8_UEP1_TX_CTRL = UEP_T_RES_NAK ;
+	R8_UEP1_RX_CTRL = UEP_R_RES_ACK |RB_UEP_R_TOG_0;
+
+    R16_UEP2_T_LEN = U20_MAXPACKET_LEN;
+    R8_UEP2_TX_CTRL = UEP_T_RES_ACK | RB_UEP_T_TOG_0;
+    R8_UEP2_RX_CTRL = UEP_R_RES_ACK | RB_UEP_R_TOG_0;
+
+    R16_UEP3_T_LEN = 0;
+    R8_UEP3_TX_CTRL = UEP_T_RES_NAK;
+    R8_UEP3_RX_CTRL = UEP_R_RES_NAK;
+
+    R16_UEP4_T_LEN = 0;
+    R8_UEP4_TX_CTRL = UEP_T_RES_NAK ;
+    R8_UEP4_RX_CTRL = UEP_R_RES_NAK;
+
+    R16_UEP5_T_LEN = 0;
+    R8_UEP5_TX_CTRL = UEP_T_RES_NAK;
+    R8_UEP5_RX_CTRL = UEP_R_RES_NAK;
+
+    R16_UEP6_T_LEN = 0;
+    R8_UEP6_TX_CTRL = UEP_T_RES_NAK;
+    R8_UEP6_RX_CTRL = UEP_R_RES_NAK;
+
+    R16_UEP7_T_LEN = 0;
+    R8_UEP7_TX_CTRL = UEP_T_RES_NAK;
+    R8_UEP7_RX_CTRL = UEP_R_RES_NAK;
 }
 /*******************************************************************************
-* Function Name  : USB20_Device_Init
-* Description    : USB2.0设备初始化
-* Input          : ENABLE：使能   DISABLE：关闭
-* Return         : None
-*******************************************************************************/
-void USB20_Device_Init ( FunctionalState sta )  // USBSS device initial
+ * @fn      USB20_Device_Init
+ *
+ * @brief   USB2.0设备初始化
+ *
+ * @param   sta -
+ *            ENABLE - 使能   
+ *            DISABLE - 关闭
+ *
+ * @return   None
+ */
+void USB20_Device_Init ( FunctionalState sta )  // USBHS device initial
 {
-    if(sta){
+    UINT16 i;
+    UINT32 *p;
+    if(sta)
+    {
+        R8_USB_CTRL = 0;
+        R8_USB_CTRL =  UCST_HS | RB_DEV_PU_EN | RB_USB_INT_BUSY |RB_USB_DMA_EN;
+        R8_USB_INT_EN = RB_USB_IE_SETUPACT | RB_USB_IE_TRANS | RB_USB_IE_SUSPEND  |RB_USB_IE_BUSRST ;
         USB20_Endp_Init();
-        USBHS->USB_CONTROL = 0;
-        USBHS->USB_CONTROL =  HIGH_SPEED | INT_BUSY_EN | DMA_EN | DEV_PU_EN | USB2_SETUP_EN | USB2_ACT_EN | USB2_DETECT_EN | USB2_SUSP_EN;
     }
-    else{
-        USBHS->USB_CONTROL = USB_ALL_CLR | USB_FORCE_RST;
+    else
+    {
+        R8_USB_CTRL = RB_USB_CLR_ALL | RB_USB_RESET_SIE;
     }
 }
 
 /*******************************************************************************
-* Function Name  : USB20_Device_setaddress
-* Description    : USB2.0设置设备地址
-* Input          : 地址
-* Return         : None
-*******************************************************************************/
+ * @fn      USB20_Device_setaddress
+ *
+ * @brief   USB2.0设置设备地址
+ *
+ * @param   address
+ *
+ * @return  None
+ **/
 void USB20_Device_Setaddress( UINT32 address )
 {
-    USBHS->USB_CONTROL &= 0x00ffffff;
-    USBHS->USB_CONTROL |= address<<24; // SET ADDRESS
+    R8_USB_DEV_AD = address; // SET ADDRESS
+}
+/*******************************************************************************
+ * @fn       U20_NonStandard_Request_Deal
+ *
+ * @brief   USB2.0 Interrupt Handler.
+ *
+ * @return   None
+ */
+UINT16 U20_NonStandard_Request_Deal()
+{
+  UINT16 len = 0;
 
+  return len;
 }
 
 /*******************************************************************************
-* Function Name  : USBHS_IRQHandler
-* Description    : USB2.0 Interrupt Handler.
-* Input          : None
-* Return         : None
-*******************************************************************************/
-void USBHS_IRQHandler(void)			//USBHS interrupt severice
+ * @fn       U20_Standard_Request_Deal
+ *
+ * @brief    USB2.0 standard request deal
+ *
+ * @return   None
+ */
+UINT16 U20_Standard_Request_Deal()
+{
+  UINT16 len = 0;
+  UINT8 endp_dir;
+  SetupLen = 0;
+  endp_dir = UsbSetupBuf->bRequestType & 0x80;
+  switch( SetupReq )
+  {
+    case USB_GET_DESCRIPTOR:
+    {
+        switch( ( ( UsbSetupBuf->wValue.w ) >> 8 ) )
+        {
+            case USB_DESCR_TYP_DEVICE:              /*获取设备描述符 */
+                pDescr = (UINT8 *)hs_device_descriptor;
+                SetupLen = ( SetupReqLen > sizeof(hs_device_descriptor) )? sizeof(hs_device_descriptor):SetupReqLen;
+                break;
+            case USB_DESCR_TYP_CONFIG:               /*获取配置描述符 */
+                pDescr = (UINT8 *)hs_config_descriptor;
+                SetupLen = ( SetupReqLen > sizeof(hs_config_descriptor) )? sizeof(hs_config_descriptor):SetupReqLen;
+                break;
+            case USB_DESCR_TYP_STRING:                /*获取字符串描述符*/
+                switch( ( UsbSetupBuf->wValue.w ) & 0xff )
+                {
+                    case USB_DESCR_LANGID_STRING:                        /*语言字符串描述符 */
+
+                        pDescr = (UINT8 *)hs_string_descriptor0;
+                        SetupLen = ( SetupReqLen > sizeof(hs_string_descriptor0) )? sizeof(hs_string_descriptor0):SetupReqLen;
+                        break;
+                    case USB_DESCR_VENDOR_STRING:                        /*产商字符串描述符 */
+                        pDescr = (UINT8 *)hs_string_descriptor1;
+                        SetupLen = ( SetupReqLen > sizeof(hs_string_descriptor1) )? sizeof(hs_string_descriptor1):SetupReqLen;
+                        break;
+                    case USB_DESCR_PRODUCT_STRING:                        /*产品字符串描述符 */
+                        pDescr =(UINT8 *) hs_string_descriptor2;
+                        SetupLen = ( SetupReqLen > sizeof(hs_string_descriptor2) )? sizeof(hs_string_descriptor2):SetupReqLen;;
+                        break;
+                    case USB_DESCR_SERIAL_STRING:
+                        break;
+                    default:
+                        SetupLen = USB_DESCR_UNSUPPORTED;
+                        break;
+                }
+                break;
+            case USB_DESCR_TYP_BOS:
+                 pDescr =(UINT8 *) hs_bos_descriptor;
+                 SetupLen = ( SetupReqLen > sizeof(hs_bos_descriptor) )? sizeof(hs_bos_descriptor):SetupReqLen;
+                 break;
+            default :
+                SetupLen = USB_DESCR_UNSUPPORTED;
+                break;
+        }
+    }
+        break;
+    case USB_SET_ADDRESS:             /*设置地址 */
+        g_devInfo.dev_addr = ( UsbSetupBuf->wValue.w )& 0xff;
+        break;
+    case USB_GET_CONFIGURATION:       /*获取配置值 */
+        endp0RTbuff[ 0 ] = g_devInfo.dev_config_value;
+        SetupLen = 1;
+        break;
+
+    case USB_SET_CONFIGURATION:       /*设置配置值 */
+        if( (R8_USB_SPD_TYPE & RB_USBSPEED_MASK)  == UST_FS )
+        {
+            U20_EndpnMaxSize = 64;
+        }
+        else if( (R8_USB_SPD_TYPE & RB_USBSPEED_MASK) == UST_LS )
+        {
+            U20_EndpnMaxSize = 8;
+        }
+        g_devInfo.dev_config_value = ( UsbSetupBuf->wValue.w ) & 0xff;
+        g_devInfo.dev_enum_status = 0x01;
+        break;
+    case USB_CLEAR_FEATURE:             /*清除特性 */
+        if( ( UsbSetupBuf->bRequestType & USB_REQ_RECIP_MASK ) == USB_REQ_RECIP_ENDP )  /*清除端点 */
+        {
+            switch( ( UsbSetupBuf->wIndex.w ) & 0xff )      /* wIndexL */
+            {
+                case 0x82:
+                    R16_UEP2_T_LEN= 0;
+                    R8_UEP2_TX_CTRL = UEP_T_RES_NAK | RB_UEP_T_TOG_0;
+                    break;
+                case 0x02:
+                    R8_UEP2_TX_CTRL = UEP_R_RES_ACK | RB_UEP_R_TOG_0;
+                    break;
+                case 0x81:
+                    R16_UEP1_T_LEN = 0;
+                    R8_UEP1_TX_CTRL = UEP_T_RES_NAK | RB_UEP_T_TOG_0;
+                    break;
+                case 0x01:
+                    R8_UEP1_RX_CTRL = UEP_T_RES_ACK | RB_UEP_R_TOG_0;
+                    break;
+                default:
+                    SetupLen = USB_DESCR_UNSUPPORTED;
+                    break;
+            }
+        }
+        else if( ( UsbSetupBuf->bRequestType & USB_REQ_RECIP_MASK ) == USB_REQ_RECIP_DEVICE )
+        {
+            if( ( ( UsbSetupBuf->wValue.w ) & 0xff ) == 1 )        /* wIndexL */
+            {
+                g_devInfo.dev_sleep_status &= ~0x01;
+            }
+        }
+        else
+        {
+            SetupLen = USB_DESCR_UNSUPPORTED;
+        }
+        break;
+    case USB_SET_FEATURE:        /*设置特性 */
+        if( ( UsbSetupBuf->bRequestType & 0x1F ) == 0x00 )            /*设置设备 */
+        {
+            if( UsbSetupBuf->wValue.w == 0x01 )
+            {
+                if( hs_config_descriptor[ 7 ] & 0x20 )                    /*设置唤醒使能标志 */
+                {
+                    g_devInfo.dev_sleep_status = 0x01;
+                }
+                else
+                {
+                    SetupLen = USB_DESCR_UNSUPPORTED;
+                }
+            }
+            else
+            {
+                SetupLen = USB_DESCR_UNSUPPORTED;
+            }
+        }
+        else if( ( UsbSetupBuf->bRequestType & 0x1F ) == 0x02 )            /*设置端点 */
+        {
+            if( UsbSetupBuf->wValue.w == 0x00 )                           /*设置指定端点STALL */
+            {
+                switch( ( UsbSetupBuf->wIndex.w ) & 0xff )
+                {
+                    case 0x82:        /*设置端点2 IN STALL */
+                        R8_UEP2_TX_CTRL = ( R8_UEP2_TX_CTRL & ~RB_UEP_TRES_MASK ) | UEP_T_RES_STALL;
+                        break;
+
+                    case 0x02:        /*设置端点2 OUT Stall */
+                        R8_UEP2_RX_CTRL = ( R8_UEP2_RX_CTRL & ~RB_UEP_RRES_MASK ) | UEP_R_RES_STALL;
+                        break;
+
+                    case 0x81:         /*设置端点1 IN STALL */
+                        R8_UEP1_TX_CTRL = ( R8_UEP1_TX_CTRL & ~RB_UEP_TRES_MASK ) | UEP_T_RES_STALL;
+                        break;
+
+                    case 0x01:        /*设置端点1 OUT STALL */
+                        R8_UEP1_RX_CTRL = ( R8_UEP1_RX_CTRL & ~RB_UEP_RRES_MASK ) | UEP_R_RES_STALL;
+                        break;
+
+                    default:
+                        SetupLen = USB_DESCR_UNSUPPORTED;
+                        break;
+                }
+            }
+            else
+            {
+                SetupLen = USB_DESCR_UNSUPPORTED;
+            }
+        }
+        else
+        {
+            SetupLen = USB_DESCR_UNSUPPORTED;
+        }
+        break;
+    case USB_GET_INTERFACE:
+        break;
+    case USB_SET_INTERFACE:
+        break;
+    case USB_GET_STATUS:              /*根据当前端点实际状态进行应答 */
+        endp0RTbuff[ 0 ] = 0x00;
+        endp0RTbuff[ 1 ] = 0x00;
+        SetupLen = 2;
+        if( UsbSetupBuf->wIndex.w == 0x81 )
+        {
+            if( ( R8_UEP1_TX_CTRL & RB_UEP_TRES_MASK ) == UEP_T_RES_STALL )
+            {
+                endp0RTbuff[ 0 ] = 0x01;
+                SetupLen = 1;
+            }
+        }
+        else if( UsbSetupBuf->wIndex.w == 0x01 )
+        {
+            if( ( R8_UEP1_RX_CTRL & RB_UEP_RRES_MASK ) == UEP_R_RES_STALL )
+            {
+                endp0RTbuff[ 0 ] = 0x01;
+                SetupLen = 1;
+            }
+        }
+        else if( UsbSetupBuf->wIndex.w == 0x82 )
+        {
+            if( ( R8_UEP2_TX_CTRL & RB_UEP_TRES_MASK ) == UEP_T_RES_STALL )
+            {
+                endp0RTbuff[ 0 ] = 0x01;
+                SetupLen = 1;
+            }
+        }
+        else if( UsbSetupBuf->wIndex.w == 0x02 )
+        {
+            if( ( R8_UEP2_RX_CTRL & RB_UEP_RRES_MASK ) == UEP_R_RES_STALL )
+            {
+                endp0RTbuff[ 0 ] = 0x01;
+                SetupLen = 1;
+            }
+        }
+        break;
+    default:
+        SetupLen = USB_DESCR_UNSUPPORTED;
+        break;
+   }
+  /* 判断是否可以正常处理 */
+  if( (SetupLen != USB_DESCR_UNSUPPORTED) && (SetupLen != 0))
+  {
+      len = ( SetupLen >= U20_UEP0_MAXSIZE ) ? U20_UEP0_MAXSIZE : SetupLen;                //返回发送长度
+      if(endp_dir)
+      {
+          memcpy( endp0RTbuff, pDescr, len );                                               //数据阶段为IN 准备好数据至缓冲区
+          pDescr += len;
+      }
+      SetupLen -= len;                                                                     //剩余未发送数据长度
+  }
+   return len;
+}
+
+/*******************************************************************************
+ * @fn       USBHSD_IRQHandler
+ *
+ * @brief    USB2.0 Interrupt Handler.
+ *
+ * @return   None
+ */
+void USBHS_IRQHandler(void)			                                //USBHS interrupt severice
 {
 	UINT32 end_num;
 	UINT32 rx_token;
-	UINT16 rx_len;
+	UINT16 ret_len,i;
+	UINT16 rxlen;
 	UINT8  *p8;
-
-	UINT32 i,temp,temp1;
-	UINT8  send_data_len =0;
-	UINT8  bmRequestType;
-	UINT8  bRequest;
-	UINT8  wValue_l;
-	UINT8  wValue_h;
-	UINT8  wLength;
-	UINT8  hs_config_len;
-
-	if( USBHS->USB_STATUS & USB2_SETUP_FLAG )
+	UINT8 int_flg;
+	int_flg = R8_USB_INT_FG;
+	if( int_flg & RB_USB_IF_SETUOACT )                   //SETUP中断
 	{
-		temp = *(UINT32 *)endp0RTbuff;
-		temp1 = *(UINT32 *)(endp0RTbuff+4);
-		bmRequestType = *(UINT8 *)endp0RTbuff;
-		bRequest = *(UINT8 *)(endp0RTbuff+1);
-		wValue_l = *(UINT8 *)(endp0RTbuff+2);
-		wValue_h = *(UINT8 *)(endp0RTbuff+3);
-		wLength = (temp1>>16) & 0xffff;
+#if 0
 		 printf("SETUP :");
 		 p8 = (UINT8 *)endp0RTbuff;
 		 for(i=0; i<8; i++)  { printf("%02x ", *p8++); }
 		 printf("\n");
-		if( bmRequestType == 0 ) // without data stage
-		{
-			if( bRequest == 0x5 ) // set address
-			{
-				set_address_status = 1; 
-				device_addr = wValue_l;
-			}
-			else if( bRequest == 0x9 ) // set configuration
-			{
-				
-			}
-			USBHS->UEP0_CTRL = EP_T_RES_ACK | EP_T_TOG_1; // IN -DATA1-ACK( len =0 )
-		}
-		else if( bmRequestType == 0x80 ) // data stage is IN
-		{ 
-			if( bRequest == 0x06 && wValue_h == 0x01 ) // dev desc
-			{
-			    memcpy(endp0RTbuff,(UINT8 *)hs_device_descriptor,(UINT16)hs_device_descriptor[0] );
-				send_data_len = hs_device_descriptor[0];
-			}
-			else if( bRequest == 0x06 && wValue_h == 0x02 ) // config desc
-			{ 
+#endif
+		 SetupReqType = UsbSetupBuf->bRequestType;
+		 SetupReq = UsbSetupBuf->bRequest;
+		 SetupReqLen = UsbSetupBuf->wLength;   //数据长度
 
-				if( wLength > 64)
-				{
-				    memcpy(endp0RTbuff,(UINT8 *)hs_config_descriptor,64 );
-					send_data_len = 64;
-					get_config_status = 1;
-				}
-				else
-				{
-				    memcpy(endp0RTbuff,(UINT8 *)hs_config_descriptor,wLength );
-					send_data_len = wLength;
-				}
-			}
-			else if( bRequest == 0x06 && wValue_h == 0x0f )
-			{
-				if( wLength >= hs_bos_descriptor[2])
-				{
-				    memcpy(endp0RTbuff,(UINT8 *)hs_bos_descriptor, hs_bos_descriptor[2] );
-					send_data_len = hs_bos_descriptor[2];
-				}
-				else
-				{
-				    memcpy(endp0RTbuff,(UINT8 *)hs_bos_descriptor, wLength );
-					send_data_len = wLength;
-				}
-			}
-			else if( bRequest == 0x06 && wValue_h == 0x03 && wValue_l == 0x01  )// string1
-			{ 
-			    memcpy(endp0RTbuff,(UINT8 *)hs_string_descriptor1, hs_string_descriptor1[0] );
-				send_data_len = hs_string_descriptor1[0];
-			}
-			else if( bRequest == 0x06 && wValue_h == 0x03 && wValue_l == 0x02  )// string2
-			{ 
-			    memcpy(endp0RTbuff,(UINT8 *)hs_string_descriptor2, hs_string_descriptor2[0] );
-				send_data_len = hs_string_descriptor2[0];
-			}
-			else if( bRequest == 0x06 && wValue_h == 0x03  )// string0
-			{ 
-			    memcpy(endp0RTbuff,(UINT8 *)hs_string_descriptor0, hs_string_descriptor0[0] );
-				send_data_len = hs_string_descriptor0[0];
-			}
-			USBHS->UEP0_CTRL = EP_T_RES_ACK | EP_T_TOG_1 | send_data_len; // DATA stage (IN -DATA1-ACK)
-		}
-		else if( (temp & 0xffff) == 0xfea1 ) //
-		{
-			*( UINT32*) 0x20020000 = 0;
-			USBHS->UEP0_CTRL = EP_T_RES_ACK | EP_T_TOG_1 | 1;
-		}
-		else if( (temp & 0xffff) == 0x0102 ) // clear feature
-		{
-			USBHS->UEP0_CTRL = EP_T_RES_ACK | EP_T_TOG_1; // IN -DATA1-ACK( len =0 )
-		}
-		else 
-		{
-			USBHS->UEP0_CTRL = EP_T_RES_STALL | EP_R_RES_STALL; // IN - STALL / OUT - DATA - STALL
-			// printf(" stall \n");
-		}
-		USBHS->USB_STATUS = USB2_SETUP_FLAG; // clear int flag
+         /*分析主机请求*/
+		 if((UsbSetupBuf->bRequestType & USB_REQ_TYP_MASK) != USB_REQ_TYP_STANDARD)   //非标准请求
+         {
+             ret_len =  U20_NonStandard_Request_Deal();
+         }
+         else                                                                        //标准请求
+         {
+             ret_len = U20_Standard_Request_Deal();
+         }
+		 if(ret_len == 0xFFFF)                                                  //不支持的描述符
+         {
+              R16_UEP0_T_LEN = 0;
+              R8_UEP0_TX_CTRL = UEP_T_RES_STALL ;
+              R8_UEP0_RX_CTRL = UEP_R_RES_STALL ;
+         }
+         else
+         {
+              R16_UEP0_T_LEN = ret_len;
+              R8_UEP0_TX_CTRL = UEP_T_RES_ACK | RB_UEP_T_TOG_1;           //数据过程或状态过程
+              R8_UEP0_RX_CTRL = UEP_R_RES_ACK | RB_UEP_R_TOG_1;
+         }
+		R8_USB_INT_FG = RB_USB_IF_SETUOACT;              // clear int flag
 	}
-	else if( USBHS->USB_STATUS & USB2_ACT_FLAG ) 
+	else if( int_flg & RB_USB_IF_TRANSFER )        //事务传输完成中断
 	{
-		end_num =  ((USBHS->USB_STATUS)>>24) & 0xf;
-		rx_token = ((USBHS->USB_STATUS)>>28) & 0x3; // 00: OUT, 01:SOF, 10:IN, 11:SETUP
-
-		if( !(USBHS->USB_STATUS & TOG_MATCH) )
+		end_num =   R8_USB_INT_ST & 0xf;                 //当前产生中断的端点
+		rx_token = ( (R8_USB_INT_ST )>>4) & 0x3;           //中断类型  00: OUT, 01:SOF, 10:IN, 11:SETUP
+#if 0
+		if( !(R8_USB_INT_ST & RB_USB_ST_TOGOK) )
 		{
 			printf(" TOG MATCH FAIL : ENDP %x token %x \n", end_num, rx_token);
 		}
-
-		if( end_num == 0 )
+#endif
+		switch( end_num )                                 //端点号
 		{
-			if( rx_token == PID_IN ) // IN
-			{
-				if( set_address_status )
-				{
-				    USB20_Device_Setaddress( device_addr );// SET ADDRESS
-					set_address_status = 0;
-					USBHS->UEP0_CTRL = 0;
-				}
-				else if( get_config_status )
-				{
-					hs_config_len = hs_config_descriptor[2]-64;
-					memcpy(endp0RTbuff,(UINT8 *)(hs_config_descriptor + 64), (UINT16)hs_config_len );
-					USBHS->UEP0_CTRL = EP_T_RES_ACK | EP_T_TOG_0 | hs_config_len; // DATA stage (IN -DATA1-ACK)
-					get_config_status = 0;
-				}
-				else
-				{
-					USBHS->UEP0_CTRL = EP_R_RES_ACK | EP_R_TOG_1;
-				}
-			}
-			else if( rx_token == PID_OUT ) //OUT
-			{
-				USBHS->UEP0_CTRL = EP_T_RES_ACK | EP_T_TOG_1;
-			}
-		}
-		else if( end_num == 1 )
-		{
-			if( rx_token == PID_IN ) // IN - DATA - ACK
-			{
-
-			}
-			else if( rx_token == PID_OUT ) // OUT - DATA - ACK
-			{
-				rx_len = USBHS->USB_RX_LEN;
-				for(i=0;i<rx_len;i++){
-                    endp1RTbuff[i] = ~endp1RTbuff[i];   //数据取反上传
+		   case 0:
+                if( rx_token == PID_IN )                                        //端点零 发送完成中断
+                {
+                    ret_len = U20_Endp0_IN_Callback();
+                    if(ret_len == 0)                                            //数据发送完成
+                    {
+                        R8_UEP0_RX_CTRL = UEP_R_RES_ACK | RB_UEP_R_TOG_1;       //状态过程为OUT
+                        R16_UEP0_T_LEN = 0;                                     //清发送长度
+                        R8_UEP0_TX_CTRL = 0;                                    //清发送控制器
+                    }
+                    else
+                    {
+                        R16_UEP0_T_LEN = ret_len;
+                        R8_UEP0_TX_CTRL ^= RB_UEP_T_TOG_1;
+                        R8_UEP0_TX_CTRL = ( R8_UEP0_TX_CTRL &~RB_UEP_TRES_MASK )| UEP_T_RES_ACK ;
+                    }
                 }
-				USBHS->UEP1_CTRL &= 0xffff0000;
-				USBHS->UEP1_CTRL |= rx_len; // IN -DATAx-ACK( len =rx_len )
-			}
-		}
-		else if( end_num == 2 )
-		{
-			if( rx_token == PID_IN ) // IN - DATA - ACK
-			{
+                else if( rx_token == PID_OUT )                                   //端点零 接收完成中断
+                {
+                    SetupLen -= SetupLen > R16_USB_RX_LEN ? R16_USB_RX_LEN :SetupLen;
+                    if( SetupLen > 0 )                                                          //还有数据待接收
+                    {
+                       R8_UEP0_RX_CTRL ^=RB_UEP_R_TOG_1;
+                       R8_UEP0_RX_CTRL = ( R8_UEP0_RX_CTRL &~RB_UEP_RRES_MASK) | UEP_R_RES_ACK;
 
-			}
-			else if( rx_token == PID_OUT ) // OUT - DATA - ACK
-			{
-				rx_len = USBHS->USB_RX_LEN;
-				for(i=0;i<rx_len;i++){
-				    endp2RTbuff[i] = ~endp2RTbuff[i];   //数据取反上传
-				}
-				USBHS->UEP2_CTRL &= 0xffff0000;
-				USBHS->UEP2_CTRL |= rx_len; // IN -DATAx-ACK( len =rx_len )
-			}
-		}
-		else if( end_num == 3 )
-		{
-			if( rx_token == PID_IN ) // IN - DATA - ACK
-			{
+                    }
+                    else                        //无数据接收
+                    {
+                        R16_UEP0_T_LEN = 0;                                      //状态过程发零长度包
+                        R8_UEP0_TX_CTRL = UEP_T_RES_ACK | RB_UEP_T_TOG_1;        //状态过程为IN
+                        R8_UEP0_RX_CTRL = 0 ;                                    //无数据接收  接收状态零
+                    }
+                }
+                break;
+		   case 1:
+		       if( rx_token == PID_IN )
+		       {
+                   R16_UEP1_T_LEN = 0;
+                   R8_UEP1_TX_CTRL ^= RB_UEP_T_TOG_1;                                               //翻转下次准备发送的同步触发位
+                   R8_UEP1_TX_CTRL = (R8_UEP1_TX_CTRL & ~RB_UEP_RRES_MASK) | UEP_R_RES_NAK;
 
-			}
-			else if( rx_token == PID_OUT ) // OUT - DATA - ACK
-			{
-				rx_len = USBHS->USB_RX_LEN;
-				for(i=0;i<rx_len;i++){
-                    endp3RTbuff[i] = ~endp3RTbuff[i];   //数据取反上传
-                }
-				USBHS->UEP3_CTRL &= 0xffff0000;
-				USBHS->UEP3_CTRL |= rx_len; // IN -DATAx-ACK( len =rx_len )
-			}
-		}
-		else if( end_num == 4 )
-		{
-			if( rx_token == PID_IN ) // IN - DATA - ACK
-			{
+                   R8_UEP1_RX_CTRL ^= RB_UEP_R_TOG_1;                                                //先翻转1号端点接收期望的同步触发位
+                   R8_UEP1_RX_CTRL = (R8_UEP1_RX_CTRL & ~RB_UEP_RRES_MASK) | UEP_R_RES_ACK;          //1号端点接收置ACK
+		       }
+		       else if(rx_token == PID_OUT)
+		       {
+		           rxlen = R16_USB_RX_LEN;
+                   R8_UEP1_RX_CTRL = (R8_UEP1_RX_CTRL & ~RB_UEP_RRES_MASK) | UEP_R_RES_NAK;     //1号端点接收置NAK
 
-			}
-			else if( rx_token == PID_OUT ) // OUT - DATA - ACK
-			{
-				rx_len = USBHS->USB_RX_LEN;
-				for(i=0;i<rx_len;i++){
-                    endp4RTbuff[i] = ~endp4RTbuff[i];   //数据取反上传
-                }
-				USBHS->UEP4_CTRL &= 0xffff0000;
-				USBHS->UEP4_CTRL |= rx_len; // IN -DATAx-ACK( len =rx_len )
-			}
-		}
-		else if( end_num == 5 )
-		{
-			if( rx_token == PID_IN ) // IN - DATA - ACK
-			{
+		           R32_UEP1_TX_DMA = (UINT32)(UINT8 *)endp1RTbuff;
+		           R16_UEP1_T_LEN =  rxlen;                                                     //设置1号端点发送长度
+		           R8_UEP1_TX_CTRL = (R8_UEP1_TX_CTRL &~RB_UEP_TRES_MASK)|UEP_T_RES_ACK;        //启动发送 置ACK
+		       }
+		       break;
+		   case 2:
+		       if(rx_token == PID_IN)
+		       {
+                   //翻转下次准备发送的同步触发位 bulk传输 data0 data1来回翻转
+                   R32_UEP2_TX_DMA = (UINT32)(UINT8 *)endp2RTbuff;
+                   R8_UEP2_TX_CTRL ^= RB_UEP_T_TOG_1;
 
-			}
-			else if( rx_token == PID_OUT ) // OUT - DATA - ACK
-			{
-				rx_len = USBHS->USB_RX_LEN;
-				for(i=0;i<rx_len;i++){
-                    endp5RTbuff[i] = ~endp5RTbuff[i];   //数据取反上传
-                }
-				USBHS->UEP5_CTRL &= 0xffff0000;
-				USBHS->UEP5_CTRL |= rx_len; // IN -DATAx-ACK( len =rx_len )
-			}
-		}
-		else if( end_num == 6 )
-		{
-			if( rx_token == PID_IN ) // IN - DATA - ACK
-			{
+                   //端点状态置成ACK,若发送长度不变 则不需要重新写 R16_UEP2_T_LEN寄存器
+                   R8_UEP2_TX_CTRL = (R8_UEP2_TX_CTRL & ~RB_UEP_TRES_MASK) | UEP_T_RES_ACK;
+		       }
+		       else if(rx_token == PID_OUT)
+		       {
+		           R32_UEP2_RX_DMA = (UINT32)(UINT8 *)endp2RTbuff;
+		           R8_UEP2_RX_CTRL ^= RB_UEP_R_TOG_1;
+		           R8_UEP2_RX_CTRL = (R8_UEP2_RX_CTRL &~RB_UEP_RRES_MASK)|UEP_R_RES_ACK;
+		       }
+		       break;
+		   case 3:
+		       break;
+           case 4:
+                break;
+           case 5:
+                break;
+           case 6:
+                break;
+           case 7:
+                break;
+           default:
+                break;
 
-			}
-			else if( rx_token == PID_OUT ) // OUT - DATA - ACK
-			{
-				rx_len = USBHS->USB_RX_LEN;
-				for(i=0;i<rx_len;i++){
-                    endp6RTbuff[i] = ~endp6RTbuff[i];   //数据取反上传
-                }
-				USBHS->UEP6_CTRL &= 0xffff0000;
-				USBHS->UEP6_CTRL |= rx_len; // IN -DATAx-ACK( len =rx_len )
-			}
 		}
-		else if( end_num == 7 )
-		{
-			if( rx_token == PID_IN ) // IN - DATA - ACK
-			{
-				
-			}
-			else if( rx_token == PID_OUT ) // OUT - DATA - ACK
-			{
-				rx_len = USBHS->USB_RX_LEN;
-				for(i=0;i<rx_len;i++){
-                    endp7RTbuff[i] = ~endp7RTbuff[i];   //数据取反上传
-                }
-				USBHS->UEP7_CTRL &= 0xffff0000;
-				USBHS->UEP7_CTRL |= rx_len; // IN -DATAx-ACK( len =rx_len )
-			}
-		}
-		USBHS->USB_STATUS = USB2_ACT_FLAG;
+		R8_USB_INT_FG = RB_USB_IF_TRANSFER;               //清USB事务完成中断
 	}
-	else if( USBHS->USB_STATUS & USB2_DETECT_FLAG )
+	else if( int_flg & RB_USB_IF_BUSRST )           //总线复位中断
 	{
-		device_addr = 0;
 		USB20_Endp_Init();
-		USB20_Device_Setaddress( device_addr );
-		printf(" bus reset! \n");
-		USBHS->USB_STATUS = USB2_DETECT_FLAG;
+		USB20_Device_Setaddress( 0 );                          //总线复位 地址清0
+		R8_USB_INT_FG = RB_USB_IF_BUSRST;
+        if( link_sta == 1 )
         {
-            if( link_sta == 1 ){
-                PFIC_EnableIRQ(USBSS_IRQn);
-                PFIC_EnableIRQ(LINK_IRQn);
-                PFIC_EnableIRQ(TMR0_IRQn);
-                R8_TMR0_INTER_EN = 1;
-                TMR0_TimerInit( 67000000 );   //约0.5秒
-                USB30D_init(ENABLE);
-            }
-        }
+            PFIC_EnableIRQ(USBSS_IRQn);
+            PFIC_EnableIRQ(LINK_IRQn);
+            PFIC_EnableIRQ(TMR0_IRQn);
+            R8_TMR0_INTER_EN = 1;
+            TMR0_TimerInit( 67000000 );   //约0.5秒
+            USB30D_init(ENABLE);
+       }
 	}
-	else if(USBHS->USB_STATUS & USB2_SUSP_FLAG )
+	else if( int_flg & RB_USB_IF_SUSPEND )         //挂起中断
 	{
-		printf(" bus suspend! \n");
-		USBHS->USB_STATUS = USB2_SUSP_FLAG;
+		R8_USB_INT_FG = RB_USB_IF_SUSPEND;
 	}
 }
+
+/*******************************************************************************
+ * @fn       U20_Endp0_IN_Callback
+ *
+ * @brief    U20_Endp0_IN_Callback Handler.
+ *
+ * @return   None
+ */
+UINT16 U20_Endp0_IN_Callback(void)
+{
+    UINT16 len = 0;
+    switch(SetupReq)
+    {
+      case USB_GET_DESCRIPTOR:
+          len = SetupLen >= U20_UEP0_MAXSIZE ? U20_UEP0_MAXSIZE : SetupLen;
+          memcpy(endp0RTbuff, pDescr, len);
+          SetupLen -= len;
+          pDescr += len;
+          break;
+      case USB_SET_ADDRESS:
+          USB20_Device_Setaddress(g_devInfo.dev_addr);
+          break;
+      default:
+          break;
+    }
+    return len;
+}
+
+

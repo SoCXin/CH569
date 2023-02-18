@@ -4,21 +4,26 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
 
 
 /*******************************************************************************
-* Function Name  : ECDC_Init
-* Description    : 初始化
-* Input          : ecdcmode:	0-SM4&ECB     1-AES&ECB     2-SM4&CTR     3-AES&CTR
-*                  clkmode:     1-关闭        2-240M        3-160M
-*                  keylen:      0-128bit      1-192bit      2-256bit
-*                  pkey:    密钥值指针
-*                  pcount:  计数器值指针
-* Return         : None
-*******************************************************************************/
+ * @fn     ECDC_Init
+ *
+ * @brief  初始化
+ *
+ * @param  ecdcmode -	0-SM4&ECB     1-AES&ECB     2-SM4&CTR     3-AES&CTR
+ *         clkmode -     1-关闭        2-240M        3-160M
+ *         keylen -      0-128bit      1-192bit      2-256bit
+ *         pkey -    密钥值指针
+ *         pcount -  计数器值指针
+ *
+ * @return   None
+ */
 void ECDC_Init( UINT8 ecdcmode, UINT8 clkmode, UINT8 keylen, PUINT32 pkey, PUINT32 pcount )
 {
 	R8_ECDC_INT_FG |= 0xFF;
@@ -41,12 +46,15 @@ void ECDC_Init( UINT8 ecdcmode, UINT8 clkmode, UINT8 keylen, PUINT32 pkey, PUINT
 }
 
 /*******************************************************************************
-* Function Name  : ECDC_SetKey
-* Description    : 设置密钥
-* Input          : pkey:   密钥值指针
-*                  keylen: 0-128bit   1-192bit   2-256bit
-* Return         : None
-*******************************************************************************/
+ * @fn     ECDC_SetKey
+ *
+ * @brief  设置密钥
+ *
+ * @param  pkey -   密钥值指针
+ *         keylen - 0-128bit   1-192bit   2-256bit
+ 
+ * @return   None
+ */
 void ECDC_SetKey( PUINT32 pkey, UINT8 keylen )
 {
 	keylen = keylen&0x03;
@@ -67,11 +75,14 @@ void ECDC_SetKey( PUINT32 pkey, UINT8 keylen )
 }
 
 /*******************************************************************************
-* Function Name  : ECDC_SetCount
-* Description    : 设置计数器
-* Input          : pcount:  计数器值指针
-* Return         : None
-*******************************************************************************/
+ * @fn     ECDC_SetCount
+ *
+ * @brief  设置计数器
+ *
+ * @param  pcount -  计数器值指针
+ *
+ * @return   None
+ */
 void ECDC_SetCount( PUINT32 pcount )
 {
 	R32_ECDC_IV_31T0 = *pcount++;
@@ -81,19 +92,22 @@ void ECDC_SetCount( PUINT32 pcount )
 }
 
 /*******************************************************************************
-* Function Name  : ECDC_Excute
-* Description    : 设置方向和模式
-* Input          : excutemode:	  RAMX加密			-0x84
-*							      RAMX解密			-0x8c
-*								  128bits数据单次加密	-0x02
-*								  128bits数据单次解密	-0x0a
-*								        外设到RAMX 加密  		-0x02
-*				    			       外设到 RAMX 解密   		-0x0a
-*								  RAMX到外设加密   		-0x04
-*								  RAMX到外设解密   		-0x0c
-*   			   endianmode:    big_endian-1      little_endian-0
-* Return         : None
-*******************************************************************************/
+ * @fn     ECDC_Excute
+ *
+ * @brief  设置方向和模式
+ *
+ * @param  excutemode -	  RAMX加密			-0x84
+ *					      RAMX解密			-0x8c
+ *						  128bits数据单次加密	-0x02
+ *						  128bits数据单次解密	-0x0a
+ *					      外设到RAMX 加密  		-0x02
+ *				    	  外设到 RAMX 解密   		-0x0a
+ *						  RAMX到外设加密   		-0x04
+ *						  RAMX到外设解密   		-0x0c
+ *   	   endianmode -    big_endian-1      little_endian-0
+ *
+ * @return   None
+ */
 void ECDC_Excute( UINT8 excutemode, UINT8 endianmode )
 {
 	R16_ECEC_CTRL &= 0xDF71;
@@ -105,12 +119,15 @@ void ECDC_Excute( UINT8 excutemode, UINT8 endianmode )
 }
 
 /*******************************************************************************
-* Function Name  : ECDC_SingleRegister
-* Description    : 单次寄存器加解密
-* Input          : pWdatbuff: 写入数据首地址
-*                  pRdatbuff: 读取数据首地址
-* Return         : None
-*******************************************************************************/
+ * @fn     ECDC_SingleRegister
+ *
+ * @brief  单次寄存器加解密
+ *
+ * @param  pWdatbuff - 写入数据首地址
+ *         pRdatbuff - 读取数据首地址
+ *
+ * @return   None
+ */
 void ECDC_SingleRegister( PUINT32 pWdatbuff, PUINT32 pRdatbuff )
 {
 	R32_ECDC_SGSD_127T96 = pWdatbuff[3];			//低地址
@@ -128,12 +145,14 @@ void ECDC_SingleRegister( PUINT32 pWdatbuff, PUINT32 pRdatbuff )
 }
 
 /*******************************************************************************
-* Function Name  : ECDC_RAMX
-* Description    : RAMX加解密
-* Input          : ram_addr： 首地址
-* 				   ram_len：     长度
-* Return         : None
-*******************************************************************************/
+ * @fn     ECDC_RAMX
+ *
+ * @brief  RAMX加解密
+ *
+ * @param  ram_add - 首地址
+ * 		   ram_len -  长度
+ * @return   None
+ **/
 void ECDC_SelfDMA( UINT32 ram_addr, UINT32 ram_len )
 {
 	R32_ECDC_SRAM_ADDR = ram_addr;
@@ -144,11 +163,14 @@ void ECDC_SelfDMA( UINT32 ram_addr, UINT32 ram_len )
 }
 
 /*******************************************************************************
-* Function Name  : ECDC_RloadCount
-* Description    : CTR模式下，每加密/解密一块，重新载入计数器值
-* Input          : pcount:  计数器值指针
-* Return         : None
-*******************************************************************************/
+ * @fn     ECDC_RloadCount
+ *
+ * @brief  CTR模式下，每加密/解密一块，重新载入计数器值
+ *
+ * @param  pcount -  计数器值指针
+ *
+ * @return   None
+ */
 void ECDC_RloadCount( UINT8 excutemode, UINT8 endianmode, PUINT32 pcount )
 {
 	R16_ECEC_CTRL &= 0xDFF9;       //第二位第三位置0

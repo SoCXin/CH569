@@ -4,6 +4,8 @@
 * Version            : V1.0
 * Date               : 2020/07/31
 * Description 		 : 
+* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+* SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
 #include "CH56x_common.h"
@@ -17,11 +19,14 @@ void USBSS_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void LINK_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
 /*******************************************************************************
-* Function Name  : DebugInit
-* Description    : Initializes the UART1 peripheral.
-* Input          : baudrate: UART1 communication baud rate.
-* Return         : None
-*******************************************************************************/
+ * @fn       DebugInit
+ *
+ * @brief    Initializes the UART1 peripheral.
+ *
+ * @param    baudrate: UART1 communication baud rate.
+ *
+ * @return   None
+ */
 void DebugInit(UINT32 baudrate)
 {
 	UINT32 x;
@@ -37,12 +42,13 @@ void DebugInit(UINT32 baudrate)
 	R32_PA_DIR |= (1<<8);
 }
 
-/*******************************************************************************
-* Function Name  : main
-* Description    : Main program.
-* Input          : None
-* Return         : None
-*******************************************************************************/
+/*********************************************************************
+ * @fn      main
+ *
+ * @brief   Main program.
+ *
+ * @return  none
+ */
 int main()
 {
 	SystemInit(FREQ_SYS);
@@ -74,23 +80,26 @@ int main()
 }
 
 /*******************************************************************************
-* Function Name  : LINK_IRQHandler
-* Description    : USB3.0 Link Interrupt Handler.
-* Input          : None
-* Return         : None
-*******************************************************************************/
-void LINK_IRQHandler (void)	          //USBSS link interrupt service
+ * @fn      LINK_IRQHandler
+ *
+ * @brief   USB3.0 Link Interrupt Handler.
+ *
+ * @return  None
+ */
+void LINK_IRQHandler(void) //USBSS link interrupt service
 {
 	USB30_linkIRQHandler();
 }
 
 /*******************************************************************************
-* Function Name  : USBSS_IRQHandler
-* Description    : USB3.0 Interrupt Handler.
-* Input          : None
-* Return         : None
-*******************************************************************************/
-void USBSS_IRQHandler (void)			//USBSS interrupt service
+ * @fn      USBSS_IRQHandler
+ *
+ * @brief   USB3.0 Interrupt Handler.
+ *
+ * @return  None
+
+ */
+void USBSS_IRQHandler(void) //USBSS interrupt service
 {
 	USB30_usbssIRQHandler();
 }

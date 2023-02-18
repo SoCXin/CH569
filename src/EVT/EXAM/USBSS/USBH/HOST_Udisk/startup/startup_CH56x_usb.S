@@ -1,10 +1,12 @@
-/********************************** (C) COPYRIGHT *******************************
-* File Name          : startup_CH56x_usb.s
-* Author             : WCH
-* Version            : V1.0
-* Date               : 2020/07/31
-* Description        : CH56x usb vector table for eclipse toolchain.
-*******************************************************************************/
+;/********************************** (C) COPYRIGHT *******************************
+;* File Name          : startup_CH56x_usb.s
+;* Author             : WCH
+;* Version            : V1.0
+;* Date               : 2020/07/31
+;* Description        : CH56x usb vector table for eclipse toolchain.
+;* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+;* SPDX-License-Identifier: Apache-2.0
+;*******************************************************************************/
 
 	.section	.init,"ax",@progbits
 	.global	_start

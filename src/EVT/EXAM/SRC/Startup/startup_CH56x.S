@@ -1,10 +1,12 @@
-/********************************** (C) COPYRIGHT *******************************
-* File Name          : startup_CH56x.s
-* Author             : WCH
-* Version            : V1.0
-* Date               : 2020/07/31
-* Description        : CH56x vector table for eclipse toolchain.
-*******************************************************************************/
+;/********************************** (C) COPYRIGHT *******************************
+;* File Name          : startup_CH56x.s
+;* Author             : WCH
+;* Version            : V1.0
+;* Date               : 2020/07/31
+;* Description        : CH56x vector table for eclipse toolchain.
+;* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+;* SPDX-License-Identifier: Apache-2.0
+;*******************************************************************************/
 
 	.section	.init,"ax",@progbits
 	.global	_start
@@ -20,7 +22,7 @@ _vector_base:
     .word   0
         j   NMI_Handler                 /* NMI Handler */
         j   HardFault_Handler           /* Hard Fault Handler */
-    .word   0
+    .word   0xf7f9bf11
     .word   0
     .word   0
     .word   0
@@ -30,7 +32,7 @@ _vector_base:
     .word   0
         j   SysTick_Handler            /* SysTick Handler */
     .word   0
-        j   SWI_Handler                 /* SWI Handler */
+        j   SW_Handler                 /* SW Handler */
     .word   0
     /* External Interrupts */
         j   WDOG_IRQHandler			   /* WDOG */
@@ -61,7 +63,7 @@ _vector_base:
     .weak   NMI_Handler
     .weak   HardFault_Handler
     .weak   SysTick_Handler
-    .weak   SWI_Handler
+    .weak   SW_Handler
     .weak   WDOG_IRQHandler
     .weak   TMR0_IRQHandler
     .weak   GPIO_IRQHandler
@@ -87,7 +89,7 @@ _vector_base:
 NMI_Handler:  1:  j 1b
 HardFault_Handler:  1:  j 1b
 SysTick_Handler:  1:  j 1b
-SWI_Handler:  1:  j 1b
+SW_Handler:  1:  j 1b
 WDOG_IRQHandler:  1:  j 1b
 TMR0_IRQHandler:  1:  j 1b
 GPIO_IRQHandler:  1:  j 1b
@@ -143,7 +145,7 @@ handle_reset:
 	addi a0, a0, 4
 	bltu a0, a1, 1b
 
-/* clear dmadata section */
+	/* clear dmadata section */
 
 2:
     la a0, _dmadata_start
@@ -153,7 +155,7 @@ handle_reset:
     sw zero, (a0)
     addi a0, a0, 4
     bltu a0, a1, 1b
-/**/
+
 2:
 	/* enable all interrupt */
     li t0, 0x88
